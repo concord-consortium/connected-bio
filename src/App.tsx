@@ -90,7 +90,7 @@ class App extends React.Component<any, any> {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Multi-level Model Demos &mdash; 2-up, buttons</h1>
+          <h1 className="App-title">Connected Bio</h1>
         </header>
         <div className="four-up">
           <div>
