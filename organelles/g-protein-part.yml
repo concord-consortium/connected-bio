@@ -1,0 +1,31 @@
+---
+name: g-protein-part
+image: assets/g-protein-part.svg
+selector: "#gbody_x5F_part"
+spawn:
+  'on':
+    selector: "#g-protein-paths path"
+    which: 1
+  never: true
+properties:
+  speed: 0.6
+  size: 1
+initialState: starting
+rules:
+  starting:
+  - wait:
+      for: 200
+      finally:
+        switch_state: away_from_receptor
+  away_from_receptor:
+  - follow:
+      selector: "#g-protein-paths path"
+      which: 1
+      direction: forward
+      finally:
+        switch_state: dying
+  dying:
+  - wait:
+      for: 200
+      finally:
+        die: true
