@@ -7,6 +7,7 @@ interface OrganelleWrapper {
   showBinding: boolean,
   doAddHormone: boolean,
   addEnzyme: boolean,
+  setActiveAssay: Function,
   currentView: any,
   setGraphState: Function
 }
@@ -33,7 +34,11 @@ class OrganelleWrapper extends React.Component<any, any> {
       clickHandlers: [
         {
           selector: "#melanocyte_x5F_cell",
-          action: this.cytoplasmClick
+          action: this.organelleClick.bind(this, "cytoplasm")
+        },
+        {
+          selector: "#nucleus_x5F_A",
+          action: this.organelleClick.bind(this, "nucleus")
         },
       ],
       species: [
@@ -55,8 +60,8 @@ class OrganelleWrapper extends React.Component<any, any> {
     });
   }
 
-  cytoplasmClick() {
-    console.log("Clicked cytoplasm")
+  organelleClick(organelle:string) {
+    this.props.setActiveAssay(organelle)
   }
 
   addHormone() {

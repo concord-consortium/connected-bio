@@ -2,6 +2,7 @@ import * as React from 'react';
 import './App.css';
 
 import OrganelleWrapper from './components/organelle-wrapper';
+import Chart from './components/chart';
 
 interface App {}
 
@@ -19,11 +20,28 @@ class App extends React.Component<any, any> {
         working_myosin_5a: false,
         open_gates: false
       },
-      addEnzyme: false
+      addEnzyme: false,
+      activeAssay: "nucleus",
+      substanceLevels: {
+        cytoplasm: {
+          substance1: 20,
+          substance2: 50,
+          substance3: 30
+        },
+        nucleus: {
+          substance4: 40,
+          substance5: 15
+        }
+      }
     };
+    this.setActiveAssay = this.setActiveAssay.bind(this);
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handleHormoneClick = this.handleHormoneClick.bind(this);
     this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
+  }
+
+  setActiveAssay(activeAssay:string) {
+    this.setState({ activeAssay })
   }
 
   handleViewChange(event:any) {
@@ -36,6 +54,8 @@ class App extends React.Component<any, any> {
   }
 
   handleEnzymeClick() {
+    let newSubstances = Object.assign({}, this.state.substanceLevels)
+    newSubstances.cytoplasm.substance3 = 60
     this.setState({
       addEnzyme: true,
       modelProperties: {
@@ -43,17 +63,23 @@ class App extends React.Component<any, any> {
         working_tyr1: true,
         working_myosin_5a: false,
         open_gates: false
-      }
+      },
+      substanceLevels: newSubstances
     });
-    setTimeout(() => this.setState({
-      addEnzyme: false,
-      modelProperties: {
-        albino: true,
-        working_tyr1: false,
-        working_myosin_5a: false,
-        open_gates: false
-      }
-    }), 4000);
+    setTimeout(() => {
+      let newSubstances = Object.assign({}, this.state.substanceLevels)
+      newSubstances.cytoplasm.substance3 = 30
+      this.setState({
+        addEnzyme: false,
+        modelProperties: {
+          albino: true,
+          working_tyr1: false,
+          working_myosin_5a: false,
+          open_gates: false
+        },
+        substanceLevels: newSubstances
+      })
+    }, 4000);
   }
 
   getBoxView(boxId:any) {
@@ -80,6 +106,7 @@ class App extends React.Component<any, any> {
           modelProperties={this.state.modelProperties} 
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
+          setActiveAssay={this.setActiveAssay}
           currentView={opt}
         />
       );
@@ -123,6 +150,7 @@ class App extends React.Component<any, any> {
             <button onClick={this.handleHormoneClick}>Add hormone</button>
             <button onClick={this.handleEnzymeClick}>Add enzyme</button>
           </div>
+          <Chart substances={this.state.substanceLevels} activeAssay={this.state.activeAssay} />
         </div>
       </div>
     );
