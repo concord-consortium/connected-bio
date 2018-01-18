@@ -2,7 +2,7 @@ import * as React from 'react';
 import './App.css';
 
 import OrganelleWrapper from './components/organelle-wrapper';
-import Chart from './components/chart';
+import Chart from './components/Chart/chart';
 
 interface App {}
 

@@ -4,10 +4,11 @@
   "private": true,
   "homepage": "https://concord-consortium.github.io/connected-bio",
   "dependencies": {
-    "@types/highcharts": "^5.0.15",
+    "@types/chartjs": "0.0.31",
+    "chart.js": "^2.7.1",
     "gh-pages": "^1.1.0",
-    "highcharts": "^6.0.4",
     "react": "^16.2.0",
+    "react-chartjs-2": "^2.7.0",
     "react-dom": "^16.2.0",
     "react-scripts-ts": "^2.8.0"
   },
