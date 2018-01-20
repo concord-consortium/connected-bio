@@ -12,8 +12,8 @@ class App extends React.Component<any, any> {
     super(props);
     this.state = {
       addHormone: false,
-      box1: "cell",
-      box2: "organism",
+      box1: 'cell',
+      box2: 'organism',
       modelProperties: {
         albino: true,
         working_tyr1: false,
@@ -21,7 +21,7 @@ class App extends React.Component<any, any> {
         open_gates: false
       },
       addEnzyme: false,
-      activeAssay: "nucleus",
+      activeAssay: 'nucleus',
       substanceLevels: {
         cytoplasm: {
           substance1: 20,
@@ -40,11 +40,11 @@ class App extends React.Component<any, any> {
     this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
   }
 
-  setActiveAssay(activeAssay:string) {
-    this.setState({ activeAssay })
+  setActiveAssay(activeAssay: string) {
+    this.setState({ activeAssay });
   }
 
-  handleViewChange(event:any) {
+  handleViewChange(event: any) {
     this.setState({ [event.target.id]: event.target.value });
   }
 
@@ -54,8 +54,8 @@ class App extends React.Component<any, any> {
   }
 
   handleEnzymeClick() {
-    let newSubstances = Object.assign({}, this.state.substanceLevels)
-    newSubstances.cytoplasm.substance3 = 60
+    let newSubstances = Object.assign({}, this.state.substanceLevels);
+    newSubstances.cytoplasm.substance3 = 60;
     this.setState({
       addEnzyme: true,
       modelProperties: {
@@ -67,8 +67,8 @@ class App extends React.Component<any, any> {
       substanceLevels: newSubstances
     });
     setTimeout(() => {
-      let newSubstances = Object.assign({}, this.state.substanceLevels)
-      newSubstances.cytoplasm.substance3 = 30
+      newSubstances = Object.assign({}, this.state.substanceLevels);
+      newSubstances.cytoplasm.substance3 = 30;
       this.setState({
         addEnzyme: false,
         modelProperties: {
@@ -78,30 +78,30 @@ class App extends React.Component<any, any> {
           open_gates: false
         },
         substanceLevels: newSubstances
-      })
-    }, 4000);
+      });
+    },         4000);
   }
 
-  getBoxView(boxId:any) {
+  getBoxView(boxId: any) {
     const opt = this.state[boxId];
     const viewBoxes = {
-      cell: "0 0 1280 800",
-      membrane: "500 100 320 200",
-      golgi: "350 450 320 200"
+      cell: '0 0 1280 800',
+      membrane: '500 100 320 200',
+      golgi: '350 450 320 200'
     };
 
-    if (opt === "none") {
+    if (opt === 'none') {
       return null;
-    } else if (opt === "organism") {
-      let imgSrc = "assets/sandrat-light.png";
+    } else if (opt === 'organism') {
+      let imgSrc = 'assets/sandrat-light.png';
       if (this.state.addEnzyme) {
-        imgSrc = "assets/sandrat-dark.png";
+        imgSrc = 'assets/sandrat-dark.png';
       }
-      return <img src={imgSrc} width="500px" />
+      return <img src={imgSrc} width="500px" />;
     } else {
       return (
         <OrganelleWrapper 
-          name={boxId + "-model"}
+          name={boxId + '-model'}
           viewBox={viewBoxes[opt]}
           modelProperties={this.state.modelProperties} 
           doAddHormone={this.state.addHormone}
@@ -130,7 +130,7 @@ class App extends React.Component<any, any> {
                 </select>
               </div>
               <div className="box">
-                { this.getBoxView("box1") }
+                {this.getBoxView('box1')}
               </div>
             </div>
             <div>
@@ -142,7 +142,7 @@ class App extends React.Component<any, any> {
                 </select>
               </div>
               <div className="box">
-                { this.getBoxView("box2") }
+                {this.getBoxView('box2')}
               </div>
             </div>
           </div>
