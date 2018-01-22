@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './App.css';
+import { MuiThemeProvider } from 'material-ui/styles';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
@@ -22,6 +23,7 @@ class App extends React.Component<any, any> {
       },
       addEnzyme: false,
       activeAssay: 'nucleus',
+      mode: 'normal',
       substanceLevels: {
         cytoplasm: {
           substance1: 20,
@@ -38,6 +40,7 @@ class App extends React.Component<any, any> {
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handleHormoneClick = this.handleHormoneClick.bind(this);
     this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
+    this.handleAssayClick = this.handleAssayClick.bind(this);
   }
 
   setActiveAssay(activeAssay: string) {
@@ -82,6 +85,14 @@ class App extends React.Component<any, any> {
     },         4000);
   }
 
+  handleAssayClick() {
+    if (this.state.mode === 'assay') {
+      this.setState({mode: 'normal'});
+    } else {
+      this.setState({mode: 'assay'});
+    }
+  }
+
   getBoxView(boxId: any) {
     const opt = this.state[boxId];
     const viewBoxes = {
@@ -108,6 +119,8 @@ class App extends React.Component<any, any> {
           addEnzyme={this.state.addEnzyme}
           setActiveAssay={this.setActiveAssay}
           currentView={opt}
+          mode={this.state.mode}
+          activeAssay={this.state.activeAssay}
         />
       );
     }
@@ -115,44 +128,47 @@ class App extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Connected Bio</h1>
-        </header>
-        <div className="four-up">
-          <div>
+      <MuiThemeProvider>
+        <div className="App">
+          <header className="App-header">
+            <h1 className="App-title">Connected Bio</h1>
+          </header>
+          <div className="four-up">
             <div>
               <div>
-                <select id="box1" value={this.state.box1} onChange={this.handleViewChange}>
-                  <option value="none">None</option>
-                  <option value="organism">Organism</option>
-                  <option value="cell">Cell</option>
-                </select>
+                <div>
+                  <select id="box1" value={this.state.box1} onChange={this.handleViewChange}>
+                    <option value="none">None</option>
+                    <option value="organism">Organism</option>
+                    <option value="cell">Cell</option>
+                  </select>
+                </div>
+                <div className="box">
+                  {this.getBoxView('box1')}
+                </div>
               </div>
-              <div className="box">
-                {this.getBoxView('box1')}
-              </div>
-            </div>
-            <div>
               <div>
-                <select id="box2" value={this.state.box2} onChange={this.handleViewChange}>
-                  <option value="none">None</option>
-                  <option value="organism">Organism</option>
-                  <option value="cell">Cell</option>
-                </select>
-              </div>
-              <div className="box">
-                {this.getBoxView('box2')}
+                <div>
+                  <select id="box2" value={this.state.box2} onChange={this.handleViewChange}>
+                    <option value="none">None</option>
+                    <option value="organism">Organism</option>
+                    <option value="cell">Cell</option>
+                  </select>
+                </div>
+                <div className="box">
+                  {this.getBoxView('box2')}
+                </div>
               </div>
             </div>
+            <Chart 
+              substances={this.state.substanceLevels} 
+              activeAssay={this.state.activeAssay} 
+              mode={this.state.mode} 
+              onAssayClick={this.handleAssayClick}
+            />
           </div>
-          <div className="buttons">
-            <button onClick={this.handleHormoneClick}>Add hormone</button>
-            <button onClick={this.handleEnzymeClick}>Add enzyme</button>
-          </div>
-          <Chart substances={this.state.substanceLevels} activeAssay={this.state.activeAssay} />
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

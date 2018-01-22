@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
+import { RaisedButton } from 'material-ui';
 import './chart.css';
 
 class Chart extends React.Component<any, any> {
@@ -44,6 +45,13 @@ class Chart extends React.Component<any, any> {
         <HorizontalBar
           data={data}
           options={options}
+        />
+        <RaisedButton 
+          label={(this.props.mode === 'assay' ? 'End' : 'Begin') + ' assay'}
+          onClick={this.props.onAssayClick}
+          style={{width: '150px', margin: '5px'}}
+          primary={this.props.mode !== 'assay'}
+          secondary={this.props.mode === 'assay'}
         />
       </div>
     );

@@ -10,14 +10,26 @@ interface OrganelleWrapper {
   setActiveAssay: Function;
   currentView: any;
   setGraphState: Function;
+  mode: string;
 }
 
 class OrganelleWrapper extends React.Component<any, any> {
     model: any;
+    organelleInfo: any = {
+      'nucleus': {
+        selector: '#nucleus_x5F_A',
+        opacity: 1
+      },
+      'cytoplasm': {
+        selector: '#cellshape_0_Layer0_0_FILL',
+        opacity: .5
+      }
+    };
   constructor(props: OrganelleWrapper) {
     super(props);
     this.model = null;
     this.addHormone = this.addHormone.bind(this);
+    this.completeLoad = this.completeLoad.bind(this);
   }
 
   componentDidMount() {
@@ -33,11 +45,11 @@ class OrganelleWrapper extends React.Component<any, any> {
       calculatedProperties: {},
       clickHandlers: [
         {
-          selector: '#melanocyte_x5F_cell',
+          selector: this.organelleInfo.cytoplasm.selector,
           action: this.organelleClick.bind(this, 'cytoplasm')
         },
         {
-          selector: '#nucleus_x5F_A',
+          selector: this.organelleInfo.nucleus.selector,
           action: this.organelleClick.bind(this, 'nucleus')
         },
       ],
@@ -49,19 +61,28 @@ class OrganelleWrapper extends React.Component<any, any> {
       ]
     }).then((m: any) => {
       this.model = m;
-
-      this.model.setTimeout(() => {
-        let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-        if (cell) {
-            cell.style['fill-opacity'] = 0.5;
-            cell.style.fill = 'rgb(241,212,151)';
-        }
-      },                    10);
+      this.completeLoad();
     });
   }
 
+  completeLoad() {
+    this.model.setTimeout(() => {
+      let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
+      if (cell) {
+        cell.style['fill-opacity'] = 0.5;
+        cell.style.fill = 'rgb(241,212,151)';
+        this.adjustOrganelleOpacity(this.props);
+      } else {
+        // Keep retrying query selector until SVG is loaded
+        this.completeLoad();
+      }
+    },                    10);
+  }
+
   organelleClick(organelle: string) {
-    this.props.setActiveAssay(organelle);
+    if (this.props.mode === 'assay') {
+      this.props.setActiveAssay(organelle);
+    }
   }
 
   addHormone() {
@@ -69,6 +90,22 @@ class OrganelleWrapper extends React.Component<any, any> {
       this.model.setTimeout(() => {
         this.model.world.createAgent(this.model.world.species[0]);
       },                    50 * i);
+    }
+  }
+
+  adjustOrganelleOpacity(props: any) {
+    let {name, activeAssay, mode} = props;
+
+    let opacityMultiplier = mode === 'assay' ? .25 : 1;
+    Object.keys(this.organelleInfo).forEach(organelle => {
+      let cell: any = document.querySelector(`#${name} ` + this.organelleInfo[organelle].selector);
+      cell.style.fillOpacity = this.organelleInfo[organelle].opacity * opacityMultiplier;
+    });
+
+    if (mode === 'assay' && this.props.activeAssay) {
+      let organelleElement: any = document.querySelector(
+        `#${this.props.name} ` + this.organelleInfo[activeAssay].selector);
+      organelleElement.style.fillOpacity = this.organelleInfo[activeAssay].opacity;
     }
   }
 
@@ -90,6 +127,8 @@ class OrganelleWrapper extends React.Component<any, any> {
       let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
       cell.style.fill = 'rgb(241,212,151)';
     }
+
+    this.adjustOrganelleOpacity(nextProps);
   }
 
   render() {
