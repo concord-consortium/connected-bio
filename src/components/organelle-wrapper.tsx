@@ -17,12 +17,10 @@ class OrganelleWrapper extends React.Component<any, any> {
     model: any;
     organelleInfo: any = {
       'nucleus': {
-        selector: '#nucleus_x5F_A',
-        opacity: 1
+        selector: '#nucleus'
       },
       'cytoplasm': {
-        selector: '#cellshape_0_Layer0_0_FILL',
-        opacity: .5
+        selector: '#melanocyte_x5F_cell, #microtubules_x5F_grouped'
       }
     };
   constructor(props: OrganelleWrapper) {
@@ -145,6 +143,44 @@ class OrganelleWrapper extends React.Component<any, any> {
         // cellFill.set({opacity: saturation})
       }
     });
+
+    this.model.on('view.hover.enter', (evt: any) => {
+      if (this.props.mode !== 'assay') {
+        return;
+      }
+
+      const highlightClasses = [
+        '.gate-a',
+        '.gate-b',
+        '.gate-c',
+        '.gate-d',
+        '#golgi_x5F_apparatus',
+        '#nucleus'
+        // '#melanocyte_x5F_cell',        // these kind of work, but not quite yet
+        // '#microtubules_x5F_grouped'
+      ].join(',');
+      let matches = evt.target._organelle.matches({selector: highlightClasses});
+      if (matches) {
+        this.makeEverythingOpaque();
+        this.makeEverythingTransparentExcept({selector: matches});
+      }
+    });
+
+    this.model.on('view.hover.exit', (evt: any) => {
+      if (this.props.mode !== 'assay') {
+        return;
+      }
+      this.makeEverythingOpaque();
+      this.makeEverythingTransparentExcept({});
+    });
+  }
+
+  makeEverythingTransparentExcept(skip: any) {
+    this.model.view.setPropertiesOnAllObjects({opacity: '*0.2'}, true, skip, true);
+  }
+
+  makeEverythingOpaque() {
+    this.model.view.resetPropertiesOnAllObjects();
   }
 
   organelleClick(organelle: string) {
@@ -161,22 +197,6 @@ class OrganelleWrapper extends React.Component<any, any> {
     }
   }
 
-  adjustOrganelleOpacity(props: any) {
-    let {name, activeAssay, mode} = props;
-
-    let opacityMultiplier = mode === 'assay' ? .25 : 1;
-    Object.keys(this.organelleInfo).forEach(organelle => {
-      let cell: any = document.querySelector(`#${name} ` + this.organelleInfo[organelle].selector);
-      cell.style.fillOpacity = this.organelleInfo[organelle].opacity * opacityMultiplier;
-    });
-
-    if (mode === 'assay' && activeAssay !== 'none') {
-      let organelleElement: any = document.querySelector(
-        `#${name} ` + this.organelleInfo[activeAssay].selector);
-      organelleElement.style.fillOpacity = this.organelleInfo[activeAssay].opacity;
-    }
-  }
-
   componentWillReceiveProps(nextProps: any) {
     if (nextProps.modelProperties) {
       Object.keys(nextProps.modelProperties).forEach((key) => {
@@ -188,15 +208,19 @@ class OrganelleWrapper extends React.Component<any, any> {
       this.addHormone();
     }
 
-    if (nextProps.addEnzyme) {
-      let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-      cell.style.fill = 'rgb(177,122,50)';
-    } else {
-      let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-      cell.style.fill = 'rgb(241,212,151)';
-    }
+    // if (nextProps.addEnzyme) {
+    //   let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
+    //   cell.style.fill = 'rgb(177,122,50)';
+    // } else {
+    //   let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
+    //   cell.style.fill = 'rgb(241,212,151)';
+    // }
 
-    this.adjustOrganelleOpacity(nextProps);
+    if (this.props.mode !== 'assay' && nextProps.mode === 'assay') {
+      this.makeEverythingTransparentExcept({});
+    } else if (this.props.mode === 'assay' && nextProps.mode !== 'assay') {
+      this.makeEverythingOpaque();
+    }
   }
 
   render() {
