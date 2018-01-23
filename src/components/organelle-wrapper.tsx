@@ -43,7 +43,60 @@ class OrganelleWrapper extends React.Component<any, any> {
       },
       modelSvg: 'assets/melanocyte.svg',
       properties: modelProperties,
-      calculatedProperties: {},
+      calculatedProperties: {
+        saturation: {
+          ratio: {
+            numerator: {
+              count: {
+                species: 'melanosome',
+                state: [
+                  'waiting_on_actin_terminal',
+                  'waiting_on_nuclear_actin_terminal'
+                ],
+              }
+            },
+            denominator: 20
+          }
+        },
+        lightness: {
+          ratio: {
+            numerator: {
+              count: {
+                species: 'melanosome',
+                state: 'waiting_on_nuclear_actin_terminal'
+              }
+            },
+            denominator: 10
+          }
+        },
+        grayness: {
+          ratio: {
+            numerator: {
+              count: {
+                species: 'melanosome',
+                state: [
+                  'waiting_on_actin_terminal',
+                  'waiting_on_nuclear_actin_terminal'
+                ],
+                rules: {
+                  fact: 'size',
+                  greaterThan: 0.7
+                }
+              }
+            },
+            denominator: {
+              count: {
+                species: 'melanosome',
+                state: ['waiting_on_actin_terminal', 'waiting_on_nuclear_actin_terminal'],
+                rules: {
+                  fact: 'size',
+                  lessThan: 0.7
+                }
+              }
+            }
+          }
+        }
+      },
       clickHandlers: [
         {
           selector: this.organelleInfo.cytoplasm.selector,
@@ -55,11 +108,13 @@ class OrganelleWrapper extends React.Component<any, any> {
         },
       ],
       species: [
+        'organelles/melanosome.yml',
         'organelles/hexagon.yml',
-        'organelles/triangle.yml',
-        'organelles/g-protein.yml',
-        'organelles/g-protein-part.yml'
-      ]
+        'organelles/triangle.yml'
+        // 'organelles/g-protein.yml',
+        // 'organelles/g-protein-part.yml'
+      ],
+      hotStart: 1000
     }).then((m: any) => {
       this.model = m;
       this.completeLoad();
@@ -67,17 +122,29 @@ class OrganelleWrapper extends React.Component<any, any> {
   }
 
   completeLoad() {
-    this.model.setTimeout(() => {
-      let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-      if (cell) {
-        cell.style['fill-opacity'] = 0.5;
-        cell.style.fill = 'rgb(241,212,151)';
-        this.adjustOrganelleOpacity(this.props);
-      } else {
-        // Keep retrying query selector until SVG is loaded
-        this.completeLoad();
+    this.model.on('model.step', () => {
+      // let saturation = Math.min(model.world.getProperty('saturation'), 1) || 0
+      let lightness = Math.min(this.model.world.getProperty('lightness'), 1);
+      let grayness = Math.min(this.model.world.getProperty('grayness'), 1);
+
+      if (isNaN(lightness)) {
+        lightness = 0;
       }
-    },                    10);
+      if (isNaN(grayness)) {
+        grayness = 1;
+      }
+
+      let gray = [123, 116, 110],
+          orange = [200, 147, 107],
+          color = gray.map( (g, i) => Math.floor(((g * grayness) + (orange[i] * (1 - grayness))) + lightness * 30) ),
+          colorStr = `rgb(${color.join()})`;
+
+      const cellFill = this.model.view.getModelSvgObjectById('cellshape_0_Layer0_0_FILL');
+      if (cellFill) {
+        cellFill.setColor(colorStr);
+        // cellFill.set({opacity: saturation})
+      }
+    });
   }
 
   organelleClick(organelle: string) {

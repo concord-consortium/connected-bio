@@ -16,9 +16,9 @@ class App extends React.Component<any, any> {
       box1: 'cell',
       box2: 'organism',
       modelProperties: {
-        albino: true,
+        albino: false,
         working_tyr1: false,
-        working_myosin_5a: false,
+        working_myosin_5a: true,
         open_gates: false
       },
       addEnzyme: false,
@@ -70,9 +70,9 @@ class App extends React.Component<any, any> {
     this.setState({
       addEnzyme: true,
       modelProperties: {
-        albino: true,
+        albino: false,
         working_tyr1: true,
-        working_myosin_5a: false,
+        working_myosin_5a: true,
         open_gates: false
       },
       substanceLevels: newSubstances
@@ -83,9 +83,9 @@ class App extends React.Component<any, any> {
       this.setState({
         addEnzyme: false,
         modelProperties: {
-          albino: true,
+          albino: false,
           working_tyr1: false,
-          working_myosin_5a: false,
+          working_myosin_5a: true,
           open_gates: false
         },
         substanceLevels: newSubstances
