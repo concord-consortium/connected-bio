@@ -6,8 +6,7 @@ spawn:
   'on':
     selector: "#intercellular-paths path"
     which: random
-  every: 390
-  # never: true
+  every: 50
 dieWhenExitingWorld: false
 properties:
   speed: 1.2

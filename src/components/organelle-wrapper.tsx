@@ -36,11 +36,12 @@ class OrganelleWrapper extends React.Component<any, any> {
     const {modelProperties} = this.props;
 
     Organelle.createModel({
-      element: this.props.name,
-      background: {
-        file: 'assets/melanocyte.svg',
-        selector: '#cell'
+      container: {
+        elId: this.props.name,
+        width: 500,
+        height: 312
       },
+      modelSvg: 'assets/melanocyte.svg',
       properties: modelProperties,
       calculatedProperties: {},
       clickHandlers: [
@@ -132,7 +133,7 @@ class OrganelleWrapper extends React.Component<any, any> {
   }
 
   render() {
-    return <svg id={this.props.name} width="500px" viewBox={this.props.viewBox} className="model" />;
+    return <div id={this.props.name} className="model" />;
   }
 }
 
