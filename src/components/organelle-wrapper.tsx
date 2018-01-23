@@ -102,9 +102,9 @@ class OrganelleWrapper extends React.Component<any, any> {
       cell.style.fillOpacity = this.organelleInfo[organelle].opacity * opacityMultiplier;
     });
 
-    if (mode === 'assay' && this.props.activeAssay) {
+    if (mode === 'assay' && activeAssay !== 'none') {
       let organelleElement: any = document.querySelector(
-        `#${this.props.name} ` + this.organelleInfo[activeAssay].selector);
+        `#${name} ` + this.organelleInfo[activeAssay].selector);
       organelleElement.style.fillOpacity = this.organelleInfo[activeAssay].opacity;
     }
   }

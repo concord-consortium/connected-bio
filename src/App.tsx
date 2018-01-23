@@ -22,7 +22,7 @@ class App extends React.Component<any, any> {
         open_gates: false
       },
       addEnzyme: false,
-      activeAssay: 'nucleus',
+      activeAssay: 'none',
       mode: 'normal',
       substanceLevels: {
         cytoplasm: {
@@ -33,6 +33,13 @@ class App extends React.Component<any, any> {
         nucleus: {
           substance4: 40,
           substance5: 15
+        },
+        none: {
+          substance1: 100,
+          substance2: 100,
+          substance3: 100,
+          substance4: 100,
+          substance5: 100
         }
       }
     };
@@ -40,7 +47,8 @@ class App extends React.Component<any, any> {
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handleHormoneClick = this.handleHormoneClick.bind(this);
     this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
-    this.handleAssayClick = this.handleAssayClick.bind(this);
+    this.handleAssayToggle = this.handleAssayToggle.bind(this);
+    this.handleAssayClear = this.handleAssayClear.bind(this);
   }
 
   setActiveAssay(activeAssay: string) {
@@ -85,12 +93,16 @@ class App extends React.Component<any, any> {
     },         4000);
   }
 
-  handleAssayClick() {
+  handleAssayToggle() {
     if (this.state.mode === 'assay') {
       this.setState({mode: 'normal'});
     } else {
       this.setState({mode: 'assay'});
     }
+  }
+
+  handleAssayClear() {
+    this.setState({ activeAssay: 'none' });
   }
 
   getBoxView(boxId: any) {
@@ -164,7 +176,8 @@ class App extends React.Component<any, any> {
               substances={this.state.substanceLevels} 
               activeAssay={this.state.activeAssay} 
               mode={this.state.mode} 
-              onAssayClick={this.handleAssayClick}
+              onAssayToggle={this.handleAssayToggle}
+              onAssayClear={this.handleAssayClear}
             />
           </div>
         </div>

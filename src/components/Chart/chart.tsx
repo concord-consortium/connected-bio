@@ -5,11 +5,7 @@ import './chart.css';
 
 class Chart extends React.Component<any, any> {
   baseData: any = {
-    datasets: [
-      {
-        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-      }
-    ]
+    datasets: [ {} ]
   };
 
   render() {
@@ -22,6 +18,9 @@ class Chart extends React.Component<any, any> {
     data.labels = Object.keys(activeSubstances);
     data.datasets[0].data = values;
     data.datasets[0].label = activeAssay;
+
+    let color = activeAssay === 'none' ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
+    data.datasets[0].backgroundColor = color;
     let options: any = {
       title: {
         display: true,
@@ -29,7 +28,7 @@ class Chart extends React.Component<any, any> {
         fontSize: 25
       },
       legend: {
-        display: true,
+        display: activeAssay !== 'none',
         position: 'bottom'
       },
       scales: {
@@ -38,6 +37,9 @@ class Chart extends React.Component<any, any> {
             beginAtZero: true
           }
         }]
+      },
+      tooltips: {
+        enabled: false
       }
     };
     return (
@@ -46,13 +48,21 @@ class Chart extends React.Component<any, any> {
           data={data}
           options={options}
         />
-        <RaisedButton 
-          label={(this.props.mode === 'assay' ? 'End' : 'Begin') + ' assay'}
-          onClick={this.props.onAssayClick}
-          style={{width: '150px', margin: '5px'}}
-          primary={this.props.mode !== 'assay'}
-          secondary={this.props.mode === 'assay'}
-        />
+        <div className="chart-buttons">
+          <RaisedButton 
+            label={(this.props.mode === 'assay' ? 'Confirm' : 'Begin') + ' assay'}
+            onClick={this.props.onAssayToggle}
+            style={{width: '150px', margin: '5px'}}
+            primary={this.props.mode !== 'assay'}
+            secondary={this.props.mode === 'assay'}
+          />
+          <RaisedButton 
+            label={'Clear assays'}
+            onClick={this.props.onAssayClear}
+            style={{width: '150px', margin: '5px'}}
+            primary={true}
+          />
+        </div>
       </div>
     );
   }
