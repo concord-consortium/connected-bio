@@ -31,19 +31,18 @@ class App extends React.Component<any, any> {
           substance3: 30
         },
         nucleus: {
-          substance4: 40,
-          substance5: 15
+          substance1: 40,
+          substance2: 15,
+          substance3: 0
         },
         golgi: {
           substance4: 15,
           substance5: 90
         },
         none: {
-          substance1: 100,
-          substance2: 100,
-          substance3: 100,
-          substance4: 100,
-          substance5: 100
+          substance1: 0,
+          substance2: 0,
+          substance3: 0,
         }
       }
     };
