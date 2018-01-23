@@ -21,6 +21,9 @@ class OrganelleWrapper extends React.Component<any, any> {
       },
       'cytoplasm': {
         selector: '#melanocyte_x5F_cell, #microtubules_x5F_grouped'
+      },
+      'golgi': {
+        selector: '#golgi_x5F_apparatus'
       }
     };
   constructor(props: OrganelleWrapper) {
@@ -104,6 +107,10 @@ class OrganelleWrapper extends React.Component<any, any> {
           selector: this.organelleInfo.nucleus.selector,
           action: this.organelleClick.bind(this, 'nucleus')
         },
+        {
+          selector: this.organelleInfo.golgi.selector,
+          action: this.organelleClick.bind(this, 'golgi')
+        }
       ],
       species: [
         'organelles/melanosome.yml',

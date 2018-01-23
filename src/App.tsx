@@ -34,6 +34,10 @@ class App extends React.Component<any, any> {
           substance4: 40,
           substance5: 15
         },
+        golgi: {
+          substance4: 15,
+          substance5: 90
+        },
         none: {
           substance1: 100,
           substance2: 100,
