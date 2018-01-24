@@ -53,8 +53,8 @@ class OrganelleWrapper extends React.Component<any, any> {
     Organelle.createModel({
       container: {
         elId: this.props.name,
-        width: 500,
-        height: 312
+        width: this.props.width,
+        height: this.props.width / 1.6
       },
       modelSvg: 'assets/melanocyte.svg',
       properties: modelProperties,

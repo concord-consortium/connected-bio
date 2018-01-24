@@ -62,20 +62,20 @@ class Chart extends React.Component<any, any> {
       }
     };
     return (
-      <div className="chart">
+      <div className={`chart ${this.props.classNames}`}>
         <HorizontalBar
           data={data}
           options={options}
         />
         <div className="chart-buttons">
-          <RaisedButton 
+          <RaisedButton
             label={(this.props.mode === 'assay' ? 'Confirm' : 'Begin') + ' assay'}
             onClick={this.props.onAssayToggle}
             style={{width: '150px', margin: '5px'}}
             primary={this.props.mode !== 'assay'}
             secondary={this.props.mode === 'assay'}
           />
-          <RaisedButton 
+          <RaisedButton
             label={'Clear assays'}
             disabled={this.props.mode === 'assay'}
             onClick={this.props.onAssayClear}
@@ -84,31 +84,31 @@ class Chart extends React.Component<any, any> {
           />
         </div>
         <div className="chart-boxes">
-          <Checkbox 
-            style={{width: '150px'}} 
-            checked={this.state.displaySubstances.substance1} 
-            id={'substance1'} 
-            label={'Substance 1'} 
-            onCheck={this.updateCheck} 
+          <Checkbox
+            style={{width: '150px'}}
+            checked={this.state.displaySubstances.substance1}
+            id={'substance1'}
+            label={'Substance 1'}
+            onCheck={this.updateCheck}
           />
-          <Checkbox 
-            style={{width: '150px'}} 
-            checked={this.state.displaySubstances.substance2} 
-            id={'substance2'} 
-            label={'Substance 2'} 
-            onCheck={this.updateCheck} 
+          <Checkbox
+            style={{width: '150px'}}
+            checked={this.state.displaySubstances.substance2}
+            id={'substance2'}
+            label={'Substance 2'}
+            onCheck={this.updateCheck}
           />
-          <Checkbox 
-            style={{width: '150px'}} 
-            checked={this.state.displaySubstances.substance3} 
-            id={'substance3'} 
-            label={'Substance 3'} 
-            onCheck={this.updateCheck} 
+          <Checkbox
+            style={{width: '150px'}}
+            checked={this.state.displaySubstances.substance3}
+            id={'substance3'}
+            label={'Substance 3'}
+            onCheck={this.updateCheck}
           />
         </div>
       </div>
     );
   }
 }
-  
+
 export default Chart;

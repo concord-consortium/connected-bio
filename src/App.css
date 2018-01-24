@@ -26,11 +26,24 @@
 .four-up>div {
   padding: 20px;
 }
- 
+
 .box {
-  width: 500px;
-  height: 312px;
   border: 1px solid;
   overflow: hidden;
   margin-bottom: 10px;
+}
+
+.box.medium {
+  width: 500px;
+  height: 312px;
+}
+
+.box.small {
+  width: 128px;
+  height: 80px;
+}
+
+.box.large {
+  width: 882px;
+  height: 550px;
 }

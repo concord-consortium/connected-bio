@@ -24,6 +24,8 @@ class App extends React.Component<any, any> {
       addEnzyme: false,
       activeAssay: 'none',
       mode: 'normal',
+      box1Size: 1,
+      box2Size: 1,
       substanceLevels: {
         cytoplasm: {
           substance1: 20,
@@ -58,6 +60,8 @@ class App extends React.Component<any, any> {
     this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
+    this.handleBox1SizeChange = this.handleBox1SizeChange.bind(this);
+    this.handleBox2SizeChange = this.handleBox2SizeChange.bind(this);
   }
 
   setActiveAssay(activeAssay: string) {
@@ -114,7 +118,21 @@ class App extends React.Component<any, any> {
     this.setState({ activeAssay: 'none' });
   }
 
-  getBoxView(boxId: any) {
+  handleBox1SizeChange() {
+    let box1Size = this.state.box1Size === 1 ? 2 : 1;
+    let box2Size = box1Size === 1 ? 1 : Math.abs(box1Size - 2);
+    this.setState({ box1Size, box2Size });
+    this.forceUpdate();
+  }
+
+  handleBox2SizeChange() {
+    let box2Size = this.state.box2Size === 1 ? 2 : 1;
+    let box1Size = box2Size === 1 ? 1 : Math.abs(box2Size - 2);
+    this.setState({ box1Size, box2Size });
+    this.forceUpdate();
+  }
+
+  getBoxView(boxId: any, size: number) {
     const opt = this.state[boxId];
     const viewBoxes = {
       cell: '0 0 1280 800',
@@ -129,25 +147,32 @@ class App extends React.Component<any, any> {
       if (this.state.addEnzyme) {
         imgSrc = 'assets/sandrat-dark.png';
       }
-      return <img src={imgSrc} width="500px" />;
+      let imageSize = size === 0 ? '128px' : size === 1 ? '500px' : '880px';
+      return <img src={imgSrc} width={imageSize} />;
     } else {
+      let width = size === 0 ? 128 : size === 1 ? 500 : 882;
       return (
-        <OrganelleWrapper 
+        <OrganelleWrapper
+          key={`${boxId}-${size}`}
           name={boxId + '-model'}
           viewBox={viewBoxes[opt]}
-          modelProperties={this.state.modelProperties} 
+          modelProperties={this.state.modelProperties}
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
           setActiveAssay={this.setActiveAssay}
           currentView={opt}
           mode={this.state.mode}
           activeAssay={this.state.activeAssay}
+          width={width}
         />
       );
     }
   }
 
   render() {
+    let oneBoxIsLarge = this.state.box1Size === 2 || this.state.box2Size === 2;
+    let sizeString = (size: number) => size === 0 ? 'small' : size === 1 ? '' : 'large';
+    let buttonSizeString = (size: number) => size < 2 ? '➚' : '➘';
     return (
       <MuiThemeProvider>
         <div className="App">
@@ -157,36 +182,40 @@ class App extends React.Component<any, any> {
           <div className="four-up">
             <div>
               <div>
-                <div>
+                <div style={{'display': 'flex'}}>
                   <select id="box1" value={this.state.box1} onChange={this.handleViewChange}>
                     <option value="none">None</option>
                     <option value="organism">Organism</option>
                     <option value="cell">Cell</option>
                   </select>
+                  <button onClick={this.handleBox1SizeChange}>{buttonSizeString(this.state.box1Size)}</button>
                 </div>
-                <div className="box">
-                  {this.getBoxView('box1')}
+                <div className={`box ${sizeString(this.state.box1Size)}`}>
+                  {this.getBoxView('box1', this.state.box1Size)}
                 </div>
               </div>
               <div>
-                <div>
+                <div style={{'display': 'flex'}}>
                   <select id="box2" value={this.state.box2} onChange={this.handleViewChange}>
                     <option value="none">None</option>
                     <option value="organism">Organism</option>
                     <option value="cell">Cell</option>
                   </select>
+                  <button onClick={this.handleBox2SizeChange}>{buttonSizeString(this.state.box2Size)}</button>
                 </div>
-                <div className="box">
-                  {this.getBoxView('box2')}
+                <div className={`box ${sizeString(this.state.box2Size)}`}>
+                  {this.getBoxView('box2', this.state.box2Size)}
                 </div>
               </div>
             </div>
-            <Chart 
-              substances={this.state.substanceLevels} 
-              activeAssay={this.state.activeAssay} 
-              mode={this.state.mode} 
+            <Chart
+              key={`${oneBoxIsLarge}`}
+              substances={this.state.substanceLevels}
+              activeAssay={this.state.activeAssay}
+              mode={this.state.mode}
               onAssayToggle={this.handleAssayToggle}
               onAssayClear={this.handleAssayClear}
+              classNames={oneBoxIsLarge ? 'small' : ''}
             />
           </div>
         </div>
