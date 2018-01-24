@@ -128,6 +128,10 @@ class OrganelleWrapper extends React.Component<any, any> {
         {
           selector: this.organelleInfo.intercell.selector,
           action: this.organelleClick.bind(this, 'intercell')
+        },
+        {
+          selector: this.organelleInfo.gates.selector,
+          action: this.organelleClick.bind(this, 'gates')
         }
       ],
       species: [
@@ -167,6 +171,8 @@ class OrganelleWrapper extends React.Component<any, any> {
         cellFill.setColor(colorStr);
         // cellFill.set({opacity: saturation})
       }
+
+      this.updateCellOpacity();
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
@@ -194,6 +200,28 @@ class OrganelleWrapper extends React.Component<any, any> {
 
       this.setState({hoveredOrganelle: null});
     });
+  }
+
+  updateCellOpacity() {
+    if (this.props.mode === 'assay') {
+      let opaqueSelectors = [];
+      let activeAssaySelector = this.organelleInfo[this.props.activeAssay].opaqueSelector ?
+        this.organelleInfo[this.props.activeAssay].opaqueSelector :
+        this.organelleInfo[this.props.activeAssay].selector;
+      if (activeAssaySelector) {
+        opaqueSelectors.push(activeAssaySelector);
+      }
+      if (this.state.hoveredOrganelle) {
+        let selector = this.organelleInfo[this.state.hoveredOrganelle].opaqueSelector ?
+          this.organelleInfo[this.state.hoveredOrganelle].opaqueSelector :
+          this.organelleInfo[this.state.hoveredOrganelle].selector;
+        opaqueSelectors.push(selector);
+      }
+
+      this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
+    } else {
+      this.makeEverythingOpaque();
+    }
   }
 
   makeEverythingTransparentExcept(skip: any) {
@@ -240,23 +268,7 @@ class OrganelleWrapper extends React.Component<any, any> {
   }
 
   componentDidUpdate() {
-    if (this.props.mode === 'assay') {
-      let opaqueSelectors = [];
-      let activeAssaySelector = this.organelleInfo[this.props.activeAssay].selector;
-      if (activeAssaySelector) {
-        opaqueSelectors.push(activeAssaySelector);
-      }
-      if (this.state.hoveredOrganelle) {
-        let selector = this.organelleInfo[this.state.hoveredOrganelle].opaqueSelector ?
-          this.organelleInfo[this.state.hoveredOrganelle].opaqueSelector :
-          this.organelleInfo[this.state.hoveredOrganelle].selector;
-        opaqueSelectors.push(selector);
-      }
-
-      this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
-    } else {
-      this.makeEverythingOpaque();
-    }
+    this.updateCellOpacity();
   }
 
   render() {

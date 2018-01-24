@@ -45,6 +45,11 @@ class App extends React.Component<any, any> {
           substance2: 0,
           substance3: 70
         },
+        gates: {
+          substance1: 30,
+          substance2: 50,
+          substance3: 70
+        },
         none: {
           substance1: 0,
           substance2: 0,
