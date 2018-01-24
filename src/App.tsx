@@ -121,11 +121,6 @@ class App extends React.Component<any, any> {
 
   getBoxView(boxId: any) {
     const opt = this.state[boxId];
-    const viewBoxes = {
-      cell: '0 0 1280 800',
-      membrane: '500 100 320 200',
-      golgi: '350 450 320 200'
-    };
 
     if (opt === 'none') {
       return null;
@@ -139,7 +134,6 @@ class App extends React.Component<any, any> {
       return (
         <OrganelleWrapper 
           name={boxId + '-model'}
-          viewBox={viewBoxes[opt]}
           modelProperties={this.state.modelProperties} 
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}

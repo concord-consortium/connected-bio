@@ -1,19 +1,22 @@
 import * as React from 'react';
 declare var Organelle: any;
 
-interface OrganelleWrapper {
+interface OrganelleWrapperProps {
   name: string;
   modelProperties: any;
-  showBinding: boolean;
   doAddHormone: boolean;
   addEnzyme: boolean;
   setActiveAssay: Function;
   currentView: any;
-  setGraphState: Function;
   mode: string;
+  activeAssay: string;
 }
 
-class OrganelleWrapper extends React.Component<any, any> {
+interface OrganelleWrapperState {
+  hoveredOrganelle: string;
+}
+
+class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
     model: any;
     organelleInfo: any = {
       'nucleus': {
@@ -37,7 +40,7 @@ class OrganelleWrapper extends React.Component<any, any> {
         selector: ''
       }
     };
-  constructor(props: OrganelleWrapper) {
+  constructor(props: OrganelleWrapperProps) {
     super(props);
     this.state = {
       hoveredOrganelle: null
