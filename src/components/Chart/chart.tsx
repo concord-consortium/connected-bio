@@ -77,6 +77,7 @@ class Chart extends React.Component<any, any> {
           />
           <RaisedButton 
             label={'Clear assays'}
+            disabled={this.props.mode === 'assay'}
             onClick={this.props.onAssayClear}
             style={{width: '150px', margin: '5px'}}
             primary={true}

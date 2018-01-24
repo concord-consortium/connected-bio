@@ -19,11 +19,17 @@ class OrganelleWrapper extends React.Component<any, any> {
       'nucleus': {
         selector: '#nucleus'
       },
-      'cytoplasm': {
-        selector: '#melanocyte_x5F_cell, #microtubules_x5F_grouped'
-      },
+      // 'cytoplasm': {
+      //   selector: '#melanocyte_x5F_cell, #microtubules_x5F_grouped'
+      // },
       'golgi': {
         selector: '#golgi_x5F_apparatus'
+      },
+      'gates': {
+        selector: '.gate-a, .gate-b, .gate-c, .gate-d'
+      },
+      'none': {
+        selector: ''
       }
     };
   constructor(props: OrganelleWrapper) {
@@ -99,10 +105,10 @@ class OrganelleWrapper extends React.Component<any, any> {
         }
       },
       clickHandlers: [
-        {
-          selector: this.organelleInfo.cytoplasm.selector,
-          action: this.organelleClick.bind(this, 'cytoplasm')
-        },
+        // {
+        //   selector: this.organelleInfo.cytoplasm.selector,
+        //   action: this.organelleClick.bind(this, 'cytoplasm')
+        // },
         {
           selector: this.organelleInfo.nucleus.selector,
           action: this.organelleClick.bind(this, 'nucleus')
@@ -156,20 +162,20 @@ class OrganelleWrapper extends React.Component<any, any> {
         return;
       }
 
-      const highlightClasses = [
-        '.gate-a',
-        '.gate-b',
-        '.gate-c',
-        '.gate-d',
-        '#golgi_x5F_apparatus',
-        '#nucleus'
-        // '#melanocyte_x5F_cell',        // these kind of work, but not quite yet
-        // '#microtubules_x5F_grouped'
-      ].join(',');
+      const highlightClasses = Object.keys(this.organelleInfo)
+        .reduce((accumulator, organelle) => {
+          accumulator.push(this.organelleInfo[organelle].selector);
+          return accumulator;
+        },      [])
+        .join(',');
       let matches = evt.target._organelle.matches({selector: highlightClasses});
       if (matches) {
-        this.makeEverythingOpaque();
-        this.makeEverythingTransparentExcept({selector: matches});
+        let keepOpaque = matches;
+        let activeAssaySelector = this.organelleInfo[this.props.activeAssay].selector;
+        if (activeAssaySelector) {
+          keepOpaque += ',' + activeAssaySelector;
+        }
+        this.makeEverythingTransparentExcept({selector: keepOpaque});
       }
     });
 
@@ -177,12 +183,13 @@ class OrganelleWrapper extends React.Component<any, any> {
       if (this.props.mode !== 'assay') {
         return;
       }
-      this.makeEverythingOpaque();
-      this.makeEverythingTransparentExcept({});
+
+      this.makeEverythingTransparentExcept({selector: this.organelleInfo[this.props.activeAssay].selector});
     });
   }
 
   makeEverythingTransparentExcept(skip: any) {
+    this.makeEverythingOpaque();
     this.model.view.setPropertiesOnAllObjects({opacity: '*0.2'}, true, skip, true);
   }
 
@@ -193,6 +200,7 @@ class OrganelleWrapper extends React.Component<any, any> {
   organelleClick(organelle: string) {
     if (this.props.mode === 'assay') {
       this.props.setActiveAssay(organelle);
+      this.makeEverythingTransparentExcept({selector: this.organelleInfo[organelle].selector});
     }
   }
 
@@ -224,7 +232,7 @@ class OrganelleWrapper extends React.Component<any, any> {
     // }
 
     if (this.props.mode !== 'assay' && nextProps.mode === 'assay') {
-      this.makeEverythingTransparentExcept({});
+      this.makeEverythingTransparentExcept({selector: this.organelleInfo[nextProps.activeAssay].selector});
     } else if (this.props.mode === 'assay' && nextProps.mode !== 'assay') {
       this.makeEverythingOpaque();
     }
