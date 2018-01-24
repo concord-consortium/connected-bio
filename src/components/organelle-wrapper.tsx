@@ -34,6 +34,9 @@ class OrganelleWrapper extends React.Component<any, any> {
     };
   constructor(props: OrganelleWrapper) {
     super(props);
+    this.state = {
+      hoveredOrganelle: null
+    };
     this.model = null;
     this.addHormone = this.addHormone.bind(this);
     this.completeLoad = this.completeLoad.bind(this);
@@ -162,21 +165,18 @@ class OrganelleWrapper extends React.Component<any, any> {
         return;
       }
 
-      const highlightClasses = Object.keys(this.organelleInfo)
+      const hoveredOrganelle = Object.keys(this.organelleInfo)
         .reduce((accumulator, organelle) => {
-          accumulator.push(this.organelleInfo[organelle].selector);
-          return accumulator;
-        },      [])
-        .join(',');
-      let matches = evt.target._organelle.matches({selector: highlightClasses});
-      if (matches) {
-        let keepOpaque = matches;
-        let activeAssaySelector = this.organelleInfo[this.props.activeAssay].selector;
-        if (activeAssaySelector) {
-          keepOpaque += ',' + activeAssaySelector;
-        }
-        this.makeEverythingTransparentExcept({selector: keepOpaque});
-      }
+          let selector = this.organelleInfo[organelle].selector;
+          let matches = evt.target._organelle.matches({selector});
+          if (matches) {
+            return organelle;
+          } else {
+            return accumulator;
+          }
+        },      '');
+      
+      this.setState({hoveredOrganelle});
     });
 
     this.model.on('view.hover.exit', (evt: any) => {
@@ -184,7 +184,7 @@ class OrganelleWrapper extends React.Component<any, any> {
         return;
       }
 
-      this.makeEverythingTransparentExcept({selector: this.organelleInfo[this.props.activeAssay].selector});
+      this.setState({hoveredOrganelle: null});
     });
   }
 
@@ -200,7 +200,6 @@ class OrganelleWrapper extends React.Component<any, any> {
   organelleClick(organelle: string) {
     if (this.props.mode === 'assay') {
       this.props.setActiveAssay(organelle);
-      this.makeEverythingTransparentExcept({selector: this.organelleInfo[organelle].selector});
     }
   }
 
@@ -230,10 +229,21 @@ class OrganelleWrapper extends React.Component<any, any> {
     //   let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
     //   cell.style.fill = 'rgb(241,212,151)';
     // }
+  }
 
-    if (this.props.mode !== 'assay' && nextProps.mode === 'assay') {
-      this.makeEverythingTransparentExcept({selector: this.organelleInfo[nextProps.activeAssay].selector});
-    } else if (this.props.mode === 'assay' && nextProps.mode !== 'assay') {
+  componentDidUpdate() {
+    if (this.props.mode === 'assay') {
+      let opaqueSelectors = [];
+      let activeAssaySelector = this.organelleInfo[this.props.activeAssay].selector;
+      if (activeAssaySelector) {
+        opaqueSelectors.push(activeAssaySelector);
+      }
+      if (this.state.hoveredOrganelle) {
+        opaqueSelectors.push(this.organelleInfo[this.state.hoveredOrganelle].selector);
+      }
+
+      this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
+    } else {
       this.makeEverythingOpaque();
     }
   }
