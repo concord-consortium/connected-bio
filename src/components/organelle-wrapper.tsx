@@ -19,14 +19,19 @@ class OrganelleWrapper extends React.Component<any, any> {
       'nucleus': {
         selector: '#nucleus'
       },
-      // 'cytoplasm': {
-      //   selector: '#melanocyte_x5F_cell, #microtubules_x5F_grouped'
-      // },
+      'cytoplasm': {
+        selector: '#cytoplasm',
+        opaqueSelector: '#cellshape_0_Layer0_0_FILL'
+      },
       'golgi': {
         selector: '#golgi_x5F_apparatus'
       },
       'gates': {
         selector: '.gate-a, .gate-b, .gate-c, .gate-d'
+      },
+      'intercell': {
+        selector: `#intercell`,
+        opaqueSelector: '#Layer6_0_FILL'
       },
       'none': {
         selector: ''
@@ -108,10 +113,10 @@ class OrganelleWrapper extends React.Component<any, any> {
         }
       },
       clickHandlers: [
-        // {
-        //   selector: this.organelleInfo.cytoplasm.selector,
-        //   action: this.organelleClick.bind(this, 'cytoplasm')
-        // },
+        {
+          selector: this.organelleInfo.cytoplasm.selector,
+          action: this.organelleClick.bind(this, 'cytoplasm')
+        },
         {
           selector: this.organelleInfo.nucleus.selector,
           action: this.organelleClick.bind(this, 'nucleus')
@@ -119,6 +124,10 @@ class OrganelleWrapper extends React.Component<any, any> {
         {
           selector: this.organelleInfo.golgi.selector,
           action: this.organelleClick.bind(this, 'golgi')
+        },
+        {
+          selector: this.organelleInfo.intercell.selector,
+          action: this.organelleClick.bind(this, 'intercell')
         }
       ],
       species: [
@@ -164,7 +173,6 @@ class OrganelleWrapper extends React.Component<any, any> {
       if (this.props.mode !== 'assay') {
         return;
       }
-
       const hoveredOrganelle = Object.keys(this.organelleInfo)
         .reduce((accumulator, organelle) => {
           let selector = this.organelleInfo[organelle].selector;
@@ -175,7 +183,7 @@ class OrganelleWrapper extends React.Component<any, any> {
             return accumulator;
           }
         },      '');
-      
+
       this.setState({hoveredOrganelle});
     });
 
@@ -239,7 +247,10 @@ class OrganelleWrapper extends React.Component<any, any> {
         opaqueSelectors.push(activeAssaySelector);
       }
       if (this.state.hoveredOrganelle) {
-        opaqueSelectors.push(this.organelleInfo[this.state.hoveredOrganelle].selector);
+        let selector = this.organelleInfo[this.state.hoveredOrganelle].opaqueSelector ?
+          this.organelleInfo[this.state.hoveredOrganelle].opaqueSelector :
+          this.organelleInfo[this.state.hoveredOrganelle].selector;
+        opaqueSelectors.push(selector);
       }
 
       this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});

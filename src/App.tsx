@@ -40,6 +40,11 @@ class App extends React.Component<any, any> {
           substance2: 50,
           substance3: 30
         },
+        intercell: {
+          substance1: 0,
+          substance2: 0,
+          substance3: 70
+        },
         none: {
           substance1: 0,
           substance2: 0,
