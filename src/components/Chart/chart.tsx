@@ -17,7 +17,7 @@ interface ChartState {
 }
 
 class Chart extends React.Component<ChartProps, ChartState> {
-  baseData: any = {
+  baseData: Chart.ChartData = {
     datasets: [ {} ]
   };
   constructor(props: any) {
@@ -45,14 +45,14 @@ class Chart extends React.Component<ChartProps, ChartState> {
     let values = activeSubstances.map(function(substance: Substance) {
       return substanceLevels[activeAssay][substance];
     });
-    let data: any = Object.assign({}, this.baseData);
+    let data: Chart.ChartData = Object.assign({}, this.baseData);
     data.labels = activeSubstances;
     data.datasets[0].data = values;
     data.datasets[0].label = activeAssay;
 
     let color = activeAssay === CellPart.None ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
     data.datasets[0].backgroundColor = color;
-    let options: any = {
+    let options: Chart.ChartOptions = {
       title: {
         display: true,
         text: 'Substance Breakdown',
@@ -65,7 +65,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
       scales: {
         xAxes: [{
           ticks: {
-            beginAtZero: true,
+            min: 0,
             max: 100
           }
         }]
