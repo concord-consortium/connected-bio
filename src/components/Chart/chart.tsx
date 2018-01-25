@@ -1,19 +1,32 @@
 import * as React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { RaisedButton, Checkbox } from 'material-ui';
+import { CellPart, Mode, Substance } from '../../Types';
 import './chart.css';
 
-class Chart extends React.Component<any, any> {
-  baseData: any = {
+interface ChartProps {
+  substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
+  activeAssay: CellPart;
+  mode: Mode;
+  onAssayToggle(): void;
+  onAssayClear(): void;
+}
+
+interface ChartState {
+  displaySubstances: { [substance in Substance]: boolean};
+}
+
+class Chart extends React.Component<ChartProps, ChartState> {
+  baseData: Chart.ChartData = {
     datasets: [ {} ]
   };
   constructor(props: any) {
     super(props);
     this.state = {
       displaySubstances: {
-        substance1: false,
-        substance2: true,
-        substance3: true
+        [Substance.Substance1]: false,
+        [Substance.Substance2]: true,
+        [Substance.Substance3]: true
       }
     };
     this.updateCheck = this.updateCheck.bind(this);
@@ -26,33 +39,33 @@ class Chart extends React.Component<any, any> {
   }
 
   render() {
-    let {substances, activeAssay} = this.props;
+    let {substanceLevels, activeAssay} = this.props;
     let {displaySubstances} = this.state;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
-    let values = activeSubstances.map(function(e: any) {
-      return substances[activeAssay][e];
+    let values = activeSubstances.map(function(substance: Substance) {
+      return substanceLevels[activeAssay][substance];
     });
-    let data: any = Object.assign({}, this.baseData);
+    let data: Chart.ChartData = Object.assign({}, this.baseData);
     data.labels = activeSubstances;
     data.datasets[0].data = values;
     data.datasets[0].label = activeAssay;
 
-    let color = activeAssay === 'none' ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
+    let color = activeAssay === CellPart.None ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
     data.datasets[0].backgroundColor = color;
-    let options: any = {
+    let options: Chart.ChartOptions = {
       title: {
         display: true,
         text: 'Substance Breakdown',
         fontSize: 25
       },
       legend: {
-        display: activeAssay !== 'none',
+        display: activeAssay !== CellPart.None,
         position: 'bottom'
       },
       scales: {
         xAxes: [{
           ticks: {
-            beginAtZero: true,
+            min: 0,
             max: 100
           }
         }]
@@ -69,15 +82,15 @@ class Chart extends React.Component<any, any> {
         />
         <div className="chart-buttons">
           <RaisedButton 
-            label={(this.props.mode === 'assay' ? 'Confirm' : 'Begin') + ' assay'}
+            label={(this.props.mode === Mode.Assay ? 'Confirm' : 'Begin') + ' assay'}
             onClick={this.props.onAssayToggle}
             style={{width: '150px', margin: '5px'}}
-            primary={this.props.mode !== 'assay'}
-            secondary={this.props.mode === 'assay'}
+            primary={this.props.mode !== Mode.Assay}
+            secondary={this.props.mode === Mode.Assay}
           />
           <RaisedButton 
             label={'Clear assays'}
-            disabled={this.props.mode === 'assay'}
+            disabled={this.props.mode === Mode.Assay}
             onClick={this.props.onAssayClear}
             style={{width: '150px', margin: '5px'}}
             primary={true}
@@ -86,22 +99,22 @@ class Chart extends React.Component<any, any> {
         <div className="chart-boxes">
           <Checkbox 
             style={{width: '150px'}} 
-            checked={this.state.displaySubstances.substance1} 
-            id={'substance1'} 
+            checked={this.state.displaySubstances[Substance.Substance1]} 
+            id={Substance.Substance1} 
             label={'Substance 1'} 
             onCheck={this.updateCheck} 
           />
           <Checkbox 
             style={{width: '150px'}} 
-            checked={this.state.displaySubstances.substance2} 
-            id={'substance2'} 
+            checked={this.state.displaySubstances[Substance.Substance2]} 
+            id={Substance.Substance2} 
             label={'Substance 2'} 
             onCheck={this.updateCheck} 
           />
           <Checkbox 
             style={{width: '150px'}} 
-            checked={this.state.displaySubstances.substance3} 
-            id={'substance3'} 
+            checked={this.state.displaySubstances[Substance.Substance3]} 
+            id={Substance.Substance3} 
             label={'Substance 3'} 
             onCheck={this.updateCheck} 
           />
