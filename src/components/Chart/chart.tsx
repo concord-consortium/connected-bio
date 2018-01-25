@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { RaisedButton, Checkbox } from 'material-ui';
-import { CellPart, Mode, Substance } from '../../App';
+import { CellPart, Mode, Substance } from '../../Types';
 import './chart.css';
 
 interface ChartProps {

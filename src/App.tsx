@@ -1,29 +1,10 @@
 import * as React from 'react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
+import { Mode, CellPart, Substance } from './Types';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
-
-export enum Mode {
-  Normal = 'NORMAL',
-  Assay = 'ASSAY'
-}
-
-export enum CellPart {
-  Nucleus = 'NUCLEUS',
-  Cytoplasm = 'CYTOPLASM',
-  Golgi = 'GOLGI',
-  Gates = 'GATES',
-  Intercell = 'INTERCELL',
-  None = 'NONE'
-}
-
-export enum Substance {
-  Substance1 = 'Substance 1',
-  Substance2 = 'Substance 2',
-  Substance3 = 'Substance 3'
-}
 
 interface AppState {
   addHormone: boolean;

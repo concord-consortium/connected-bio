@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CellPart, Mode } from '../App';
+import { CellPart, Mode } from '../Types';
 
 declare var Organelle: any;
 
