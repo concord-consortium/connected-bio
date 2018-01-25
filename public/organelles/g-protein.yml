@@ -1,0 +1,38 @@
+---
+name: g-protein
+image: assets/g-protein.svg
+selector: "#gbody_x5F_protein"
+spawn:
+  'on':
+    selector: "#g-protein-paths path"
+    which: 0
+  start: true
+properties:
+  speed: 0.3
+  size: 1
+initialState: toward_receptor
+rules:
+  toward_receptor:
+  - follow:
+      selector: "#g-protein-paths path"
+      which: 0
+      direction: forward
+      finally:
+        switch_state: at_receptor
+  at_receptor:
+  - if:
+      fact: world.receptor_is_bound
+    then:
+      switch_state: stick_to_receptor
+    else:
+      switch_state: away_from_receptor
+  away_from_receptor:
+  - follow:
+      selector: "#g-protein-paths path"
+      which: 1
+      direction: forward
+      finally:
+        switch_state: toward_receptor
+  stick_to_receptor:
+  - wait:
+      for: 6000
