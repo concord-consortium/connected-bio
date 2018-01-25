@@ -19,6 +19,12 @@ export enum CellPart {
   None = 'NONE'
 }
 
+export enum Substance {
+  Substance1 = 'Substance 1',
+  Substance2 = 'Substance 2',
+  Substance3 = 'Substance 3'
+}
+
 interface AppState {
   addHormone: boolean;
   addEnzyme: boolean;
@@ -27,7 +33,7 @@ interface AppState {
   modelProperties: ModelProperties;
   activeAssay: CellPart;
   mode: Mode;
-  substanceLevels: any;
+  substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
 }
 
 interface AppProps { }
@@ -57,34 +63,34 @@ class App extends React.Component<AppProps, AppState> {
       mode: Mode.Normal,
       substanceLevels: {
         [CellPart.Cytoplasm]: {
-          substance1: 20,
-          substance2: 50,
-          substance3: 30
+          [Substance.Substance1]: 20,
+          [Substance.Substance2]: 50,
+          [Substance.Substance3]: 30
         },
         [CellPart.Nucleus]: {
-          substance1: 90,
-          substance2: 15,
-          substance3: 0
+          [Substance.Substance1]: 90,
+          [Substance.Substance2]: 15,
+          [Substance.Substance3]: 0
         },
         [CellPart.Golgi]: {
-          substance1: 20,
-          substance2: 50,
-          substance3: 30
+          [Substance.Substance1]: 20,
+          [Substance.Substance2]: 50,
+          [Substance.Substance3]: 30
         },
         [CellPart.Intercell]: {
-          substance1: 0,
-          substance2: 0,
-          substance3: 70
+          [Substance.Substance1]: 0,
+          [Substance.Substance2]: 0,
+          [Substance.Substance3]: 70
         },
         [CellPart.Gates]: {
-          substance1: 30,
-          substance2: 50,
-          substance3: 70
+          [Substance.Substance1]: 30,
+          [Substance.Substance2]: 50,
+          [Substance.Substance3]: 70
         },
         [CellPart.None]: {
-          substance1: 0,
-          substance2: 0,
-          substance3: 0,
+          [Substance.Substance1]: 0,
+          [Substance.Substance2]: 0,
+          [Substance.Substance3]: 0,
         }
       }
     };
@@ -111,7 +117,7 @@ class App extends React.Component<AppProps, AppState> {
 
   handleEnzymeClick() {
     let newSubstances = Object.assign({}, this.state.substanceLevels);
-    newSubstances.cytoplasm.substance3 = 60;
+    newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 60;
     this.setState({
       addEnzyme: true,
       modelProperties: {
@@ -124,7 +130,7 @@ class App extends React.Component<AppProps, AppState> {
     });
     setTimeout(() => {
       newSubstances = Object.assign({}, this.state.substanceLevels);
-      newSubstances.cytoplasm.substance3 = 30;
+      newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 30;
       this.setState({
         addEnzyme: false,
         modelProperties: {
@@ -212,7 +218,7 @@ class App extends React.Component<AppProps, AppState> {
               </div>
             </div>
             <Chart 
-              substances={this.state.substanceLevels} 
+              substanceLevels={this.state.substanceLevels} 
               activeAssay={this.state.activeAssay} 
               mode={this.state.mode} 
               onAssayToggle={this.handleAssayToggle}
