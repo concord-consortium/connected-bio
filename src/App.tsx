@@ -5,11 +5,42 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
 
-interface App {}
+export enum Mode {
+  Normal = 'NORMAL',
+  Assay = 'ASSAY'
+}
 
-class App extends React.Component<any, any> {
+export enum CellPart {
+  Nucleus = 'NUCLEUS',
+  Cytoplasm = 'CYTOPLASM',
+  Golgi = 'GOLGI',
+  Gates = 'GATES',
+  Intercell = 'INTERCELL',
+  None = 'NONE'
+}
 
-  constructor(props: App) {
+interface AppState {
+  addHormone: boolean;
+  addEnzyme: boolean;
+  box1: string;
+  box2: string;
+  modelProperties: ModelProperties;
+  activeAssay: CellPart;
+  mode: Mode;
+  substanceLevels: any;
+}
+
+interface AppProps { }
+
+interface ModelProperties {
+  albino: boolean;
+  working_tyr1: boolean;
+  working_myosin_5a: boolean;
+  open_gates: boolean;
+}
+
+class App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
     super(props);
     this.state = {
       addHormone: false,
@@ -22,35 +53,35 @@ class App extends React.Component<any, any> {
         open_gates: false
       },
       addEnzyme: false,
-      activeAssay: 'none',
-      mode: 'normal',
+      activeAssay: CellPart.None,
+      mode: Mode.Normal,
       substanceLevels: {
-        cytoplasm: {
+        [CellPart.Cytoplasm]: {
           substance1: 20,
           substance2: 50,
           substance3: 30
         },
-        nucleus: {
+        [CellPart.Nucleus]: {
           substance1: 90,
           substance2: 15,
           substance3: 0
         },
-        golgi: {
+        [CellPart.Golgi]: {
           substance1: 20,
           substance2: 50,
           substance3: 30
         },
-        intercell: {
+        [CellPart.Intercell]: {
           substance1: 0,
           substance2: 0,
           substance3: 70
         },
-        gates: {
+        [CellPart.Gates]: {
           substance1: 30,
           substance2: 50,
           substance3: 70
         },
-        none: {
+        [CellPart.None]: {
           substance1: 0,
           substance2: 0,
           substance3: 0,
@@ -65,7 +96,7 @@ class App extends React.Component<any, any> {
     this.handleAssayClear = this.handleAssayClear.bind(this);
   }
 
-  setActiveAssay(activeAssay: string) {
+  setActiveAssay(activeAssay: CellPart) {
     this.setState({ activeAssay });
   }
 
@@ -108,15 +139,15 @@ class App extends React.Component<any, any> {
   }
 
   handleAssayToggle() {
-    if (this.state.mode === 'assay') {
-      this.setState({mode: 'normal'});
+    if (this.state.mode === Mode.Assay) {
+      this.setState({mode: Mode.Normal});
     } else {
-      this.setState({mode: 'assay'});
+      this.setState({mode: Mode.Assay});
     }
   }
 
   handleAssayClear() {
-    this.setState({ activeAssay: 'none' });
+    this.setState({ activeAssay: CellPart.None });
   }
 
   getBoxView(boxId: any) {

@@ -1,9 +1,22 @@
 import * as React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { RaisedButton, Checkbox } from 'material-ui';
+import { CellPart, Mode } from '../../App';
 import './chart.css';
 
-class Chart extends React.Component<any, any> {
+interface ChartProps {
+  substances: any;
+  activeAssay: CellPart;
+  mode: Mode;
+  onAssayToggle(): void;
+  onAssayClear(): void;
+}
+
+interface ChartState {
+  displaySubstances: any;
+}
+
+class Chart extends React.Component<ChartProps, ChartState> {
   baseData: any = {
     datasets: [ {} ]
   };
@@ -37,7 +50,7 @@ class Chart extends React.Component<any, any> {
     data.datasets[0].data = values;
     data.datasets[0].label = activeAssay;
 
-    let color = activeAssay === 'none' ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
+    let color = activeAssay === CellPart.None ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
     data.datasets[0].backgroundColor = color;
     let options: any = {
       title: {
@@ -46,7 +59,7 @@ class Chart extends React.Component<any, any> {
         fontSize: 25
       },
       legend: {
-        display: activeAssay !== 'none',
+        display: activeAssay !== CellPart.None,
         position: 'bottom'
       },
       scales: {
@@ -69,15 +82,15 @@ class Chart extends React.Component<any, any> {
         />
         <div className="chart-buttons">
           <RaisedButton 
-            label={(this.props.mode === 'assay' ? 'Confirm' : 'Begin') + ' assay'}
+            label={(this.props.mode === Mode.Assay ? 'Confirm' : 'Begin') + ' assay'}
             onClick={this.props.onAssayToggle}
             style={{width: '150px', margin: '5px'}}
-            primary={this.props.mode !== 'assay'}
-            secondary={this.props.mode === 'assay'}
+            primary={this.props.mode !== Mode.Assay}
+            secondary={this.props.mode === Mode.Assay}
           />
           <RaisedButton 
             label={'Clear assays'}
-            disabled={this.props.mode === 'assay'}
+            disabled={this.props.mode === Mode.Assay}
             onClick={this.props.onAssayClear}
             style={{width: '150px', margin: '5px'}}
             primary={true}
