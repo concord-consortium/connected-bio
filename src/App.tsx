@@ -13,6 +13,7 @@ interface AppState {
   box2: string;
   modelProperties: ModelProperties;
   activeAssay: AssayInfo;
+  lockedAssays: AssayInfo[];
   mode: Mode;
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
 }
@@ -41,6 +42,7 @@ class App extends React.Component<AppProps, AppState> {
       },
       addEnzyme: false,
       activeAssay: { cellPart: CellPart.None },
+      lockedAssays: [],
       mode: Mode.Normal,
       substanceLevels: {
         [CellPart.Cytoplasm]: {
@@ -128,6 +130,13 @@ class App extends React.Component<AppProps, AppState> {
   handleAssayToggle() {
     if (this.state.mode === Mode.Assay) {
       this.setState({mode: Mode.Normal});
+      // Lock an assay after it is finished, if one exists
+      let { activeAssay } = this.state;
+      if (activeAssay.cellPart !== CellPart.None) {
+        this.setState({
+          lockedAssays: this.state.lockedAssays.concat([activeAssay])
+        });
+      }
     } else {
       this.setState({mode: Mode.Assay});
     }
@@ -159,6 +168,7 @@ class App extends React.Component<AppProps, AppState> {
           currentView={opt}
           mode={this.state.mode}
           activeAssay={this.state.activeAssay}
+          lockedAssays={this.state.lockedAssays}
         />
       );
     }
