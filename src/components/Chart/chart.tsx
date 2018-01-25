@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { RaisedButton, Checkbox } from 'material-ui';
-import { CellPart, Mode, Substance } from '../../Types';
+import { CellPart, Mode, Substance, AssayInfo } from '../../Types';
 import './chart.css';
 
 interface ChartProps {
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
-  activeAssay: CellPart;
+  activeAssay: AssayInfo;
   mode: Mode;
   onAssayToggle(): void;
   onAssayClear(): void;
@@ -43,14 +43,14 @@ class Chart extends React.Component<ChartProps, ChartState> {
     let {displaySubstances} = this.state;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
     let values = activeSubstances.map(function(substance: Substance) {
-      return substanceLevels[activeAssay][substance];
+      return substanceLevels[activeAssay.cellPart][substance];
     });
     let data: Chart.ChartData = Object.assign({}, this.baseData);
     data.labels = activeSubstances;
     data.datasets[0].data = values;
-    data.datasets[0].label = activeAssay;
+    data.datasets[0].label = activeAssay.cellPart;
 
-    let color = activeAssay === CellPart.None ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
+    let color = activeAssay.cellPart === CellPart.None ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
     data.datasets[0].backgroundColor = color;
     let options: Chart.ChartOptions = {
       title: {
@@ -59,7 +59,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
         fontSize: 25
       },
       legend: {
-        display: activeAssay !== CellPart.None,
+        display: activeAssay.cellPart !== CellPart.None,
         position: 'bottom'
       },
       scales: {

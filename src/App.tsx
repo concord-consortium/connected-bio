@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { Mode, CellPart, Substance } from './Types';
+import { Mode, CellPart, Substance, AssayInfo } from './Types';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
@@ -12,7 +12,7 @@ interface AppState {
   box1: string;
   box2: string;
   modelProperties: ModelProperties;
-  activeAssay: CellPart;
+  activeAssay: AssayInfo;
   mode: Mode;
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
 }
@@ -40,7 +40,7 @@ class App extends React.Component<AppProps, AppState> {
         open_gates: false
       },
       addEnzyme: false,
-      activeAssay: CellPart.None,
+      activeAssay: { cellPart: CellPart.None },
       mode: Mode.Normal,
       substanceLevels: {
         [CellPart.Cytoplasm]: {
@@ -83,7 +83,7 @@ class App extends React.Component<AppProps, AppState> {
     this.handleAssayClear = this.handleAssayClear.bind(this);
   }
 
-  setActiveAssay(activeAssay: CellPart) {
+  setActiveAssay(activeAssay: AssayInfo) {
     this.setState({ activeAssay });
   }
 
@@ -134,7 +134,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleAssayClear() {
-    this.setState({ activeAssay: CellPart.None });
+    this.setState({ activeAssay: { cellPart: CellPart.None }});
   }
 
   getBoxView(boxId: any) {

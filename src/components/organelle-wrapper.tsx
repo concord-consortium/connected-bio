@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CellPart, Mode } from '../Types';
+import { CellPart, Mode, AssayInfo } from '../Types';
 
 declare var Organelle: any;
 
@@ -10,8 +10,8 @@ interface OrganelleWrapperProps {
   addEnzyme: boolean;
   currentView: any;
   mode: Mode;
-  activeAssay: CellPart;
-  setActiveAssay(cellPart: CellPart): void;
+  activeAssay: AssayInfo;
+  setActiveAssay(activeAssay: AssayInfo): void;
 }
 
 interface OrganelleWrapperState {
@@ -210,9 +210,9 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   updateCellOpacity() {
     if (this.props.mode === Mode.Assay) {
       let opaqueSelectors = [];
-      let activeAssaySelector = this.organelleInfo[this.props.activeAssay].opaqueSelector ?
-        this.organelleInfo[this.props.activeAssay].opaqueSelector :
-        this.organelleInfo[this.props.activeAssay].selector;
+      let activeAssaySelector = this.organelleInfo[this.props.activeAssay.cellPart].opaqueSelector ?
+        this.organelleInfo[this.props.activeAssay.cellPart].opaqueSelector :
+        this.organelleInfo[this.props.activeAssay.cellPart].selector;
       if (activeAssaySelector) {
         opaqueSelectors.push(activeAssaySelector);
       }
@@ -240,7 +240,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   organelleClick(organelle: CellPart) {
     if (this.props.mode === Mode.Assay) {
-      this.props.setActiveAssay(organelle);
+      this.props.setActiveAssay({ cellPart: organelle });
     }
   }
 
