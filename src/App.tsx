@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './App.css';
+import { MuiThemeProvider } from 'material-ui/styles';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
@@ -15,13 +16,14 @@ class App extends React.Component<any, any> {
       box1: 'cell',
       box2: 'organism',
       modelProperties: {
-        albino: true,
+        albino: false,
         working_tyr1: false,
-        working_myosin_5a: false,
+        working_myosin_5a: true,
         open_gates: false
       },
       addEnzyme: false,
-      activeAssay: 'nucleus',
+      activeAssay: 'none',
+      mode: 'normal',
       substanceLevels: {
         cytoplasm: {
           substance1: 20,
@@ -29,8 +31,29 @@ class App extends React.Component<any, any> {
           substance3: 30
         },
         nucleus: {
-          substance4: 40,
-          substance5: 15
+          substance1: 90,
+          substance2: 15,
+          substance3: 0
+        },
+        golgi: {
+          substance1: 20,
+          substance2: 50,
+          substance3: 30
+        },
+        intercell: {
+          substance1: 0,
+          substance2: 0,
+          substance3: 70
+        },
+        gates: {
+          substance1: 30,
+          substance2: 50,
+          substance3: 70
+        },
+        none: {
+          substance1: 0,
+          substance2: 0,
+          substance3: 0,
         }
       }
     };
@@ -38,6 +61,8 @@ class App extends React.Component<any, any> {
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handleHormoneClick = this.handleHormoneClick.bind(this);
     this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
+    this.handleAssayToggle = this.handleAssayToggle.bind(this);
+    this.handleAssayClear = this.handleAssayClear.bind(this);
   }
 
   setActiveAssay(activeAssay: string) {
@@ -59,9 +84,9 @@ class App extends React.Component<any, any> {
     this.setState({
       addEnzyme: true,
       modelProperties: {
-        albino: true,
+        albino: false,
         working_tyr1: true,
-        working_myosin_5a: false,
+        working_myosin_5a: true,
         open_gates: false
       },
       substanceLevels: newSubstances
@@ -72,9 +97,9 @@ class App extends React.Component<any, any> {
       this.setState({
         addEnzyme: false,
         modelProperties: {
-          albino: true,
+          albino: false,
           working_tyr1: false,
-          working_myosin_5a: false,
+          working_myosin_5a: true,
           open_gates: false
         },
         substanceLevels: newSubstances
@@ -82,13 +107,20 @@ class App extends React.Component<any, any> {
     },         4000);
   }
 
+  handleAssayToggle() {
+    if (this.state.mode === 'assay') {
+      this.setState({mode: 'normal'});
+    } else {
+      this.setState({mode: 'assay'});
+    }
+  }
+
+  handleAssayClear() {
+    this.setState({ activeAssay: 'none' });
+  }
+
   getBoxView(boxId: any) {
     const opt = this.state[boxId];
-    const viewBoxes = {
-      cell: '0 0 1280 800',
-      membrane: '500 100 320 200',
-      golgi: '350 450 320 200'
-    };
 
     if (opt === 'none') {
       return null;
@@ -102,12 +134,13 @@ class App extends React.Component<any, any> {
       return (
         <OrganelleWrapper 
           name={boxId + '-model'}
-          viewBox={viewBoxes[opt]}
           modelProperties={this.state.modelProperties} 
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
           setActiveAssay={this.setActiveAssay}
           currentView={opt}
+          mode={this.state.mode}
+          activeAssay={this.state.activeAssay}
         />
       );
     }
@@ -115,44 +148,48 @@ class App extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Connected Bio</h1>
-        </header>
-        <div className="four-up">
-          <div>
+      <MuiThemeProvider>
+        <div className="App">
+          <header className="App-header">
+            <h1 className="App-title">Connected Bio</h1>
+          </header>
+          <div className="four-up">
             <div>
               <div>
-                <select id="box1" value={this.state.box1} onChange={this.handleViewChange}>
-                  <option value="none">None</option>
-                  <option value="organism">Organism</option>
-                  <option value="cell">Cell</option>
-                </select>
+                <div>
+                  <select id="box1" value={this.state.box1} onChange={this.handleViewChange}>
+                    <option value="none">None</option>
+                    <option value="organism">Organism</option>
+                    <option value="cell">Cell</option>
+                  </select>
+                </div>
+                <div className="box">
+                  {this.getBoxView('box1')}
+                </div>
               </div>
-              <div className="box">
-                {this.getBoxView('box1')}
-              </div>
-            </div>
-            <div>
               <div>
-                <select id="box2" value={this.state.box2} onChange={this.handleViewChange}>
-                  <option value="none">None</option>
-                  <option value="organism">Organism</option>
-                  <option value="cell">Cell</option>
-                </select>
-              </div>
-              <div className="box">
-                {this.getBoxView('box2')}
+                <div>
+                  <select id="box2" value={this.state.box2} onChange={this.handleViewChange}>
+                    <option value="none">None</option>
+                    <option value="organism">Organism</option>
+                    <option value="cell">Cell</option>
+                  </select>
+                </div>
+                <div className="box">
+                  {this.getBoxView('box2')}
+                </div>
               </div>
             </div>
+            <Chart 
+              substances={this.state.substanceLevels} 
+              activeAssay={this.state.activeAssay} 
+              mode={this.state.mode} 
+              onAssayToggle={this.handleAssayToggle}
+              onAssayClear={this.handleAssayClear}
+            />
           </div>
-          <div className="buttons">
-            <button onClick={this.handleHormoneClick}>Add hormone</button>
-            <button onClick={this.handleEnzymeClick}>Add enzyme</button>
-          </div>
-          <Chart substances={this.state.substanceLevels} activeAssay={this.state.activeAssay} />
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
