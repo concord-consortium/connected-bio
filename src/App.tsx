@@ -41,7 +41,7 @@ class App extends React.Component<AppProps, AppState> {
         open_gates: false
       },
       addEnzyme: false,
-      activeAssay: { cellPart: CellPart.None },
+      activeAssay: null,
       lockedAssays: [],
       mode: Mode.Normal,
       substanceLevels: {
@@ -69,11 +69,6 @@ class App extends React.Component<AppProps, AppState> {
           [Substance.Substance1]: 30,
           [Substance.Substance2]: 50,
           [Substance.Substance3]: 70
-        },
-        [CellPart.None]: {
-          [Substance.Substance1]: 0,
-          [Substance.Substance2]: 0,
-          [Substance.Substance3]: 0,
         }
       }
     };
@@ -132,7 +127,7 @@ class App extends React.Component<AppProps, AppState> {
       this.setState({mode: Mode.Normal});
       // Lock an assay after it is finished, if one exists
       let { activeAssay } = this.state;
-      if (activeAssay.cellPart !== CellPart.None) {
+      if (activeAssay) {
         this.setState({
           lockedAssays: this.state.lockedAssays.concat([activeAssay])
         });
@@ -143,7 +138,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleAssayClear() {
-    this.setState({ activeAssay: { cellPart: CellPart.None }});
+    this.setState({ activeAssay: null});
   }
 
   getBoxView(boxId: any) {

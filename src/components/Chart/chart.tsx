@@ -18,7 +18,7 @@ interface ChartState {
 
 class Chart extends React.Component<ChartProps, ChartState> {
   baseData: Chart.ChartData = {
-    datasets: [ {} ]
+    datasets: [ { backgroundColor: 'rgba(255, 99, 132, 0.6)'} ]
   };
   constructor(props: any) {
     super(props);
@@ -42,16 +42,18 @@ class Chart extends React.Component<ChartProps, ChartState> {
     let {substanceLevels, activeAssay} = this.props;
     let {displaySubstances} = this.state;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
-    let values = activeSubstances.map(function(substance: Substance) {
-      return substanceLevels[activeAssay.cellPart][substance];
-    });
+
+    let values: number[] = [];
+    if (activeAssay) {
+      values = activeSubstances.map(function(substance: Substance) {
+        return substanceLevels[activeAssay.cellPart][substance];
+      });
+    }
     let data: Chart.ChartData = Object.assign({}, this.baseData);
     data.labels = activeSubstances;
     data.datasets[0].data = values;
-    data.datasets[0].label = activeAssay.cellPart;
+    data.datasets[0].label = activeAssay ? activeAssay.cellPart : '';
 
-    let color = activeAssay.cellPart === CellPart.None ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 99, 132, 0.6)';
-    data.datasets[0].backgroundColor = color;
     let options: Chart.ChartOptions = {
       title: {
         display: true,
@@ -59,7 +61,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
         fontSize: 25
       },
       legend: {
-        display: activeAssay.cellPart !== CellPart.None,
+        display: !!activeAssay,
         position: 'bottom'
       },
       scales: {

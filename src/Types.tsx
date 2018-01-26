@@ -8,8 +8,7 @@ export enum CellPart {
   Cytoplasm = 'CYTOPLASM',
   Golgi = 'GOLGI',
   Gates = 'GATES',
-  Intercell = 'INTERCELL',
-  None = 'NONE'
+  Intercell = 'INTERCELL'
 }
 
 export enum Substance {

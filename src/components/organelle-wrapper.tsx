@@ -38,15 +38,12 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       [CellPart.Intercell]: {
         selector: `#intercell`,
         opaqueSelector: '#Layer6_0_FILL'
-      },
-      [CellPart.None]: {
-        selector: ''
       }
     };
   constructor(props: OrganelleWrapperProps) {
     super(props);
     this.state = {
-      hoveredOrganelle: CellPart.None
+      hoveredOrganelle: null
     };
     this.model = null;
     this.addHormone = this.addHormone.bind(this);
@@ -195,7 +192,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
           } else {
             return accumulator;
           }
-        },      CellPart.None);
+        },      null);
 
       this.setState({hoveredOrganelle});
     });
@@ -205,7 +202,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         return;
       }
 
-      this.setState({hoveredOrganelle: CellPart.None});
+      this.setState({hoveredOrganelle: null});
     });
   }
 
@@ -219,18 +216,13 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     if (this.props.mode === Mode.Assay) {
       let opaqueSelectors: string[] = [];
       this.props.lockedAssays.forEach((lockedAssay) => {
-        let lockedSelector = this.getOpaqueSelector(lockedAssay.cellPart);
-        if (lockedSelector) {
-          opaqueSelectors.push(lockedSelector);
-        }
+        opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.cellPart));
       });
-      let activeSelector = this.getOpaqueSelector(this.props.activeAssay.cellPart);
-      if (activeSelector) {
-        opaqueSelectors.push(activeSelector);
+      if (this.props.activeAssay) {
+        opaqueSelectors.push(this.getOpaqueSelector(this.props.activeAssay.cellPart));
       }
-      let hoverSelector = this.getOpaqueSelector(this.state.hoveredOrganelle);
-      if (hoverSelector) {
-        opaqueSelectors.push(hoverSelector);
+      if (this.state.hoveredOrganelle) {
+        opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
       }
 
       this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
@@ -274,7 +266,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
 
     if (this.props.mode === Mode.Assay && nextProps.mode !== Mode.Assay) {
-      this.setState({hoveredOrganelle: CellPart.None});
+      this.setState({hoveredOrganelle: null});
     }
 
     // if (nextProps.addEnzyme) {
