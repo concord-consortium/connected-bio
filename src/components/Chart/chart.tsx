@@ -7,6 +7,7 @@ import './chart.css';
 interface ChartProps {
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
   activeAssay: AssayInfo;
+  lockedAssays: AssayInfo[];
   mode: Mode;
   onAssayToggle(): void;
   onAssayClear(): void;
@@ -16,10 +17,11 @@ interface ChartState {
   displaySubstances: { [substance in Substance]: boolean};
 }
 
+const defaultColors = ['#3366CC', '#DC3912', '#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6',
+  '#DD4477', '#66AA00', '#B82E2E', '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC', '#E67300',
+  '#8B0707', '#329262', '#5574A6', '#3B3EAC'];
+
 class Chart extends React.Component<ChartProps, ChartState> {
-  baseData: Chart.ChartData = {
-    datasets: [ { backgroundColor: 'rgba(255, 99, 132, 0.6)'} ]
-  };
   constructor(props: any) {
     super(props);
     this.state = {
@@ -38,22 +40,38 @@ class Chart extends React.Component<ChartProps, ChartState> {
     this.setState({displaySubstances: newDisplaySubstances});
   }
 
+  createDataset(activeSubstances: string[], substanceLevels: any, assayInfo: AssayInfo, barNum: number) {
+    let values = activeSubstances.map(function(substance: Substance) {
+      return substanceLevels[assayInfo.cellPart][substance];
+    });
+
+    return {
+      data: values,
+      label: assayInfo.cellPart,
+      backgroundColor: defaultColors[barNum % defaultColors.length]
+    };
+  }
+
   render() {
-    let {substanceLevels, activeAssay} = this.props;
+    let {substanceLevels, activeAssay, lockedAssays} = this.props;
     let {displaySubstances} = this.state;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
 
-    let values: number[] = [];
-    if (activeAssay) {
-      values = activeSubstances.map(function(substance: Substance) {
-        return substanceLevels[activeAssay.cellPart][substance];
-      });
+    let data: Chart.ChartData = {
+      datasets: [],
+      labels: activeSubstances,
+    };
+    let activeGraphed = false;
+    lockedAssays.forEach((lockedAssay, i) => {
+        data.datasets.push(this.createDataset(activeSubstances, substanceLevels, lockedAssay, i));
+        if (lockedAssay.cellPart === activeAssay.cellPart) {
+          activeGraphed = true;
+        }
+    });
+    if (activeAssay && !activeGraphed) {
+      data.datasets.push(this.createDataset(activeSubstances, substanceLevels, activeAssay, lockedAssays.length));
     }
-    let data: Chart.ChartData = Object.assign({}, this.baseData);
-    data.labels = activeSubstances;
-    data.datasets[0].data = values;
-    data.datasets[0].label = activeAssay ? activeAssay.cellPart : '';
-
+    
     let options: Chart.ChartOptions = {
       title: {
         display: true,

@@ -139,6 +139,7 @@ class App extends React.Component<AppProps, AppState> {
 
   handleAssayClear() {
     this.setState({ activeAssay: null});
+    this.setState({ lockedAssays: [] });
   }
 
   getBoxView(boxId: any) {
@@ -206,6 +207,7 @@ class App extends React.Component<AppProps, AppState> {
             <Chart 
               substanceLevels={this.state.substanceLevels} 
               activeAssay={this.state.activeAssay} 
+              lockedAssays={this.state.lockedAssays}
               mode={this.state.mode} 
               onAssayToggle={this.handleAssayToggle}
               onAssayClear={this.handleAssayClear}
