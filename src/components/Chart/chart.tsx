@@ -6,6 +6,7 @@ import './chart.css';
 
 interface ChartProps {
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
+  substanceDeltas: { [cellPart in CellPart]: { [substance in Substance]: number} };
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
   mode: Mode;
@@ -40,20 +41,34 @@ class Chart extends React.Component<ChartProps, ChartState> {
     this.setState({displaySubstances: newDisplaySubstances});
   }
 
-  createDataset(activeSubstances: string[], substanceLevels: any, assayInfo: OrganelleInfo, barNum: number) {
-    let values = activeSubstances.map(function(substance: Substance) {
-      return substanceLevels[assayInfo.cellPart][substance];
+  createBar(activeSubstances: string[], substanceLevels: any, substanceDeltas: any,
+            assayInfo: OrganelleInfo, barNum: number
+  ) {
+    let bars = [];
+    bars.push({
+      data: this.getValues(activeSubstances, substanceLevels, assayInfo),
+      label: assayInfo.cellPart,
+      backgroundColor: defaultColors[barNum % defaultColors.length],
+      stack: 'Stack ' + barNum
     });
 
-    return {
-      data: values,
-      label: assayInfo.cellPart,
-      backgroundColor: defaultColors[barNum % defaultColors.length]
-    };
+    bars.push({
+      data: this.getValues(activeSubstances, substanceDeltas, assayInfo),
+      label: assayInfo.cellPart + ' EXTRA',
+      backgroundColor: 'green',
+      stack: 'Stack ' + barNum
+    });
+    return bars;
+  }
+
+  getValues(activeSubstances: string[], substanceLevels: any, assayInfo: OrganelleInfo) {
+    return activeSubstances.map(function(substance: Substance) {
+      return substanceLevels[assayInfo.cellPart][substance];
+    });
   }
 
   render() {
-    let {substanceLevels, activeAssay, lockedAssays, mode} = this.props;
+    let {substanceLevels, substanceDeltas, activeAssay, lockedAssays, mode} = this.props;
     let {displaySubstances} = this.state;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
 
@@ -63,13 +78,15 @@ class Chart extends React.Component<ChartProps, ChartState> {
     };
     let activeGraphed = false;
     lockedAssays.forEach((lockedAssay, i) => {
-        data.datasets.push(this.createDataset(activeSubstances, substanceLevels, lockedAssay, i));
+        data.datasets = data.datasets.concat(this.createBar(activeSubstances, substanceLevels, 
+                                                            substanceDeltas, lockedAssay, i));
         if (lockedAssay.cellPart === activeAssay.cellPart) {
           activeGraphed = true;
         }
     });
     if (activeAssay && !activeGraphed) {
-      data.datasets.push(this.createDataset(activeSubstances, substanceLevels, activeAssay, lockedAssays.length));
+      data.datasets = data.datasets.concat(
+        this.createBar(activeSubstances, substanceLevels, substanceDeltas, activeAssay, lockedAssays.length));
     }
     
     let options: Chart.ChartOptions = {
@@ -87,7 +104,11 @@ class Chart extends React.Component<ChartProps, ChartState> {
           ticks: {
             min: 0,
             max: 100
-          }
+          },
+          stacked: true
+        }],
+        yAxes: [{
+          stacked: true
         }]
       },
       tooltips: {

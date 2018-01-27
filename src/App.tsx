@@ -16,7 +16,9 @@ interface AppState {
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
   mode: Mode;
+  modeParams: any;
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
+  substanceDeltas: { [cellPart in CellPart]: { [substance in Substance]: number} };
 }
 
 interface AppProps { }
@@ -45,6 +47,7 @@ class App extends React.Component<AppProps, AppState> {
       activeAssay: null,
       lockedAssays: [],
       mode: Mode.Normal,
+      modeParams: {},
       substanceLevels: {
         [CellPart.Cytoplasm]: {
           [Substance.Substance1]: 20,
@@ -71,7 +74,8 @@ class App extends React.Component<AppProps, AppState> {
           [Substance.Substance2]: 50,
           [Substance.Substance3]: 70
         }
-      }
+      },
+      substanceDeltas: this.getClearedSubstanceDeltas()
     };
     this.setActiveAssay = this.setActiveAssay.bind(this);
     this.handleViewChange = this.handleViewChange.bind(this);
@@ -80,10 +84,29 @@ class App extends React.Component<AppProps, AppState> {
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
+    this.changeSubstanceLevel = this.changeSubstanceLevel.bind(this);
+  }
+
+  getClearedSubstanceDeltas(): any {
+    let deltas = {};
+    Object.keys(CellPart).forEach((cellPartKey) => {
+      deltas[CellPart[cellPartKey]] = {};
+      Object.keys(Substance).forEach((substanceKey) => {
+        deltas[CellPart[cellPartKey]][Substance[substanceKey]] = 0;
+      });
+    });
+    return deltas;
   }
 
   setActiveAssay(activeAssay: OrganelleInfo) {
     this.setState({ activeAssay });
+  }
+
+  changeSubstanceLevel(organelle: OrganelleInfo) {
+    let substanceDeltas = Object.assign({}, this.state.substanceDeltas);
+    let {substance, amount} = this.state.modeParams;
+    substanceDeltas[organelle.cellPart][substance] += amount;
+    this.setState({ substanceDeltas });
   }
 
   handleViewChange(event: any) {
@@ -144,9 +167,12 @@ class App extends React.Component<AppProps, AppState> {
     this.setState({ lockedAssays: [] });
   }
 
-  handleSubstanceManipulatorToggle(manipulationMode: Mode) {
+  handleSubstanceManipulatorToggle(manipulationMode: Mode, substance: Substance, amount: number) {
     if (this.state.mode === Mode.Normal) {
-      this.setState({mode: manipulationMode});
+      this.setState({
+        mode: manipulationMode,
+        modeParams: {substance, amount}
+      });
     } else {
       this.setState({mode: Mode.Normal});
     }
@@ -175,6 +201,7 @@ class App extends React.Component<AppProps, AppState> {
           mode={this.state.mode}
           activeAssay={this.state.activeAssay}
           lockedAssays={this.state.lockedAssays}
+          changeSubstanceLevel={this.changeSubstanceLevel}
         />
       );
     }
@@ -217,6 +244,7 @@ class App extends React.Component<AppProps, AppState> {
             <div className="tools">
               <Chart 
                 substanceLevels={this.state.substanceLevels} 
+                substanceDeltas={this.state.substanceDeltas}
                 activeAssay={this.state.activeAssay} 
                 lockedAssays={this.state.lockedAssays}
                 mode={this.state.mode} 

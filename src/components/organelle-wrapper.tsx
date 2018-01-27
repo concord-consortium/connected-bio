@@ -13,6 +13,7 @@ interface OrganelleWrapperProps {
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
   setActiveAssay(activeAssay: OrganelleInfo): void;
+  changeSubstanceLevel(organelle: OrganelleInfo): void;
 }
 
 interface OrganelleWrapperState {
@@ -216,14 +217,17 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     let {mode} = this.props;
     if (mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract) {
       let opaqueSelectors: string[] = [];
-      this.props.lockedAssays.forEach((lockedAssay) => {
-        opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.cellPart));
-      });
-      if (this.props.activeAssay) {
-        opaqueSelectors.push(this.getOpaqueSelector(this.props.activeAssay.cellPart));
-      }
       if (this.state.hoveredOrganelle) {
         opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
+      }
+      
+      if (mode === Mode.Assay) {
+        this.props.lockedAssays.forEach((lockedAssay) => {
+          opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.cellPart));
+        });
+        if (this.props.activeAssay) {
+          opaqueSelectors.push(this.getOpaqueSelector(this.props.activeAssay.cellPart));
+        }
       }
 
       this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
@@ -244,6 +248,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   organelleClick(organelle: CellPart) {
     if (this.props.mode === Mode.Assay) {
       this.props.setActiveAssay({ cellPart: organelle });
+    } else if (this.props.mode === Mode.Add || this.props.mode === Mode.Subtract) {
+      this.props.changeSubstanceLevel({ cellPart: organelle });
     }
   }
 

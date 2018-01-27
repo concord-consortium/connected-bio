@@ -6,12 +6,14 @@ import { Substance, Mode } from '../../Types';
 
 interface SubstanceManipulatorProps {
   mode: Mode;
-  onSubstanceManipulatorToggle(modeToggled: Mode): void;
+  onSubstanceManipulatorToggle(manipulationMode: Mode, substance: Substance, amount: number): void;
 }
 
 interface SubstanceManipulatorState {
   selectedSubstance: Substance;
 }
+
+const SUBSTANCE_DELTA: number = 5;
 
 class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, SubstanceManipulatorState> {
   constructor(props: any) {
@@ -31,11 +33,11 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
   }
 
   handleAddModeToggle() {
-    this.props.onSubstanceManipulatorToggle(Mode.Add);
+    this.props.onSubstanceManipulatorToggle(Mode.Add, this.state.selectedSubstance, SUBSTANCE_DELTA);
   }
 
   handleSubtractModeToggle() {
-    this.props.onSubstanceManipulatorToggle(Mode.Subtract);
+    this.props.onSubstanceManipulatorToggle(Mode.Subtract, this.state.selectedSubstance, SUBSTANCE_DELTA * -1);
   }
 
   render() {
@@ -69,16 +71,19 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             style={{width: '150px'}} 
             value={Substance.Substance1}
             label="Substance 1"
+            disabled={mode !== Mode.Normal}
           />
           <RadioButton
             style={{width: '150px'}} 
             value={Substance.Substance2}
             label="Substance 2"
+            disabled={mode !== Mode.Normal}
           />
           <RadioButton
             style={{width: '150px'}} 
             value={Substance.Substance3}
             label="Substance 3"
+            disabled={mode !== Mode.Normal}
           />
         </RadioButtonGroup>
       </div>
