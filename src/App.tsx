@@ -5,6 +5,7 @@ import { Mode, CellPart, Substance, AssayInfo } from './Types';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
+import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
 
 interface AppState {
   addHormone: boolean;
@@ -78,6 +79,7 @@ class App extends React.Component<AppProps, AppState> {
     this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
+    this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
   }
 
   setActiveAssay(activeAssay: AssayInfo) {
@@ -142,6 +144,14 @@ class App extends React.Component<AppProps, AppState> {
     this.setState({ lockedAssays: [] });
   }
 
+  handleSubstanceManipulatorToggle(manipulationMode: Mode) {
+    if (this.state.mode === Mode.Normal) {
+      this.setState({mode: manipulationMode});
+    } else {
+      this.setState({mode: Mode.Normal});
+    }
+  }
+
   getBoxView(boxId: any) {
     const opt = this.state[boxId];
 
@@ -204,14 +214,20 @@ class App extends React.Component<AppProps, AppState> {
                 </div>
               </div>
             </div>
-            <Chart 
-              substanceLevels={this.state.substanceLevels} 
-              activeAssay={this.state.activeAssay} 
-              lockedAssays={this.state.lockedAssays}
-              mode={this.state.mode} 
-              onAssayToggle={this.handleAssayToggle}
-              onAssayClear={this.handleAssayClear}
-            />
+            <div className="tools">
+              <Chart 
+                substanceLevels={this.state.substanceLevels} 
+                activeAssay={this.state.activeAssay} 
+                lockedAssays={this.state.lockedAssays}
+                mode={this.state.mode} 
+                onAssayToggle={this.handleAssayToggle}
+                onAssayClear={this.handleAssayClear}
+              />
+              <SubstanceManipulator 
+                mode={this.state.mode} 
+                onSubstanceManipulatorToggle={this.handleSubstanceManipulatorToggle}
+              />
+            </div>
           </div>
         </div>
       </MuiThemeProvider>

@@ -53,7 +53,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
   }
 
   render() {
-    let {substanceLevels, activeAssay, lockedAssays} = this.props;
+    let {substanceLevels, activeAssay, lockedAssays, mode} = this.props;
     let {displaySubstances} = this.state;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
 
@@ -102,7 +102,8 @@ class Chart extends React.Component<ChartProps, ChartState> {
         />
         <div className="chart-buttons">
           <RaisedButton 
-            label={(this.props.mode === Mode.Assay ? 'Confirm' : 'Begin') + ' assay'}
+            label={'Add assay'}
+            disabled={!(mode === Mode.Normal || mode === Mode.Assay)}
             onClick={this.props.onAssayToggle}
             style={{width: '150px', margin: '5px'}}
             primary={this.props.mode !== Mode.Assay}
@@ -110,7 +111,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
           />
           <RaisedButton 
             label={'Clear assays'}
-            disabled={this.props.mode === Mode.Assay}
+            disabled={!(mode === Mode.Normal)}
             onClick={this.props.onAssayClear}
             style={{width: '150px', margin: '5px'}}
             primary={true}

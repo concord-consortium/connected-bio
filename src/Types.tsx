@@ -1,6 +1,8 @@
 export enum Mode {
   Normal = 'NORMAL',
-  Assay = 'ASSAY'
+  Assay = 'ASSAY',
+  Add = 'ADD',
+  Subtract = 'SUBTRACT'
 }
 
 export enum CellPart {

@@ -179,7 +179,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
-      if (this.props.mode !== Mode.Assay) {
+      if (this.props.mode === Mode.Normal) {
         return;
       }
 
@@ -213,7 +213,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   updateCellOpacity() {
-    if (this.props.mode === Mode.Assay) {
+    let {mode} = this.props;
+    if (mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract) {
       let opaqueSelectors: string[] = [];
       this.props.lockedAssays.forEach((lockedAssay) => {
         opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.cellPart));

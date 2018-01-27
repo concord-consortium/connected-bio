@@ -1,0 +1,11 @@
+.four-up .substance-manipulator {
+  width: 750px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  height: fit-content;
+  border: 1px solid;
+  padding: 0;
+  margin: 38px;
+}
