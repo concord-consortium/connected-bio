@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CellPart, Mode, AssayInfo } from '../Types';
+import { CellPart, Mode, OrganelleInfo } from '../Types';
 
 declare var Organelle: any;
 
@@ -10,9 +10,9 @@ interface OrganelleWrapperProps {
   addEnzyme: boolean;
   currentView: any;
   mode: Mode;
-  activeAssay: AssayInfo;
-  lockedAssays: AssayInfo[];
-  setActiveAssay(activeAssay: AssayInfo): void;
+  activeAssay: OrganelleInfo;
+  lockedAssays: OrganelleInfo[];
+  setActiveAssay(activeAssay: OrganelleInfo): void;
 }
 
 interface OrganelleWrapperState {

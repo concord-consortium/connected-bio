@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { RaisedButton, Checkbox } from 'material-ui';
-import { CellPart, Mode, Substance, AssayInfo } from '../../Types';
+import { CellPart, Mode, Substance, OrganelleInfo } from '../../Types';
 import './chart.css';
 
 interface ChartProps {
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
-  activeAssay: AssayInfo;
-  lockedAssays: AssayInfo[];
+  activeAssay: OrganelleInfo;
+  lockedAssays: OrganelleInfo[];
   mode: Mode;
   onAssayToggle(): void;
   onAssayClear(): void;
@@ -40,7 +40,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
     this.setState({displaySubstances: newDisplaySubstances});
   }
 
-  createDataset(activeSubstances: string[], substanceLevels: any, assayInfo: AssayInfo, barNum: number) {
+  createDataset(activeSubstances: string[], substanceLevels: any, assayInfo: OrganelleInfo, barNum: number) {
     let values = activeSubstances.map(function(substance: Substance) {
       return substanceLevels[assayInfo.cellPart][substance];
     });

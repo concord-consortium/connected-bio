@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { Mode, CellPart, Substance, AssayInfo } from './Types';
+import { Mode, CellPart, Substance, OrganelleInfo } from './Types';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
@@ -13,8 +13,8 @@ interface AppState {
   box1: string;
   box2: string;
   modelProperties: ModelProperties;
-  activeAssay: AssayInfo;
-  lockedAssays: AssayInfo[];
+  activeAssay: OrganelleInfo;
+  lockedAssays: OrganelleInfo[];
   mode: Mode;
   substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
 }
@@ -82,7 +82,7 @@ class App extends React.Component<AppProps, AppState> {
     this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
   }
 
-  setActiveAssay(activeAssay: AssayInfo) {
+  setActiveAssay(activeAssay: OrganelleInfo) {
     this.setState({ activeAssay });
   }
 

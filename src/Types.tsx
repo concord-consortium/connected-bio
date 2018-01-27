@@ -19,6 +19,6 @@ export enum Substance {
   Substance3 = 'Substance 3'
 }
 
-export interface AssayInfo {
+export interface OrganelleInfo {
   cellPart: CellPart;
 }
