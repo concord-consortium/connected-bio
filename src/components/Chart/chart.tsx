@@ -18,7 +18,7 @@ interface ChartState {
   displaySubstances: { [substance in Substance]: boolean};
 }
 
-const defaultColors = ['#3366CC', '#DC3912', '#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6',
+const defaultColors = ['#3366CC', '#FF9900', '#990099', '#3B3EAC', '#0099C6',
   '#DD4477', '#66AA00', '#B82E2E', '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC', '#E67300',
   '#8B0707', '#329262', '#5574A6', '#3B3EAC'];
 
@@ -46,25 +46,38 @@ class Chart extends React.Component<ChartProps, ChartState> {
   ) {
     let bars = [];
     bars.push({
-      data: this.getValues(activeSubstances, substanceLevels, assayInfo),
+      data: activeSubstances.map(function(substance: Substance) {
+              let substanceLevel = substanceLevels[assayInfo.cellPart][substance];
+              let deltaLevel = substanceDeltas[assayInfo.cellPart][substance];
+              // Shorten any bars with substance removed so total bar length is unchanged
+              if (deltaLevel < 0) {
+                substanceLevel += deltaLevel;
+              }
+              return substanceLevel;
+            }),
       label: assayInfo.cellPart,
       backgroundColor: defaultColors[barNum % defaultColors.length],
       stack: 'Stack ' + barNum
     });
 
     bars.push({
-      data: this.getValues(activeSubstances, substanceDeltas, assayInfo),
-      label: assayInfo.cellPart + ' EXTRA',
+      data: activeSubstances.map(function(substance: Substance) {
+              return Math.max(0, substanceDeltas[assayInfo.cellPart][substance]);
+            }),
+      label: assayInfo.cellPart + ' ADDED',
       backgroundColor: 'green',
       stack: 'Stack ' + barNum
     });
-    return bars;
-  }
 
-  getValues(activeSubstances: string[], substanceLevels: any, assayInfo: OrganelleInfo) {
-    return activeSubstances.map(function(substance: Substance) {
-      return substanceLevels[assayInfo.cellPart][substance];
+    bars.push({
+      data: activeSubstances.map(function(substance: Substance) {
+              return Math.max(0, substanceDeltas[assayInfo.cellPart][substance] * -1);
+            }),
+      label: assayInfo.cellPart + ' SUBTRACTED',
+      backgroundColor: 'red',
+      stack: 'Stack ' + barNum
     });
+    return bars;
   }
 
   render() {
