@@ -64,7 +64,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
       data: activeSubstances.map(function(substance: Substance) {
               return Math.max(0, substanceDeltas[assayInfo.cellPart][substance]);
             }),
-      label: assayInfo.cellPart + ' ADDED',
+      label: assayInfo.cellPart + ' ADDED#',
       backgroundColor: 'green',
       stack: 'Stack ' + barNum
     });
@@ -73,7 +73,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
       data: activeSubstances.map(function(substance: Substance) {
               return Math.max(0, substanceDeltas[assayInfo.cellPart][substance] * -1);
             }),
-      label: assayInfo.cellPart + ' SUBTRACTED',
+      label: assayInfo.cellPart + ' SUBTRACTED#',
       backgroundColor: 'red',
       stack: 'Stack ' + barNum
     });
@@ -102,7 +102,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
         this.createBar(activeSubstances, substanceLevels, substanceDeltas, activeAssay, lockedAssays.length));
     }
     
-    let options: Chart.ChartOptions = {
+    let options: any = {
       title: {
         display: true,
         text: 'Substance Breakdown',
@@ -110,7 +110,13 @@ class Chart extends React.Component<ChartProps, ChartState> {
       },
       legend: {
         display: !!activeAssay,
-        position: 'bottom'
+        position: 'bottom',
+        labels: {
+          filter: (legendItem: any, chartData: any) => {
+            // Hidden labels, like for "extra" bars, are marked with a "#"
+            return legendItem.text.indexOf('#') === -1;
+          }
+        }
       },
       scales: {
         xAxes: [{
