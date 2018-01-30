@@ -19,6 +19,11 @@ export enum Substance {
   Substance3 = 'Substance 3'
 }
 
+export enum Mouse {
+  Field = 'FIELD',
+  Forest = 'FOREST'
+}
+
 export interface OrganelleInfo {
   cellPart: CellPart;
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { Mode, CellPart, Substance, OrganelleInfo } from './Types';
+import { Mode, CellPart, Substance, OrganelleInfo, Mouse } from './Types';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
@@ -10,8 +10,10 @@ import SubstanceManipulator from './components/SubstanceManipulator/SubstanceMan
 interface AppState {
   addHormone: boolean;
   addEnzyme: boolean;
-  box1: string;
-  box2: string;
+  box1Org: Mouse;
+  box1View: string;
+  box2Org: Mouse;
+  box2View: string;
   modelProperties: ModelProperties;
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
@@ -35,8 +37,10 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
     this.state = {
       addHormone: false,
-      box1: 'cell',
-      box2: 'organism',
+      box1View: 'cell',
+      box1Org: Mouse.Field,
+      box2View: 'organism',
+      box2Org: Mouse.Forest,
       modelProperties: {
         albino: false,
         working_tyr1: false,
@@ -185,26 +189,27 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  getBoxView(boxId: any) {
-    const opt = this.state[boxId];
+  getBoxView(boxOrg: string, boxView: string) {
+    const org = this.state[boxOrg];
+    const view = this.state[boxView];
 
-    if (opt === 'none') {
+    if (view === 'none') {
       return null;
-    } else if (opt === 'organism') {
+    } else if (view === 'organism') {
       let imgSrc = 'assets/sandrat-light.png';
-      if (this.state.addEnzyme) {
+      if (org === Mouse.Forest) {
         imgSrc = 'assets/sandrat-dark.png';
       }
       return <img src={imgSrc} width="500px" />;
     } else {
       return (
         <OrganelleWrapper 
-          name={boxId + '-model'}
+          name={boxOrg + '-' + boxView + '-model'}
           modelProperties={this.state.modelProperties} 
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
           setActiveAssay={this.setActiveAssay}
-          currentView={opt}
+          currentView={view}
           mode={this.state.mode}
           activeAssay={this.state.activeAssay}
           lockedAssays={this.state.lockedAssays}
@@ -225,26 +230,34 @@ class App extends React.Component<AppProps, AppState> {
             <div>
               <div>
                 <div>
-                  <select id="box1" value={this.state.box1} onChange={this.handleViewChange}>
+                  <select id="box1Org" value={this.state.box1Org} onChange={this.handleViewChange}>
+                    <option value={Mouse.Field}>Field Mouse</option>
+                    <option value={Mouse.Forest}>Forest Mouse</option>
+                  </select>
+                  <select id="box1View" value={this.state.box1View} onChange={this.handleViewChange}>
                     <option value="none">None</option>
                     <option value="organism">Organism</option>
                     <option value="cell">Cell</option>
                   </select>
                 </div>
                 <div className="box">
-                  {this.getBoxView('box1')}
+                  {this.getBoxView('box1Org', 'box1View')}
                 </div>
               </div>
               <div>
                 <div>
-                  <select id="box2" value={this.state.box2} onChange={this.handleViewChange}>
+                  <select id="box2Org" value={this.state.box2Org} onChange={this.handleViewChange}>
+                    <option value={Mouse.Field}>Field Mouse</option>
+                    <option value={Mouse.Forest}>Forest Mouse</option>
+                  </select>
+                  <select id="box2View" value={this.state.box2View} onChange={this.handleViewChange}>
                     <option value="none">None</option>
                     <option value="organism">Organism</option>
                     <option value="cell">Cell</option>
                   </select>
                 </div>
                 <div className="box">
-                  {this.getBoxView('box2')}
+                  {this.getBoxView('box2Org', 'box2View')}
                 </div>
               </div>
             </div>
