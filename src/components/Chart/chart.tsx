@@ -93,7 +93,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
     lockedAssays.forEach((lockedAssay, i) => {
         data.datasets = data.datasets.concat(this.createBar(activeSubstances, substanceLevels, 
                                                             substanceDeltas, lockedAssay, i));
-        if (lockedAssay.cellPart === activeAssay.cellPart) {
+        if (activeAssay && lockedAssay.cellPart === activeAssay.cellPart) {
           activeGraphed = true;
         }
     });
@@ -109,7 +109,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
         fontSize: 25
       },
       legend: {
-        display: !!activeAssay,
+        display: true,
         position: 'bottom',
         labels: {
           filter: (legendItem: any, chartData: any) => {

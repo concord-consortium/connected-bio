@@ -153,10 +153,17 @@ class App extends React.Component<AppProps, AppState> {
       // Lock an assay after it is finished, if one exists
       let { activeAssay } = this.state;
       if (activeAssay) {
-        this.setState({
-          lockedAssays: this.state.lockedAssays.concat([activeAssay])
-        });
+        let repeatAssay = this.state.lockedAssays
+          .reduce((accumulator: boolean, assay: OrganelleInfo) => {
+            return accumulator || assay.cellPart === activeAssay.cellPart;
+          },      false);
+        if (!repeatAssay) {
+          this.setState({
+            lockedAssays: this.state.lockedAssays.concat([activeAssay])
+          });
+        }
       }
+      this.setState({activeAssay: null});
     } else {
       this.setState({mode: Mode.Assay});
     }
