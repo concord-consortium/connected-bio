@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { RaisedButton, Checkbox } from 'material-ui';
-import { CellPart, Mode, Substance, OrganelleInfo } from '../../Types';
+import { Mode, Substance } from '../../Types';
+import Organism, { OrganelleInfo } from '../../models/Organism';
+import { isEqual } from 'lodash';
 import './chart.css';
 
 interface ChartProps {
-  substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
-  substanceDeltas: { [cellPart in CellPart]: { [substance in Substance]: number} };
+  organisms: {[name: string]: Organism};
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
   mode: Mode;
@@ -41,9 +42,10 @@ class Chart extends React.Component<ChartProps, ChartState> {
     this.setState({displaySubstances: newDisplaySubstances});
   }
 
-  createBar(activeSubstances: string[], substanceLevels: any, substanceDeltas: any,
-            assayInfo: OrganelleInfo, barNum: number
-  ) {
+  createBar(activeSubstances: string[], assayInfo: OrganelleInfo, barNum: number) {
+    let organism = this.props.organisms[assayInfo.organism.getName()];
+    let substanceLevels = organism.getSubstanceLevels();
+    let substanceDeltas = organism.getSubstanceDeltas();
     let bars = [];
     bars.push({
       data: activeSubstances.map(function(substance: Substance) {
@@ -55,7 +57,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
               }
               return substanceLevel;
             }),
-      label: assayInfo.cellPart,
+      label: organism.getName() + ' ' + assayInfo.cellPart.toLowerCase(),
       backgroundColor: defaultColors[barNum % defaultColors.length],
       stack: 'Stack ' + barNum
     });
@@ -64,7 +66,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
       data: activeSubstances.map(function(substance: Substance) {
               return Math.max(0, substanceDeltas[assayInfo.cellPart][substance]);
             }),
-      label: assayInfo.cellPart + ' ADDED#',
+      label: organism.getName() + ' ' + assayInfo.cellPart + ' ADDED#',
       backgroundColor: 'green',
       stack: 'Stack ' + barNum
     });
@@ -73,7 +75,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
       data: activeSubstances.map(function(substance: Substance) {
               return Math.max(0, substanceDeltas[assayInfo.cellPart][substance] * -1);
             }),
-      label: assayInfo.cellPart + ' SUBTRACTED#',
+      label: organism.getName() + ' ' + assayInfo.cellPart + ' SUBTRACTED#',
       backgroundColor: 'red',
       stack: 'Stack ' + barNum
     });
@@ -81,7 +83,7 @@ class Chart extends React.Component<ChartProps, ChartState> {
   }
 
   render() {
-    let {substanceLevels, substanceDeltas, activeAssay, lockedAssays, mode} = this.props;
+    let {activeAssay, lockedAssays, mode} = this.props;
     let {displaySubstances} = this.state;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
 
@@ -91,15 +93,14 @@ class Chart extends React.Component<ChartProps, ChartState> {
     };
     let activeGraphed = false;
     lockedAssays.forEach((lockedAssay, i) => {
-        data.datasets = data.datasets.concat(this.createBar(activeSubstances, substanceLevels, 
-                                                            substanceDeltas, lockedAssay, i));
-        if (activeAssay && lockedAssay.cellPart === activeAssay.cellPart) {
+        data.datasets = data.datasets.concat(this.createBar(activeSubstances, lockedAssay, i));
+        if (activeAssay && isEqual(lockedAssay, activeAssay)) {
           activeGraphed = true;
         }
     });
     if (activeAssay && !activeGraphed) {
       data.datasets = data.datasets.concat(
-        this.createBar(activeSubstances, substanceLevels, substanceDeltas, activeAssay, lockedAssays.length));
+        this.createBar(activeSubstances, activeAssay, lockedAssays.length));
     }
     
     let options: any = {

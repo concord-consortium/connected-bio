@@ -1,7 +1,10 @@
 import * as React from 'react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { Mode, CellPart, Substance, OrganelleInfo, Mouse } from './Types';
+import { Mode, View, Substance } from './Types';
+import Organism, { OrganelleInfo } from './models/Organism';
+import Mouse, { MouseType } from './models/Mouse';
+import { isEqual } from 'lodash';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import Chart from './components/Chart/chart';
@@ -10,17 +13,16 @@ import SubstanceManipulator from './components/SubstanceManipulator/SubstanceMan
 interface AppState {
   addHormone: boolean;
   addEnzyme: boolean;
-  box1Org: Mouse;
-  box1View: string;
-  box2Org: Mouse;
-  box2View: string;
+  box1Org: string;
+  box1View: View;
+  box2Org: string;
+  box2View: View;
   modelProperties: ModelProperties;
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
   mode: Mode;
   modeParams: any;
-  substanceLevels: { [cellPart in CellPart]: { [substance in Substance]: number} };
-  substanceDeltas: { [cellPart in CellPart]: { [substance in Substance]: number} };
+  organisms: {[name: string]: Organism};
 }
 
 interface AppProps { }
@@ -35,12 +37,16 @@ interface ModelProperties {
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
+    let organisms = {
+      'Field Mouse': new Mouse('Field Mouse', MouseType.Field),
+      'Forest Mouse': new Mouse('Forest Mouse', MouseType.Forest)
+    };
     this.state = {
       addHormone: false,
-      box1View: 'cell',
-      box1Org: Mouse.Field,
-      box2View: 'organism',
-      box2Org: Mouse.Forest,
+      box1View: View.Cell,
+      box1Org: 'Field Mouse',
+      box2View: View.Organism,
+      box2Org: 'Forest Mouse',
       modelProperties: {
         albino: false,
         working_tyr1: false,
@@ -52,54 +58,16 @@ class App extends React.Component<AppProps, AppState> {
       lockedAssays: [],
       mode: Mode.Normal,
       modeParams: {},
-      substanceLevels: {
-        [CellPart.Cytoplasm]: {
-          [Substance.Substance1]: 20,
-          [Substance.Substance2]: 50,
-          [Substance.Substance3]: 30
-        },
-        [CellPart.Nucleus]: {
-          [Substance.Substance1]: 90,
-          [Substance.Substance2]: 15,
-          [Substance.Substance3]: 0
-        },
-        [CellPart.Golgi]: {
-          [Substance.Substance1]: 20,
-          [Substance.Substance2]: 50,
-          [Substance.Substance3]: 30
-        },
-        [CellPart.Intercell]: {
-          [Substance.Substance1]: 0,
-          [Substance.Substance2]: 0,
-          [Substance.Substance3]: 70
-        },
-        [CellPart.Gates]: {
-          [Substance.Substance1]: 30,
-          [Substance.Substance2]: 50,
-          [Substance.Substance3]: 70
-        }
-      },
-      substanceDeltas: this.getClearedSubstanceDeltas()
+      organisms
     };
     this.setActiveAssay = this.setActiveAssay.bind(this);
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handleHormoneClick = this.handleHormoneClick.bind(this);
-    this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
+    // this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
     this.changeSubstanceLevel = this.changeSubstanceLevel.bind(this);
-  }
-
-  getClearedSubstanceDeltas(): any {
-    let deltas = {};
-    Object.keys(CellPart).forEach((cellPartKey) => {
-      deltas[CellPart[cellPartKey]] = {};
-      Object.keys(Substance).forEach((substanceKey) => {
-        deltas[CellPart[cellPartKey]][Substance[substanceKey]] = 0;
-      });
-    });
-    return deltas;
   }
 
   setActiveAssay(activeAssay: OrganelleInfo) {
@@ -107,10 +75,11 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   changeSubstanceLevel(organelle: OrganelleInfo) {
-    let substanceDeltas = Object.assign({}, this.state.substanceDeltas);
     let {substance, amount} = this.state.modeParams;
-    substanceDeltas[organelle.cellPart][substance] += amount;
-    this.setState({ substanceDeltas });
+    let organisms = Object.assign({}, this.state.organisms);
+    organisms[organelle.organism.getName()] = 
+      organelle.organism.incrementSubstanceLevel(organelle.cellPart, substance, amount);
+    this.setState({ organisms });
   }
 
   handleViewChange(event: any) {
@@ -122,34 +91,34 @@ class App extends React.Component<AppProps, AppState> {
     setTimeout(() => this.setState({addHormone: false}), 500);
   }
 
-  handleEnzymeClick() {
-    let newSubstances = Object.assign({}, this.state.substanceLevels);
-    newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 60;
-    this.setState({
-      addEnzyme: true,
-      modelProperties: {
-        albino: false,
-        working_tyr1: true,
-        working_myosin_5a: true,
-        open_gates: false
-      },
-      substanceLevels: newSubstances
-    });
-    setTimeout(() => {
-      newSubstances = Object.assign({}, this.state.substanceLevels);
-      newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 30;
-      this.setState({
-        addEnzyme: false,
-        modelProperties: {
-          albino: false,
-          working_tyr1: false,
-          working_myosin_5a: true,
-          open_gates: false
-        },
-        substanceLevels: newSubstances
-      });
-    },         4000);
-  }
+  // handleEnzymeClick() {
+  //   let newSubstances = Object.assign({}, this.state.substanceLevels);
+  //   newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 60;
+  //   this.setState({
+  //     addEnzyme: true,
+  //     modelProperties: {
+  //       albino: false,
+  //       working_tyr1: true,
+  //       working_myosin_5a: true,
+  //       open_gates: false
+  //     },
+  //     substanceLevels: newSubstances
+  //   });
+  //   setTimeout(() => {
+  //     newSubstances = Object.assign({}, this.state.substanceLevels);
+  //     newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 30;
+  //     this.setState({
+  //       addEnzyme: false,
+  //       modelProperties: {
+  //         albino: false,
+  //         working_tyr1: false,
+  //         working_myosin_5a: true,
+  //         open_gates: false
+  //       },
+  //       substanceLevels: newSubstances
+  //     });
+  //   },         4000);
+  // }
 
   handleAssayToggle() {
     if (this.state.mode === Mode.Assay) {
@@ -159,7 +128,7 @@ class App extends React.Component<AppProps, AppState> {
       if (activeAssay) {
         let repeatAssay = this.state.lockedAssays
           .reduce((accumulator: boolean, assay: OrganelleInfo) => {
-            return accumulator || assay.cellPart === activeAssay.cellPart;
+            return accumulator || isEqual(assay, activeAssay);
           },      false);
         if (!repeatAssay) {
           this.setState({
@@ -190,16 +159,13 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   getBoxView(boxOrg: string, boxView: string) {
-    const org = this.state[boxOrg];
-    const view = this.state[boxView];
+    const org: Organism = this.state.organisms[this.state[boxOrg]];
+    const view: View = this.state[boxView];
 
-    if (view === 'none') {
+    if (view === View.None) {
       return null;
-    } else if (view === 'organism') {
-      let imgSrc = 'assets/sandrat-light.png';
-      if (org === Mouse.Forest) {
-        imgSrc = 'assets/sandrat-dark.png';
-      }
+    } else if (view === View.Organism) {
+      let imgSrc = org.getImageSrc();
       return <img src={imgSrc} width="500px" />;
     } else {
       return (
@@ -211,6 +177,7 @@ class App extends React.Component<AppProps, AppState> {
           setActiveAssay={this.setActiveAssay}
           currentView={view}
           mode={this.state.mode}
+          organism={org}
           activeAssay={this.state.activeAssay}
           lockedAssays={this.state.lockedAssays}
           changeSubstanceLevel={this.changeSubstanceLevel}
@@ -231,13 +198,13 @@ class App extends React.Component<AppProps, AppState> {
               <div>
                 <div>
                   <select id="box1Org" value={this.state.box1Org} onChange={this.handleViewChange}>
-                    <option value={Mouse.Field}>Field Mouse</option>
-                    <option value={Mouse.Forest}>Forest Mouse</option>
+                    <option value="Field Mouse">Field Mouse</option>
+                    <option value="Forest Mouse">Forest Mouse</option>
                   </select>
                   <select id="box1View" value={this.state.box1View} onChange={this.handleViewChange}>
-                    <option value="none">None</option>
-                    <option value="organism">Organism</option>
-                    <option value="cell">Cell</option>
+                    <option value={View.None}>None</option>
+                    <option value={View.Organism}>Organism</option>
+                    <option value={View.Cell}>Cell</option>
                   </select>
                 </div>
                 <div className="box">
@@ -247,13 +214,13 @@ class App extends React.Component<AppProps, AppState> {
               <div>
                 <div>
                   <select id="box2Org" value={this.state.box2Org} onChange={this.handleViewChange}>
-                    <option value={Mouse.Field}>Field Mouse</option>
-                    <option value={Mouse.Forest}>Forest Mouse</option>
+                    <option value="Field Mouse">Field Mouse</option>
+                    <option value="Forest Mouse">Forest Mouse</option>
                   </select>
                   <select id="box2View" value={this.state.box2View} onChange={this.handleViewChange}>
-                    <option value="none">None</option>
-                    <option value="organism">Organism</option>
-                    <option value="cell">Cell</option>
+                    <option value={View.None}>None</option>
+                    <option value={View.Organism}>Organism</option>
+                    <option value={View.Cell}>Cell</option>
                   </select>
                 </div>
                 <div className="box">
@@ -263,8 +230,7 @@ class App extends React.Component<AppProps, AppState> {
             </div>
             <div className="tools">
               <Chart 
-                substanceLevels={this.state.substanceLevels} 
-                substanceDeltas={this.state.substanceDeltas}
+                organisms={this.state.organisms}
                 activeAssay={this.state.activeAssay} 
                 lockedAssays={this.state.lockedAssays}
                 mode={this.state.mode} 

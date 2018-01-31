@@ -4,10 +4,12 @@
   "private": true,
   "homepage": "https://concord-consortium.github.io/connected-bio",
   "dependencies": {
+    "@types/lodash": "^4.14.99",
     "@types/material-ui": "^0.20.4",
     "@types/react-tap-event-plugin": "0.0.30",
     "chart.js": "^2.7.1",
     "gh-pages": "^1.1.0",
+    "lodash": "^4.17.4",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-chartjs-2": "^2.7.0",
