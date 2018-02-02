@@ -68,6 +68,25 @@ class App extends React.Component<AppProps, AppState> {
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
     this.changeSubstanceLevel = this.changeSubstanceLevel.bind(this);
+    this.simulationTick = this.simulationTick.bind(this);
+  }
+
+  componentDidMount() {
+    this.simulationTick(0);
+  }
+
+  simulationTick(msPassed: number) {
+    let { organisms } = this.state;
+    let updatedOrgs = Object.keys(organisms)
+      .map(key => organisms[key])
+      .map(org => org.step(100))
+      .reduce((orgs: object, org: Organism) => {
+        orgs[org.getName()] = org;
+        return orgs;
+      },      {});
+    this.setState({organisms: updatedOrgs});
+
+    setTimeout(this.simulationTick, 100);
   }
 
   setActiveAssay(activeAssay: OrganelleInfo) {

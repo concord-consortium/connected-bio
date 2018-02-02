@@ -243,12 +243,16 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   makeEverythingTransparentExcept(skip: any) {
-    this.makeEverythingOpaque();
-    this.model.view.setPropertiesOnAllObjects({opacity: '*0.2'}, true, skip, true);
+    if (this.model) {
+      this.makeEverythingOpaque();
+      this.model.view.setPropertiesOnAllObjects({opacity: '*0.2'}, true, skip, true);
+    }
   }
 
   makeEverythingOpaque() {
-    this.model.view.resetPropertiesOnAllObjects();
+    if (this.model) {
+      this.model.view.resetPropertiesOnAllObjects();
+    }
   }
 
   organelleClick(organelle: CellPart) {
@@ -268,7 +272,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   componentWillReceiveProps(nextProps: any) {
-    if (nextProps.modelProperties) {
+    if (this.model && nextProps.modelProperties) {
       Object.keys(nextProps.modelProperties).forEach((key) => {
         this.model.world.setProperty(key, nextProps.modelProperties[key]);
       });
