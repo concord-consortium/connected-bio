@@ -7,7 +7,7 @@ import Mouse, { MouseType } from './models/Mouse';
 import { isEqual } from 'lodash';
 
 import OrganelleWrapper from './components/organelle-wrapper';
-import Chart from './components/Chart/chart';
+import AssayTool from './components/Assay/AssayTool';
 import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
 
 interface AppState {
@@ -248,7 +248,7 @@ class App extends React.Component<AppProps, AppState> {
               </div>
             </div>
             <div className="tools">
-              <Chart 
+              <AssayTool 
                 organisms={this.state.organisms}
                 activeAssay={this.state.activeAssay} 
                 lockedAssays={this.state.lockedAssays}
