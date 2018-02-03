@@ -4,6 +4,7 @@ import { Mode, Substance } from '../../Types';
 import Organism, { OrganelleInfo } from '../../models/Organism';
 import AssayLineGraph from './AssayLineGraph';
 import './AssayTool.css';
+import AssayBarChart from './AssayBarChart';
 
 interface AssayToolProps {
   organisms: {[name: string]: Organism};
@@ -16,6 +17,11 @@ interface AssayToolProps {
 
 interface AssayToolState {
   displaySubstances: { [substance in Substance]: boolean};
+  graphType: GraphType;
+}
+
+enum GraphType {
+  Bar, Line
 }
 
 const defaultColors = ['#3366CC', '#FF9900', '#990099', '#3B3EAC', '#0099C6',
@@ -30,9 +36,11 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
         [Substance.Substance1]: false,
         [Substance.Substance2]: true,
         [Substance.Substance3]: true
-      }
+      },
+      graphType: GraphType.Bar
     };
     this.updateCheck = this.updateCheck.bind(this);
+    this.onGraphSwitch = this.onGraphSwitch.bind(this);
   }
 
   updateCheck(event: any, isInputChecked: boolean) {
@@ -41,19 +49,36 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
     this.setState({displaySubstances: newDisplaySubstances});
   }
 
+  onGraphSwitch() {
+    if (this.state.graphType === GraphType.Bar) {
+      this.setState({graphType: GraphType.Line});
+    } else {
+      this.setState({graphType: GraphType.Bar});
+    }
+  }
+
   render() {
     let {activeAssay, lockedAssays, mode, organisms} = this.props;
     let {displaySubstances} = this.state;
+    let graph = this.state.graphType === GraphType.Line ? (
+      <AssayLineGraph
+        organisms={organisms}
+        activeAssay={activeAssay}
+        lockedAssays={lockedAssays}
+        displaySubstances={displaySubstances}
+        colors={defaultColors}
+      />) : (
+      <AssayBarChart
+        organisms={organisms}
+        activeAssay={activeAssay}
+        lockedAssays={lockedAssays}
+        displaySubstances={displaySubstances}
+        colors={defaultColors}
+      />);
     
     return (
       <div className="chart">
-        <AssayLineGraph
-          organisms={organisms}
-          activeAssay={activeAssay}
-          lockedAssays={lockedAssays}
-          displaySubstances={displaySubstances}
-          colors={defaultColors}
-        />
+        {graph}
         <div className="chart-buttons">
           <RaisedButton 
             label={'Add assay'}
@@ -67,6 +92,13 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             label={'Clear assays'}
             disabled={!(mode === Mode.Normal)}
             onClick={this.props.onAssayClear}
+            style={{width: '150px', margin: '5px'}}
+            primary={true}
+          />
+          <RaisedButton 
+            label={'Switch graph'}
+            disabled={mode !== Mode.Normal}
+            onClick={this.onGraphSwitch}
             style={{width: '150px', margin: '5px'}}
             primary={true}
           />

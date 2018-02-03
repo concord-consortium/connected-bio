@@ -147,7 +147,8 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         xAxes: [{
           display: false,
           ticks: {
-            min: 0
+            min: 0,
+            max: MAX_STORED_STATES
           }
         }]
       },
