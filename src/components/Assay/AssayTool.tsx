@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { RaisedButton, Checkbox } from 'material-ui';
+import ClockIcon from 'material-ui/svg-icons/action/alarm-on';
+import NoClockIcon from 'material-ui/svg-icons/action/alarm-off';
 import { Mode, Substance } from '../../Types';
 import Organism, { OrganelleInfo } from '../../models/Organism';
 import AssayLineGraph from './AssayLineGraph';
@@ -96,11 +98,12 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             primary={true}
           />
           <RaisedButton 
-            label={'Switch graph'}
             disabled={mode !== Mode.Normal}
             onClick={this.onGraphSwitch}
             style={{width: '150px', margin: '5px'}}
             primary={true}
+            labelPosition="before"
+            icon={this.state.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
           />
         </div>
         <div className="chart-boxes">
