@@ -69,6 +69,7 @@ class App extends React.Component<AppProps, AppState> {
     this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
     this.changeSubstanceLevel = this.changeSubstanceLevel.bind(this);
     this.simulationTick = this.simulationTick.bind(this);
+    this.forceDropper = this.forceDropper.bind(this);
   }
 
   componentDidMount() {
@@ -205,10 +206,25 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
+  forceDropper(e: any) {
+    // Force the cell view cursor from default to dropper
+    if (e.target.className.indexOf('upper-canvas') > -1) {
+      if (this.isModeDropper(this.state.mode)) {
+        e.target.style.cursor = 'url(assets/dropper.png) 6 28, auto';
+      } else {
+        e.target.style.cursor = 'default';
+      }
+    }
+  }
+
+  isModeDropper(mode: Mode) {
+    return mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract;
+  }
+
   render() {
     return (
       <MuiThemeProvider>
-        <div className="App">
+        <div className={'App' + (this.isModeDropper(this.state.mode) ? ' dropper' : '')}>
           <header className="App-header">
             <h1 className="App-title">Connected Bio</h1>
           </header>
@@ -226,7 +242,13 @@ class App extends React.Component<AppProps, AppState> {
                     <option value={View.Cell}>Cell</option>
                   </select>
                 </div>
-                <div className="box">
+                <div 
+                  className="box" 
+                  onClick={this.forceDropper}
+                  onMouseUp={this.forceDropper} 
+                  onMouseDown={this.forceDropper}  
+                  onMouseMove={this.forceDropper}
+                >
                   {this.getBoxView('box1Org', 'box1View')}
                 </div>
               </div>
@@ -242,7 +264,13 @@ class App extends React.Component<AppProps, AppState> {
                     <option value={View.Cell}>Cell</option>
                   </select>
                 </div>
-                <div className="box">
+                <div 
+                  className="box" 
+                  onClick={this.forceDropper}
+                  onMouseUp={this.forceDropper} 
+                  onMouseDown={this.forceDropper}  
+                  onMouseMove={this.forceDropper}
+                >
                   {this.getBoxView('box2Org', 'box2View')}
                 </div>
               </div>

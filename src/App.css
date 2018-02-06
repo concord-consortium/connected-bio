@@ -17,6 +17,11 @@
   flex-direction: column;
   align-items: center;
   min-width: 1550px;
+  cursor: default;
+}
+
+.App.dropper {
+  cursor: url("assets/dropper.png") 6 28, auto;
 }
 
 .four-up {
