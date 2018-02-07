@@ -20,6 +20,8 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
     let substanceLevels = organism.getSubstanceLevels();
     let substanceDeltas = organism.getSubstanceDeltas();
     let bars = [];
+    
+    let barColor = this.props.colors[barNum % this.props.colors.length];
     bars.push({
       data: activeSubstances.map(function(substance: Substance) {
               let substanceLevel = substanceLevels[assayInfo.cellPart][substance];
@@ -31,7 +33,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
               return substanceLevel;
             }),
       label: organism.getName() + ' ' + assayInfo.cellPart.toLowerCase(),
-      backgroundColor: this.props.colors[barNum % this.props.colors.length],
+      backgroundColor: barColor,
       stack: 'Stack ' + barNum
     });
 
@@ -49,7 +51,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
               return Math.max(0, substanceDeltas[assayInfo.cellPart][substance] * -1);
             }),
       label: organism.getName() + ' ' + assayInfo.cellPart + ' SUBTRACTED#',
-      backgroundColor: 'red',
+      backgroundColor: barColor + '77',
       stack: 'Stack ' + barNum
     });
     return bars;
