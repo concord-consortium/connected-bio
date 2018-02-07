@@ -152,6 +152,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
           }
         }]
       },
+      elements: { point: { radius: 0 } },
       showLines: true
     };
     return (
