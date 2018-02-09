@@ -5,7 +5,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import { Substance, Mode } from '../../Types';
 
 interface SubstanceManipulatorProps {
-  mode: Mode;
+  mode: string;
   onSubstanceManipulatorToggle(manipulationMode: Mode, substance: Substance, amount: number): void;
 }
 

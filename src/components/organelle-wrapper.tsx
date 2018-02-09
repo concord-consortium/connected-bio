@@ -10,7 +10,7 @@ interface OrganelleWrapperProps {
   doAddHormone: boolean;
   addEnzyme: boolean;
   currentView: any;
-  mode: Mode;
+  mode: string;
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
   organism: Organism;

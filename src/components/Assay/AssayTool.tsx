@@ -12,7 +12,7 @@ interface AssayToolProps {
   organisms: {[name: string]: Organism};
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
-  mode: Mode;
+  mode: string;
   onAssayToggle(): void;
   onAssayClear(): void;
 }

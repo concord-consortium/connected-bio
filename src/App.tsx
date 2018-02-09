@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { Mode, View, Substance } from './Types';
 import Organism, { OrganelleInfo } from './models/Organism';
 import Mouse, { MouseType } from './models/Mouse';
 import { isEqual } from 'lodash';
+import { rootStore } from './models/RootStore';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import AssayTool from './components/Assay/AssayTool';
@@ -20,7 +22,6 @@ interface AppState {
   modelProperties: ModelProperties;
   activeAssay: OrganelleInfo;
   lockedAssays: OrganelleInfo[];
-  mode: Mode;
   modeParams: any;
   organisms: {[name: string]: Organism};
 }
@@ -34,6 +35,7 @@ interface ModelProperties {
   open_gates: boolean;
 }
 
+@observer
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
@@ -56,7 +58,6 @@ class App extends React.Component<AppProps, AppState> {
       addEnzyme: false,
       activeAssay: null,
       lockedAssays: [],
-      mode: Mode.Normal,
       modeParams: {},
       organisms
     };
@@ -141,8 +142,8 @@ class App extends React.Component<AppProps, AppState> {
   // }
 
   handleAssayToggle() {
-    if (this.state.mode === Mode.Assay) {
-      this.setState({mode: Mode.Normal});
+    if (rootStore.mode === Mode.Assay) {
+      rootStore.setMode(Mode.Normal);
       // Lock an assay after it is finished, if one exists
       let { activeAssay } = this.state;
       if (activeAssay) {
@@ -158,7 +159,7 @@ class App extends React.Component<AppProps, AppState> {
       }
       this.setState({activeAssay: null});
     } else {
-      this.setState({mode: Mode.Assay});
+      rootStore.setMode(Mode.Assay);
     }
   }
 
@@ -168,13 +169,13 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleSubstanceManipulatorToggle(manipulationMode: Mode, substance: Substance, amount: number) {
-    if (this.state.mode === Mode.Normal) {
+    if (rootStore.mode === Mode.Normal) {
       this.setState({
-        mode: manipulationMode,
         modeParams: {substance, amount}
       });
+      rootStore.setMode(manipulationMode);
     } else {
-      this.setState({mode: Mode.Normal});
+      rootStore.setMode(Mode.Normal);
     }
   }
 
@@ -196,7 +197,7 @@ class App extends React.Component<AppProps, AppState> {
           addEnzyme={this.state.addEnzyme}
           setActiveAssay={this.setActiveAssay}
           currentView={view}
-          mode={this.state.mode}
+          mode={rootStore.mode}
           organism={org}
           activeAssay={this.state.activeAssay}
           lockedAssays={this.state.lockedAssays}
@@ -209,7 +210,7 @@ class App extends React.Component<AppProps, AppState> {
   forceDropper(e: any) {
     // Force the cell view cursor from default to dropper
     if (e.target.className.indexOf('upper-canvas') > -1) {
-      if (this.isModeDropper(this.state.mode)) {
+      if (this.isModeDropper(rootStore.mode)) {
         e.target.style.cursor = 'url(assets/dropper.png) 6 28, auto';
       } else {
         e.target.style.cursor = 'default';
@@ -217,14 +218,14 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  isModeDropper(mode: Mode) {
+  isModeDropper(mode: string) {
     return mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract;
   }
 
   render() {
     return (
       <MuiThemeProvider>
-        <div className={'App' + (this.isModeDropper(this.state.mode) ? ' dropper' : '')}>
+        <div className={'App' + (this.isModeDropper(rootStore.mode) ? ' dropper' : '')}>
           <header className="App-header">
             <h1 className="App-title">Connected Bio</h1>
           </header>
@@ -280,12 +281,12 @@ class App extends React.Component<AppProps, AppState> {
                 organisms={this.state.organisms}
                 activeAssay={this.state.activeAssay} 
                 lockedAssays={this.state.lockedAssays}
-                mode={this.state.mode} 
+                mode={rootStore.mode} 
                 onAssayToggle={this.handleAssayToggle}
                 onAssayClear={this.handleAssayClear}
               />
               <SubstanceManipulator 
-                mode={this.state.mode} 
+                mode={rootStore.mode} 
                 onSubstanceManipulatorToggle={this.handleSubstanceManipulatorToggle}
               />
             </div>
