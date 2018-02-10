@@ -1,17 +1,47 @@
 import { types } from 'mobx-state-tree';
 import { Mode } from '../Types';
+import { Organism, OrganelleInfo, IOrganelleInfo, FieldMouse, ForestMouse } from './Organism';
 
 const RootStore = types
   .model('RootStore', {
-    mode: types.enumeration('Mode', Object.keys(Mode).map(key => Mode[key]))
+    mode: types.enumeration('Mode', Object.keys(Mode).map(key => Mode[key])),
+    organisms: types.map(Organism),
+    activeAssay: types.maybe(OrganelleInfo),
+    lockedAssays: types.optional(types.array(OrganelleInfo), []),
+    time: types.optional(types.number, 0)
   })
-  .actions(self => {
-    function setMode(newMode: string) {
+  .actions(self => ({
+    setMode(newMode: string) {
       self.mode = newMode;
-    }
+    },
 
-    return {
-      setMode
-    };
-  });
-export const rootStore = RootStore.create({mode: Mode.Normal});
+    setActiveAssay(assayOrganelle: IOrganelleInfo) {
+      self.activeAssay = assayOrganelle;
+    },
+
+    setLockedAssays(assayOrganelles: any) {
+      self.lockedAssays = assayOrganelles;
+    },
+
+    step(msPassed: number) {
+      self.organisms.keys().forEach(orgKey => {
+        let organism = self.organisms.get(orgKey);
+        organism.organelles.keys().forEach(organelleKey => {
+          let organelle = organism.organelles.get(organelleKey);
+          organelle.substanceDeltas.keys().forEach(substanceKey => {
+            organelle.substanceDeltas.get(substanceKey).step(msPassed);
+          });
+        });
+      });
+
+      self.time += msPassed;
+    }
+  }));
+
+export const rootStore = RootStore.create({
+  mode: Mode.Normal,
+  organisms: {
+    'Field Mouse': FieldMouse,
+    'Forest Mouse': ForestMouse
+  }
+});

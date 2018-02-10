@@ -1,23 +1,25 @@
 import * as React from 'react';
+import { clone } from 'mobx-state-tree';
 import { Scatter } from 'react-chartjs-2';
-import { Substance } from '../../Types';
-import Organism, { OrganelleInfo } from '../../models/Organism';
+import { SubstanceType } from '../../Types';
+import { IOrganelleInfo } from '../../models/Organism';
 import { isEqual } from 'lodash';
+import { rootStore } from '../../models/RootStore';
+import { observer } from 'mobx-react';
 
 interface AssayLineProps {
-  organisms: {[name: string]: Organism};
-  activeAssay: OrganelleInfo;
-  lockedAssays: OrganelleInfo[];
-  displaySubstances: { [substance in Substance]: boolean};
+  displaySubstances: { [substance in SubstanceType]: boolean};
   colors: string[];
+  time: number;
 }
 
 interface AssayLineState {
-  organismsOverTime: {[name: string]: Organism}[];
+  organismsOverTime: any[];
 }
 
 const MAX_STORED_STATES = 100;
 
+@observer
 class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
   constructor(props: any) {
     super(props);
@@ -27,69 +29,31 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
   }
 
   componentWillReceiveProps(nextProps: AssayLineProps) {
-    let nextOrganisms = this.state.organismsOverTime.slice(0);
-    nextOrganisms.push(nextProps.organisms);
-    if (nextOrganisms.length > MAX_STORED_STATES) {
-      nextOrganisms.splice(0, 1);
+    if (this.props.time < nextProps.time) {
+      let nextOrganisms = this.state.organismsOverTime.slice(0);
+      nextOrganisms.push(clone(rootStore.organisms));
+      if (nextOrganisms.length > MAX_STORED_STATES) {
+        nextOrganisms.splice(0, 1);
+      }
+      this.setState({
+        organismsOverTime: nextOrganisms
+      });
     }
-    this.setState({
-      organismsOverTime: nextOrganisms
-    });
   }
 
-  createBar(activeSubstances: string[], assayInfo: OrganelleInfo, barNum: number) {
-    let organism = this.props.organisms[assayInfo.organism.getName()];
-    let substanceLevels = organism.getSubstanceLevels();
-    let substanceDeltas = organism.getSubstanceDeltas();
-    let bars = [];
-    bars.push({
-      data: activeSubstances.map(function(substance: Substance) {
-              let substanceLevel = substanceLevels[assayInfo.cellPart][substance];
-              let deltaLevel = substanceDeltas[assayInfo.cellPart][substance];
-              // Shorten any bars with substance removed so total bar length is unchanged
-              if (deltaLevel < 0) {
-                substanceLevel += deltaLevel;
-              }
-              return substanceLevel;
-            }),
-      label: organism.getName() + ' ' + assayInfo.cellPart.toLowerCase(),
-      backgroundColor: this.props.colors[barNum % this.props.colors.length],
-      stack: 'Stack ' + barNum
-    });
-
-    bars.push({
-      data: activeSubstances.map(function(substance: Substance) {
-              return Math.max(0, substanceDeltas[assayInfo.cellPart][substance]);
-            }),
-      label: organism.getName() + ' ' + assayInfo.cellPart + ' ADDED#',
-      backgroundColor: 'green',
-      stack: 'Stack ' + barNum
-    });
-
-    bars.push({
-      data: activeSubstances.map(function(substance: Substance) {
-              return Math.max(0, substanceDeltas[assayInfo.cellPart][substance] * -1);
-            }),
-      label: organism.getName() + ' ' + assayInfo.cellPart + ' SUBTRACTED#',
-      backgroundColor: 'red',
-      stack: 'Stack ' + barNum
-    });
-    return bars;
-  }
-
-  createLine(activeSubstance: string, assayInfo: OrganelleInfo, lineNum: number) {
+  createLine(activeSubstance: string, assayInfo: IOrganelleInfo, lineNum: number) {
     let data = this.state.organismsOverTime.map((organisms, index) => {
-      let organism = organisms[assayInfo.organism.getName()];
-      let substanceLevels = organism.getSubstanceLevels();
-      let substanceDeltas = organism.getSubstanceDeltas();
+      let organism = organisms.get(assayInfo.organism.id);
+      let substanceLevel = organism.getLevelForOrganelleSubstance(assayInfo.organelle, activeSubstance);
+      let substanceDelta = organism.getDeltaForOrganelleSubstance(assayInfo.organelle, activeSubstance);
       return {
         x: index,
-        y: substanceLevels[assayInfo.cellPart][activeSubstance] + substanceDeltas[assayInfo.cellPart][activeSubstance]
+        y: substanceLevel + substanceDelta
       };
     });
     return {
       data,
-      label: assayInfo.organism.getName() + ' ' + assayInfo.cellPart.toLowerCase() + ' ' 
+      label: assayInfo.organism.id + ' ' + assayInfo.organelle.toLowerCase() + ' ' 
         + activeSubstance.toLowerCase(),
       borderWidth: 3,
       backgroundColor: this.props.colors[lineNum],
@@ -100,7 +64,8 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
   }
 
   render() {
-    let {activeAssay, lockedAssays, displaySubstances} = this.props;
+    let {displaySubstances} = this.props;
+    let {activeAssay, lockedAssays} = rootStore;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
 
     let data: any = {
@@ -130,7 +95,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
     let options: any = {
       title: {
         display: true,
-        text: 'Substance Breakdown Over Time',
+        text: 'SubstanceType Breakdown Over Time',
         fontSize: 25
       },
       legend: {

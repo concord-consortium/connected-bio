@@ -13,7 +13,7 @@ export enum CellPart {
   Intercell = 'INTERCELL'
 }
 
-export enum Substance {
+export enum SubstanceType {
   Substance1 = 'Substance 1',
   Substance2 = 'Substance 2',
   Substance3 = 'Substance 3'

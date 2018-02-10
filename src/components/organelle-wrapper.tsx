@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import { CellPart, Mode } from '../Types';
-import Organism, { OrganelleInfo } from '../models/Organism';
+import { IOrganism, IOrganelleInfo, OrganelleInfo } from '../models/Organism';
+import { rootStore } from '../models/RootStore';
 
 declare var Organelle: any;
 
@@ -11,17 +13,15 @@ interface OrganelleWrapperProps {
   addEnzyme: boolean;
   currentView: any;
   mode: string;
-  activeAssay: OrganelleInfo;
-  lockedAssays: OrganelleInfo[];
-  organism: Organism;
-  setActiveAssay(activeAssay: OrganelleInfo): void;
-  changeSubstanceLevel(organelle: OrganelleInfo): void;
+  organism: IOrganism;
+  changeSubstanceLevel(organelle: IOrganelleInfo): void;
 }
 
 interface OrganelleWrapperState {
   hoveredOrganelle: any;
 }
 
+@observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
     model: any;
     organelleSelectorInfo: {[cellPart in CellPart]: any} = {
@@ -209,7 +209,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
   }
 
-  getOpaqueSelector(cellPart: CellPart) {
+  getOpaqueSelector(cellPart: string) {
     return this.organelleSelectorInfo[cellPart].opaqueSelector ?
       this.organelleSelectorInfo[cellPart].opaqueSelector :
       this.organelleSelectorInfo[cellPart].selector;
@@ -224,14 +224,14 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       }
       
       if (mode === Mode.Assay) {
-        this.props.lockedAssays.forEach((lockedAssay) => {
-          if (lockedAssay.organism.getName() === this.props.organism.getName()) {
-            opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.cellPart));
+        rootStore.lockedAssays.forEach((lockedAssay) => {
+          if (lockedAssay.organism.id === this.props.organism.id) {
+            opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.organelle));
           }
         });
-        if (this.props.activeAssay) {
-          if (this.props.activeAssay.organism.getName() === this.props.organism.getName()) {
-            opaqueSelectors.push(this.getOpaqueSelector(this.props.activeAssay.cellPart));
+        if (rootStore.activeAssay) {
+          if (rootStore.activeAssay.organism === this.props.organism) {
+            opaqueSelectors.push(this.getOpaqueSelector(rootStore.activeAssay.organelle));
           }
         }
       }
@@ -257,9 +257,14 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   organelleClick(organelle: CellPart) {
     if (this.props.mode === Mode.Assay) {
-      this.props.setActiveAssay({ organism: this.props.organism, cellPart: organelle });
+      let org = rootStore.organisms.get(this.props.organism.id);
+      let organelleInfo = OrganelleInfo.create({ 
+        organism: org, 
+        organelle 
+      });
+      rootStore.setActiveAssay(organelleInfo);
     } else if (this.props.mode === Mode.Add || this.props.mode === Mode.Subtract) {
-      this.props.changeSubstanceLevel({ organism: this.props.organism, cellPart: organelle });
+      this.props.changeSubstanceLevel(OrganelleInfo.create({ organism: this.props.organism, organelle }));
     }
   }
 

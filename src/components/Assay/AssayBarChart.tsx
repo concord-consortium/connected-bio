@@ -1,56 +1,55 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import { HorizontalBar } from 'react-chartjs-2';
-import { Substance } from '../../Types';
-import Organism, { OrganelleInfo } from '../../models/Organism';
+import { SubstanceType } from '../../Types';
+import { IOrganelleInfo } from '../../models/Organism';
 import { isEqual } from 'lodash';
+import { rootStore } from '../../models/RootStore';
 
 interface AssayBarProps {
-  organisms: {[name: string]: Organism};
-  activeAssay: OrganelleInfo;
-  lockedAssays: OrganelleInfo[];
-  displaySubstances: { [substance in Substance]: boolean};
+  displaySubstances: { [substance in SubstanceType]: boolean};
   colors: string[];
 }
 
 interface AssayBarState {}
 
+@observer
 class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
-  createBar(activeSubstances: string[], assayInfo: OrganelleInfo, barNum: number) {
-    let organism = this.props.organisms[assayInfo.organism.getName()];
-    let substanceLevels = organism.getSubstanceLevels();
-    let substanceDeltas = organism.getSubstanceDeltas();
+  createBar(activeSubstances: string[], assayInfo: IOrganelleInfo, barNum: number) {
+    let organism = rootStore.organisms.get(assayInfo.organism.id);
+    let organelleType = assayInfo.organelle;
     let bars = [];
     
     let barColor = this.props.colors[barNum % this.props.colors.length];
     bars.push({
-      data: activeSubstances.map(function(substance: Substance) {
-              let substanceLevel = substanceLevels[assayInfo.cellPart][substance];
-              let deltaLevel = substanceDeltas[assayInfo.cellPart][substance];
+      data: activeSubstances.map(function(substance: SubstanceType) {
+              let substanceLevel = organism.getLevelForOrganelleSubstance(organelleType, substance);
+              let deltaLevel = organism.getDeltaForOrganelleSubstance(organelleType, substance);
               // Shorten any bars with substance removed so total bar length is unchanged
               if (deltaLevel < 0) {
                 substanceLevel += deltaLevel;
               }
               return substanceLevel;
             }),
-      label: organism.getName() + ' ' + assayInfo.cellPart.toLowerCase(),
+      label: organism.id + ' ' + assayInfo.organelle.toLowerCase(),
       backgroundColor: barColor,
       stack: 'Stack ' + barNum
     });
 
     bars.push({
-      data: activeSubstances.map(function(substance: Substance) {
-              return Math.max(0, substanceDeltas[assayInfo.cellPart][substance]);
+      data: activeSubstances.map(function(substance: SubstanceType) {
+              return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substance));
             }),
-      label: organism.getName() + ' ' + assayInfo.cellPart + ' ADDED#',
+      label: organism.id + ' ' + assayInfo.organelle + ' ADDED#',
       backgroundColor: 'green',
       stack: 'Stack ' + barNum
     });
 
     bars.push({
-      data: activeSubstances.map(function(substance: Substance) {
-              return Math.max(0, substanceDeltas[assayInfo.cellPart][substance] * -1);
+      data: activeSubstances.map(function(substance: SubstanceType) {
+              return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substance) * -1);
             }),
-      label: organism.getName() + ' ' + assayInfo.cellPart + ' SUBTRACTED#',
+      label: organism.id + ' ' + assayInfo.organelle + ' SUBTRACTED#',
       backgroundColor: barColor + '77',
       stack: 'Stack ' + barNum
     });
@@ -58,7 +57,8 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
   }
 
   render() {
-    let {activeAssay, lockedAssays, displaySubstances} = this.props;
+    let {displaySubstances} = this.props;
+    let {activeAssay, lockedAssays} = rootStore;
     let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
 
     let data: Chart.ChartData = {
@@ -80,7 +80,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
     let options: any = {
       title: {
         display: true,
-        text: 'Substance Breakdown',
+        text: 'SubstanceType Breakdown',
         fontSize: 25
       },
       legend: {

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { clone } from 'mobx-state-tree';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { Mode, View, Substance } from './Types';
-import Organism, { OrganelleInfo } from './models/Organism';
-import Mouse, { MouseType } from './models/Mouse';
+import { Mode, View, SubstanceType } from './Types';
+import { IOrganism, IOrganelleInfo } from './models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from './models/RootStore';
 
@@ -20,10 +20,7 @@ interface AppState {
   box2Org: string;
   box2View: View;
   modelProperties: ModelProperties;
-  activeAssay: OrganelleInfo;
-  lockedAssays: OrganelleInfo[];
   modeParams: any;
-  organisms: {[name: string]: Organism};
 }
 
 interface AppProps { }
@@ -35,14 +32,12 @@ interface ModelProperties {
   open_gates: boolean;
 }
 
+const STEP_MS = 100;
+
 @observer
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
-    let organisms = {
-      'Field Mouse': new Mouse('Field Mouse', MouseType.Field),
-      'Forest Mouse': new Mouse('Forest Mouse', MouseType.Forest)
-    };
     this.state = {
       addHormone: false,
       box1View: View.Cell,
@@ -56,15 +51,9 @@ class App extends React.Component<AppProps, AppState> {
         open_gates: false
       },
       addEnzyme: false,
-      activeAssay: null,
-      lockedAssays: [],
-      modeParams: {},
-      organisms
+      modeParams: {}
     };
-    this.setActiveAssay = this.setActiveAssay.bind(this);
     this.handleViewChange = this.handleViewChange.bind(this);
-    this.handleHormoneClick = this.handleHormoneClick.bind(this);
-    // this.handleEnzymeClick = this.handleEnzymeClick.bind(this);
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
@@ -78,97 +67,46 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   simulationTick(msPassed: number) {
-    let { organisms } = this.state;
-    let updatedOrgs = Object.keys(organisms)
-      .map(key => organisms[key])
-      .map(org => org.step(100))
-      .reduce((orgs: object, org: Organism) => {
-        orgs[org.getName()] = org;
-        return orgs;
-      },      {});
-    this.setState({organisms: updatedOrgs});
-
-    setTimeout(this.simulationTick, 100);
+    rootStore.step(msPassed);
+    setTimeout(this.simulationTick.bind(this, STEP_MS), STEP_MS);
   }
 
-  setActiveAssay(activeAssay: OrganelleInfo) {
-    this.setState({ activeAssay });
-  }
-
-  changeSubstanceLevel(organelle: OrganelleInfo) {
+  changeSubstanceLevel(organelleRef: IOrganelleInfo) {
     let {substance, amount} = this.state.modeParams;
-    let organisms = Object.assign({}, this.state.organisms);
-    organisms[organelle.organism.getName()] = 
-      organelle.organism.incrementSubstanceLevel(organelle.cellPart, substance, amount);
-    this.setState({ organisms });
+    rootStore.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
+      organelleRef.organelle, substance, amount);
   }
 
   handleViewChange(event: any) {
     this.setState({ [event.target.id]: event.target.value });
   }
 
-  handleHormoneClick() {
-    this.setState({addHormone: true});
-    setTimeout(() => this.setState({addHormone: false}), 500);
-  }
-
-  // handleEnzymeClick() {
-  //   let newSubstances = Object.assign({}, this.state.substanceLevels);
-  //   newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 60;
-  //   this.setState({
-  //     addEnzyme: true,
-  //     modelProperties: {
-  //       albino: false,
-  //       working_tyr1: true,
-  //       working_myosin_5a: true,
-  //       open_gates: false
-  //     },
-  //     substanceLevels: newSubstances
-  //   });
-  //   setTimeout(() => {
-  //     newSubstances = Object.assign({}, this.state.substanceLevels);
-  //     newSubstances[CellPart.Cytoplasm][Substance.Substance3] = 30;
-  //     this.setState({
-  //       addEnzyme: false,
-  //       modelProperties: {
-  //         albino: false,
-  //         working_tyr1: false,
-  //         working_myosin_5a: true,
-  //         open_gates: false
-  //       },
-  //       substanceLevels: newSubstances
-  //     });
-  //   },         4000);
-  // }
-
   handleAssayToggle() {
     if (rootStore.mode === Mode.Assay) {
       rootStore.setMode(Mode.Normal);
       // Lock an assay after it is finished, if one exists
-      let { activeAssay } = this.state;
+      let { activeAssay } = rootStore;
       if (activeAssay) {
-        let repeatAssay = this.state.lockedAssays
-          .reduce((accumulator: boolean, assay: OrganelleInfo) => {
+        let repeatAssay = rootStore.lockedAssays
+          .reduce((accumulator: boolean, assay: IOrganelleInfo) => {
             return accumulator || isEqual(assay, activeAssay);
           },      false);
         if (!repeatAssay) {
-          this.setState({
-            lockedAssays: this.state.lockedAssays.concat([activeAssay])
-          });
+          rootStore.setLockedAssays(rootStore.lockedAssays.concat([clone(activeAssay)]));
         }
       }
-      this.setState({activeAssay: null});
+      rootStore.setActiveAssay(null);
     } else {
       rootStore.setMode(Mode.Assay);
     }
   }
 
   handleAssayClear() {
-    this.setState({ activeAssay: null});
-    this.setState({ lockedAssays: [] });
+    rootStore.setActiveAssay(null);
+    rootStore.setLockedAssays([]);
   }
 
-  handleSubstanceManipulatorToggle(manipulationMode: Mode, substance: Substance, amount: number) {
+  handleSubstanceManipulatorToggle(manipulationMode: Mode, substance: SubstanceType, amount: number) {
     if (rootStore.mode === Mode.Normal) {
       this.setState({
         modeParams: {substance, amount}
@@ -180,7 +118,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   getBoxView(boxOrg: string, boxView: string) {
-    const org: Organism = this.state.organisms[this.state[boxOrg]];
+    const org: IOrganism = rootStore.organisms.get(this.state[boxOrg]);
     const view: View = this.state[boxView];
 
     if (view === View.None) {
@@ -195,12 +133,9 @@ class App extends React.Component<AppProps, AppState> {
           modelProperties={this.state.modelProperties} 
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
-          setActiveAssay={this.setActiveAssay}
           currentView={view}
           mode={rootStore.mode}
           organism={org}
-          activeAssay={this.state.activeAssay}
-          lockedAssays={this.state.lockedAssays}
           changeSubstanceLevel={this.changeSubstanceLevel}
         />
       );
@@ -278,15 +213,10 @@ class App extends React.Component<AppProps, AppState> {
             </div>
             <div className="tools">
               <AssayTool 
-                organisms={this.state.organisms}
-                activeAssay={this.state.activeAssay} 
-                lockedAssays={this.state.lockedAssays}
-                mode={rootStore.mode} 
                 onAssayToggle={this.handleAssayToggle}
                 onAssayClear={this.handleAssayClear}
               />
               <SubstanceManipulator 
-                mode={rootStore.mode} 
                 onSubstanceManipulatorToggle={this.handleSubstanceManipulatorToggle}
               />
             </div>
