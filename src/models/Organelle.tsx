@@ -1,11 +1,11 @@
 import { types } from 'mobx-state-tree';
-import { CellPart } from '../Types';
+import { OrganelleType } from '../Types';
 import { Substance } from './Substance';
 import { SubstanceType } from '../Types';
 
 export const Organelle = types
   .model('Organelle', {
-    type: types.enumeration('OrganelleType', Object.keys(CellPart).map(key => CellPart[key])),
+    type: types.enumeration('OrganelleType', Object.keys(OrganelleType).map(key => OrganelleType[key])),
     substanceLevels: types.optional(types.map(Substance), {}),
     substanceDeltas: types.optional(types.map(Substance), {})
   })

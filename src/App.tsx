@@ -4,7 +4,7 @@ import { clone } from 'mobx-state-tree';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { Mode, View, SubstanceType } from './Types';
-import { IOrganism, IOrganelleInfo } from './models/Organism';
+import { IOrganism, IOrganelleRef } from './models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from './models/RootStore';
 
@@ -55,10 +55,10 @@ class App extends React.Component<AppProps, AppState> {
     setTimeout(this.simulationTick.bind(this, STEP_MS), STEP_MS);
   }
 
-  changeSubstanceLevel(organelleRef: IOrganelleInfo) {
+  changeSubstanceLevel(organelleRef: IOrganelleRef) {
     let {substanceType, amount} = rootStore.activeSubstanceManipulation;
     rootStore.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-      organelleRef.organelle, substanceType, amount);
+      organelleRef.organelleType, substanceType, amount);
   }
 
   handleViewChange(event: any) {
@@ -72,7 +72,7 @@ class App extends React.Component<AppProps, AppState> {
       let { activeAssay } = rootStore;
       if (activeAssay) {
         let repeatAssay = rootStore.lockedAssays
-          .reduce((accumulator: boolean, assay: IOrganelleInfo) => {
+          .reduce((accumulator: boolean, assay: IOrganelleRef) => {
             return accumulator || isEqual(assay, activeAssay);
           },      false);
         if (!repeatAssay) {

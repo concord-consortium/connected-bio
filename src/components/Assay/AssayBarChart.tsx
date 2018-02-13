@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { HorizontalBar } from 'react-chartjs-2';
 import { SubstanceType } from '../../Types';
-import { IOrganelleInfo } from '../../models/Organism';
+import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from '../../models/RootStore';
 
@@ -15,9 +15,9 @@ interface AssayBarState {}
 
 @observer
 class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
-  createBar(activeSubstances: string[], assayInfo: IOrganelleInfo, barNum: number) {
+  createBar(activeSubstances: string[], assayInfo: IOrganelleRef, barNum: number) {
     let organism = rootStore.organisms.get(assayInfo.organism.id);
-    let organelleType = assayInfo.organelle;
+    let organelleType = assayInfo.organelleType;
     let bars = [];
     
     let barColor = this.props.colors[barNum % this.props.colors.length];
@@ -31,7 +31,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
               }
               return substanceLevel;
             }),
-      label: organism.id + ' ' + assayInfo.organelle.toLowerCase(),
+      label: organism.id + ' ' + assayInfo.organelleType.toLowerCase(),
       backgroundColor: barColor,
       stack: 'Stack ' + barNum
     });
@@ -40,7 +40,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
       data: activeSubstances.map(function(substance: SubstanceType) {
               return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substance));
             }),
-      label: organism.id + ' ' + assayInfo.organelle + ' ADDED#',
+      label: organism.id + ' ' + assayInfo.organelleType + ' ADDED#',
       backgroundColor: 'green',
       stack: 'Stack ' + barNum
     });
@@ -49,7 +49,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
       data: activeSubstances.map(function(substance: SubstanceType) {
               return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substance) * -1);
             }),
-      label: organism.id + ' ' + assayInfo.organelle + ' SUBTRACTED#',
+      label: organism.id + ' ' + assayInfo.organelleType + ' SUBTRACTED#',
       backgroundColor: barColor + '77',
       stack: 'Stack ' + barNum
     });

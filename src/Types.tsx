@@ -5,7 +5,7 @@ export enum Mode {
   Subtract = 'SUBTRACT'
 }
 
-export enum CellPart {
+export enum OrganelleType {
   Nucleus = 'NUCLEUS',
   Cytoplasm = 'CYTOPLASM',
   Golgi = 'GOLGI',

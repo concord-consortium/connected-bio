@@ -2,7 +2,7 @@ import * as React from 'react';
 import { clone } from 'mobx-state-tree';
 import { Scatter } from 'react-chartjs-2';
 import { SubstanceType } from '../../Types';
-import { IOrganelleInfo } from '../../models/Organism';
+import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from '../../models/RootStore';
 import { observer } from 'mobx-react';
@@ -41,11 +41,11 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
     }
   }
 
-  createLine(activeSubstance: string, assayInfo: IOrganelleInfo, lineNum: number) {
+  createLine(activeSubstance: string, assayInfo: IOrganelleRef, lineNum: number) {
     let data = this.state.organismsOverTime.map((organisms, index) => {
       let organism = organisms.get(assayInfo.organism.id);
-      let substanceLevel = organism.getLevelForOrganelleSubstance(assayInfo.organelle, activeSubstance);
-      let substanceDelta = organism.getDeltaForOrganelleSubstance(assayInfo.organelle, activeSubstance);
+      let substanceLevel = organism.getLevelForOrganelleSubstance(assayInfo.organelleType, activeSubstance);
+      let substanceDelta = organism.getDeltaForOrganelleSubstance(assayInfo.organelleType, activeSubstance);
       return {
         x: index,
         y: substanceLevel + substanceDelta
@@ -53,7 +53,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
     });
     return {
       data,
-      label: assayInfo.organism.id + ' ' + assayInfo.organelle.toLowerCase() + ' ' 
+      label: assayInfo.organism.id + ' ' + assayInfo.organelleType.toLowerCase() + ' ' 
         + activeSubstance.toLowerCase(),
       borderWidth: 3,
       backgroundColor: this.props.colors[lineNum],

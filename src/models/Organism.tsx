@@ -1,5 +1,5 @@
 import { types } from 'mobx-state-tree';
-import { SubstanceType, CellPart } from '../Types';
+import { SubstanceType, OrganelleType } from '../Types';
 import { v4 as uuid } from 'uuid';
 import { Organelle } from './Organelle';
 
@@ -42,18 +42,18 @@ export const Organism = types
   }));
 export type IOrganism = typeof Organism.Type;
 
-export const OrganelleInfo = types
+export const OrganelleRef = types
   .model('OrganelleRef', {
     organism: types.reference(Organism),
-    organelle: types.enumeration('OrganelleType', Object.keys(CellPart).map(key => CellPart[key]))
+    organelleType: types.enumeration('OrganelleType', Object.keys(OrganelleType).map(key => OrganelleType[key]))
   });
-export type IOrganelleInfo = typeof OrganelleInfo.Type;
+export type IOrganelleRef = typeof OrganelleRef.Type;
 
 export const FieldMouse = Organism.create({
   id: 'Field Mouse',
   organelles: {
-    [CellPart.Nucleus]: {
-      type: CellPart.Nucleus,
+    [OrganelleType.Nucleus]: {
+      type: OrganelleType.Nucleus,
       substanceLevels: {
         [SubstanceType.Substance1] : {
           type: SubstanceType.Substance1,
@@ -69,8 +69,8 @@ export const FieldMouse = Organism.create({
         },
       }
     },
-    [CellPart.Cytoplasm]: {
-      type: CellPart.Cytoplasm,
+    [OrganelleType.Cytoplasm]: {
+      type: OrganelleType.Cytoplasm,
       substanceLevels: {
         [SubstanceType.Substance1] : {
           type: SubstanceType.Substance1,
@@ -92,8 +92,8 @@ export const FieldMouse = Organism.create({
 export const ForestMouse = Organism.create({
   id: 'Forest Mouse',
   organelles: {
-    [CellPart.Nucleus]: {
-      type: CellPart.Nucleus,
+    [OrganelleType.Nucleus]: {
+      type: OrganelleType.Nucleus,
       substanceLevels: {
         [SubstanceType.Substance1] : {
           type: SubstanceType.Substance1,
