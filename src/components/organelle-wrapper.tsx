@@ -8,7 +8,6 @@ declare var Organelle: any;
 
 interface OrganelleWrapperProps {
   name: string;
-  modelProperties: any;
   doAddHormone: boolean;
   addEnzyme: boolean;
   currentView: any;
@@ -54,7 +53,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   componentDidMount() {
-    const {modelProperties} = this.props;
+    const {modelProperties} = this.props.organism;
 
     Organelle.createModel({
       container: {
@@ -277,9 +276,9 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   componentWillReceiveProps(nextProps: any) {
-    if (this.model && nextProps.modelProperties) {
-      Object.keys(nextProps.modelProperties).forEach((key) => {
-        this.model.world.setProperty(key, nextProps.modelProperties[key]);
+    if (this.model && nextProps.organism.modelProperties) {
+      Object.keys(nextProps.organism.modelProperties).forEach((key) => {
+        this.model.world.setProperty(key, nextProps.organism.modelProperties[key]);
       });
     }
 

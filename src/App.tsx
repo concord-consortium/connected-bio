@@ -19,17 +19,9 @@ interface AppState {
   box1View: View;
   box2Org: string;
   box2View: View;
-  modelProperties: ModelProperties;
 }
 
 interface AppProps { }
-
-interface ModelProperties {
-  albino: boolean;
-  working_tyr1: boolean;
-  working_myosin_5a: boolean;
-  open_gates: boolean;
-}
 
 const STEP_MS = 100;
 
@@ -43,12 +35,6 @@ class App extends React.Component<AppProps, AppState> {
       box1Org: 'Field Mouse',
       box2View: View.Organism,
       box2Org: 'Forest Mouse',
-      modelProperties: {
-        albino: false,
-        working_tyr1: false,
-        working_myosin_5a: true,
-        open_gates: false
-      },
       addEnzyme: false
     };
     this.handleViewChange = this.handleViewChange.bind(this);
@@ -126,7 +112,6 @@ class App extends React.Component<AppProps, AppState> {
       return (
         <OrganelleWrapper 
           name={boxOrg + '-' + boxView + '-model'}
-          modelProperties={this.state.modelProperties} 
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
           currentView={view}

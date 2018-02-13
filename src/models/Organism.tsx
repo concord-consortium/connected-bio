@@ -3,10 +3,19 @@ import { SubstanceType, CellPart } from '../Types';
 import { v4 as uuid } from 'uuid';
 import { Organelle } from './Organelle';
 
+export const ModelProperties = types
+  .model('ModelProperties', {
+    albino: types.optional(types.boolean, false),
+    working_tyr1: types.optional(types.boolean, false),
+    working_myosin_5a: types.optional(types.boolean, true),
+    open_gates: types.optional(types.boolean, false)
+  });
+
 export const Organism = types
   .model('Organism', {
     id: types.optional(types.identifier(types.string), () => uuid()),
-    organelles: types.map(Organelle)
+    organelles: types.map(Organelle),
+    modelProperties: types.optional(ModelProperties, () => ModelProperties.create())
   })
   .views(self => ({
     getImageSrc() {
