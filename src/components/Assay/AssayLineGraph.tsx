@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { clone } from 'mobx-state-tree';
 import { Scatter } from 'react-chartjs-2';
-import { SubstanceType } from '../../Types';
+import { SubstanceType } from '../../models/Substance';
 import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from '../../models/RootStore';

@@ -3,11 +3,11 @@ import { observer } from 'mobx-react';
 import { RaisedButton, Checkbox } from 'material-ui';
 import ClockIcon from 'material-ui/svg-icons/action/alarm-on';
 import NoClockIcon from 'material-ui/svg-icons/action/alarm-off';
-import { Mode, SubstanceType } from '../../Types';
+import { SubstanceType } from '../../models/Substance';
 import AssayLineGraph from './AssayLineGraph';
 import './AssayTool.css';
 import AssayBarChart from './AssayBarChart';
-import { rootStore } from '../../models/RootStore';
+import { rootStore, Mode } from '../../models/RootStore';
 
 interface AssayToolProps {
   onAssayToggle(): void;

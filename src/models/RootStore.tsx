@@ -1,7 +1,13 @@
 import { types } from 'mobx-state-tree';
-import { Mode, SubstanceType } from '../Types';
 import { Organism, OrganelleRef, IOrganelleRef, FieldMouse, ForestMouse } from './Organism';
-import { Substance } from './Substance';
+import { Substance, SubstanceType } from './Substance';
+
+export enum Mode {
+  Normal = 'NORMAL',
+  Assay = 'ASSAY',
+  Add = 'ADD',
+  Subtract = 'SUBTRACT'
+}
 
 const RootStore = types
   .model('RootStore', {

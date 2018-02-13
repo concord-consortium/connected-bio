@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { OrganelleType, Mode } from '../Types';
 import { IOrganism, IOrganelleRef, OrganelleRef } from '../models/Organism';
-import { rootStore } from '../models/RootStore';
+import { OrganelleType } from '../models/Organelle';
+import { rootStore, Mode } from '../models/RootStore';
 
 declare var Organelle: any;
 

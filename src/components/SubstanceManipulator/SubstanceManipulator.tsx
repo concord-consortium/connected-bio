@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import './SubstanceManipulator.css';
 import { RaisedButton } from 'material-ui';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
-import { SubstanceType, Mode } from '../../Types';
-import { rootStore } from '../../models/RootStore';
+import { SubstanceType } from '../../models/Substance';
+import { rootStore, Mode } from '../../models/RootStore';
 
 interface SubstanceManipulatorProps {
   onSubstanceManipulatorToggle(manipulationMode: Mode, substance: SubstanceType, amount: number): void;

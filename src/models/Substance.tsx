@@ -1,7 +1,12 @@
 import { types } from 'mobx-state-tree';
-import { SubstanceType } from '../Types';
 
 const HALF_LIFE_MS: number = 1000;
+
+export enum SubstanceType {
+  Substance1 = 'Substance 1',
+  Substance2 = 'Substance 2',
+  Substance3 = 'Substance 3'
+}
 
 export const Substance = types
   .model('Substance', {

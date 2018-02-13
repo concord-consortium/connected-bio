@@ -1,7 +1,13 @@
 import { types } from 'mobx-state-tree';
-import { OrganelleType } from '../Types';
-import { Substance } from './Substance';
-import { SubstanceType } from '../Types';
+import { Substance, SubstanceType } from './Substance';
+
+export enum OrganelleType {
+  Nucleus = 'NUCLEUS',
+  Cytoplasm = 'CYTOPLASM',
+  Golgi = 'GOLGI',
+  Gates = 'GATES',
+  Intercell = 'INTERCELL'
+}
 
 export const Organelle = types
   .model('Organelle', {

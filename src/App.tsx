@@ -3,10 +3,10 @@ import { observer } from 'mobx-react';
 import { clone } from 'mobx-state-tree';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { Mode, View, SubstanceType } from './Types';
 import { IOrganism, IOrganelleRef } from './models/Organism';
+import { SubstanceType } from './models/Substance';
 import { isEqual } from 'lodash';
-import { rootStore } from './models/RootStore';
+import { rootStore, Mode } from './models/RootStore';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import AssayTool from './components/Assay/AssayTool';
@@ -24,6 +24,12 @@ interface AppState {
 interface AppProps { }
 
 const STEP_MS = 100;
+
+enum View {
+  None = 'NONE',
+  Organism = 'ORGANISM',
+  Cell = 'CELL'
+}
 
 @observer
 class App extends React.Component<AppProps, AppState> {

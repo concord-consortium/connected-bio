@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree';
-import { SubstanceType, OrganelleType } from '../Types';
 import { v4 as uuid } from 'uuid';
-import { Organelle } from './Organelle';
+import { Organelle, OrganelleType } from './Organelle';
+import { SubstanceType } from './Substance';
 
 export const ModelProperties = types
   .model('ModelProperties', {
