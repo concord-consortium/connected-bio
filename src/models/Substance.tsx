@@ -8,6 +8,11 @@ export const Substance = types
     type: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
     amount: types.number
   })
+  .views(self => ({
+    get substanceType(): SubstanceType {
+      return SubstanceType[Object.keys(SubstanceType).filter((key) => SubstanceType[key] === self.type)[0]];
+    }
+  }))
   .actions(self => ({
     step(milliseconds: number) {
       let newAmount: number = self.amount * Math.pow(.5, (milliseconds / HALF_LIFE_MS));

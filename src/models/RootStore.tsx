@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree';
-import { Mode } from '../Types';
+import { Mode, SubstanceType } from '../Types';
 import { Organism, OrganelleInfo, IOrganelleInfo, FieldMouse, ForestMouse } from './Organism';
+import { Substance } from './Substance';
 
 const RootStore = types
   .model('RootStore', {
@@ -8,6 +9,7 @@ const RootStore = types
     organisms: types.map(Organism),
     activeAssay: types.maybe(OrganelleInfo),
     lockedAssays: types.optional(types.array(OrganelleInfo), []),
+    activeSubstanceManipulation: types.maybe(Substance),
     time: types.optional(types.number, 0)
   })
   .actions(self => ({
@@ -21,6 +23,13 @@ const RootStore = types
 
     setLockedAssays(assayOrganelles: any) {
       self.lockedAssays = assayOrganelles;
+    },
+    
+    setActiveSubstanceManipulation(substanceType: SubstanceType, amount: number) {
+      self.activeSubstanceManipulation = Substance.create({
+        type: substanceType,
+        amount
+      });
     },
 
     step(msPassed: number) {

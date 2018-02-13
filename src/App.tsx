@@ -20,7 +20,6 @@ interface AppState {
   box2Org: string;
   box2View: View;
   modelProperties: ModelProperties;
-  modeParams: any;
 }
 
 interface AppProps { }
@@ -50,8 +49,7 @@ class App extends React.Component<AppProps, AppState> {
         working_myosin_5a: true,
         open_gates: false
       },
-      addEnzyme: false,
-      modeParams: {}
+      addEnzyme: false
     };
     this.handleViewChange = this.handleViewChange.bind(this);
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
@@ -72,9 +70,9 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   changeSubstanceLevel(organelleRef: IOrganelleInfo) {
-    let {substance, amount} = this.state.modeParams;
+    let {substanceType, amount} = rootStore.activeSubstanceManipulation;
     rootStore.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-      organelleRef.organelle, substance, amount);
+      organelleRef.organelle, substanceType, amount);
   }
 
   handleViewChange(event: any) {
@@ -108,10 +106,8 @@ class App extends React.Component<AppProps, AppState> {
 
   handleSubstanceManipulatorToggle(manipulationMode: Mode, substance: SubstanceType, amount: number) {
     if (rootStore.mode === Mode.Normal) {
-      this.setState({
-        modeParams: {substance, amount}
-      });
       rootStore.setMode(manipulationMode);
+      rootStore.setActiveSubstanceManipulation(substance, amount);
     } else {
       rootStore.setMode(Mode.Normal);
     }
