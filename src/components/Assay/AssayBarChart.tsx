@@ -4,7 +4,7 @@ import { HorizontalBar } from 'react-chartjs-2';
 import { SubstanceType } from '../../models/Substance';
 import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
-import { rootStore } from '../../models/RootStore';
+import { rootStore } from '../../stores/RootStore';
 
 interface AssayBarProps {
   displaySubstances: { [substance in SubstanceType]: boolean};

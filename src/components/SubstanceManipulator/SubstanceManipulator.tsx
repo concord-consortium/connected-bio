@@ -4,7 +4,7 @@ import './SubstanceManipulator.css';
 import { RaisedButton } from 'material-ui';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import { SubstanceType } from '../../models/Substance';
-import { rootStore, Mode } from '../../models/RootStore';
+import { rootStore, Mode } from '../../stores/RootStore';
 
 interface SubstanceManipulatorProps {
   onSubstanceManipulatorToggle(manipulationMode: Mode, substance: SubstanceType, amount: number): void;

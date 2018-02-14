@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { IOrganism, IOrganelleRef, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
-import { rootStore, Mode } from '../models/RootStore';
+import { rootStore, Mode } from '../stores/RootStore';
 
 declare var Organelle: any;
 

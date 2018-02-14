@@ -6,7 +6,8 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { IOrganism, IOrganelleRef } from './models/Organism';
 import { SubstanceType } from './models/Substance';
 import { isEqual } from 'lodash';
-import { rootStore, Mode } from './models/RootStore';
+import { rootStore, Mode } from './stores/RootStore';
+import { appStore, View } from './stores/AppStore';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import AssayTool from './components/Assay/AssayTool';
@@ -15,21 +16,11 @@ import SubstanceManipulator from './components/SubstanceManipulator/SubstanceMan
 interface AppState {
   addHormone: boolean;
   addEnzyme: boolean;
-  box1Org: string;
-  box1View: View;
-  box2Org: string;
-  box2View: View;
 }
 
 interface AppProps { }
 
 const STEP_MS = 100;
-
-enum View {
-  None = 'NONE',
-  Organism = 'ORGANISM',
-  Cell = 'CELL'
-}
 
 @observer
 class App extends React.Component<AppProps, AppState> {
@@ -37,17 +28,11 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
     this.state = {
       addHormone: false,
-      box1View: View.Cell,
-      box1Org: 'Field Mouse',
-      box2View: View.Organism,
-      box2Org: 'Forest Mouse',
       addEnzyme: false
     };
-    this.handleViewChange = this.handleViewChange.bind(this);
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
-    this.changeSubstanceLevel = this.changeSubstanceLevel.bind(this);
     this.simulationTick = this.simulationTick.bind(this);
     this.forceDropper = this.forceDropper.bind(this);
   }
@@ -68,7 +53,12 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleViewChange(event: any) {
-    this.setState({ [event.target.id]: event.target.value });
+    let view: View = View[Object.keys(View).filter((key) => View[key] === event.target.value)[0]];
+    appStore.setBoxView(event.target.name, view);
+  }
+
+  handleOrgChange(event: any) {
+    appStore.setBoxOrg(event.target.name, rootStore.organisms.get(event.target.value));
   }
 
   handleAssayToggle() {
@@ -105,9 +95,9 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  getBoxView(boxOrg: string, boxView: string) {
-    const org: IOrganism = rootStore.organisms.get(this.state[boxOrg]);
-    const view: View = this.state[boxView];
+  getBoxView(boxId: string) {
+    const org: IOrganism = rootStore.organisms.get(appStore.getBoxOrgName(boxId));
+    const view: View = appStore.getBoxView(boxId);
 
     if (view === View.None) {
       return null;
@@ -117,7 +107,7 @@ class App extends React.Component<AppProps, AppState> {
     } else {
       return (
         <OrganelleWrapper 
-          name={boxOrg + '-' + boxView + '-model'}
+          name={boxId + '-model'}
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
           currentView={view}
@@ -155,11 +145,11 @@ class App extends React.Component<AppProps, AppState> {
             <div>
               <div>
                 <div>
-                  <select id="box1Org" value={this.state.box1Org} onChange={this.handleViewChange}>
+                  <select name="box-1" value={appStore.getBoxOrgName('box-1')} onChange={this.handleOrgChange}>
                     <option value="Field Mouse">Field Mouse</option>
                     <option value="Forest Mouse">Forest Mouse</option>
                   </select>
-                  <select id="box1View" value={this.state.box1View} onChange={this.handleViewChange}>
+                  <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
                     <option value={View.None}>None</option>
                     <option value={View.Organism}>Organism</option>
                     <option value={View.Cell}>Cell</option>
@@ -172,16 +162,16 @@ class App extends React.Component<AppProps, AppState> {
                   onMouseDown={this.forceDropper}  
                   onMouseMove={this.forceDropper}
                 >
-                  {this.getBoxView('box1Org', 'box1View')}
+                  {this.getBoxView('box-1')}
                 </div>
               </div>
               <div>
                 <div>
-                  <select id="box2Org" value={this.state.box2Org} onChange={this.handleViewChange}>
+                  <select name="box-2" value={appStore.getBoxOrgName('box-2')} onChange={this.handleOrgChange}>
                     <option value="Field Mouse">Field Mouse</option>
                     <option value="Forest Mouse">Forest Mouse</option>
                   </select>
-                  <select id="box2View" value={this.state.box2View} onChange={this.handleViewChange}>
+                  <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
                     <option value={View.None}>None</option>
                     <option value={View.Organism}>Organism</option>
                     <option value={View.Cell}>Cell</option>
@@ -194,7 +184,7 @@ class App extends React.Component<AppProps, AppState> {
                   onMouseDown={this.forceDropper}  
                   onMouseMove={this.forceDropper}
                 >
-                  {this.getBoxView('box2Org', 'box2View')}
+                  {this.getBoxView('box-2')}
                 </div>
               </div>
             </div>

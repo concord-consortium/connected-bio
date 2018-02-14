@@ -7,7 +7,7 @@ import { SubstanceType } from '../../models/Substance';
 import AssayLineGraph from './AssayLineGraph';
 import './AssayTool.css';
 import AssayBarChart from './AssayBarChart';
-import { rootStore, Mode } from '../../models/RootStore';
+import { rootStore, Mode } from '../../stores/RootStore';
 
 interface AssayToolProps {
   onAssayToggle(): void;

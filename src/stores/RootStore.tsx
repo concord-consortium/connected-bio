@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree';
-import { Organism, OrganelleRef, IOrganelleRef, FieldMouse, ForestMouse } from './Organism';
-import { Substance, SubstanceType } from './Substance';
+import { Organism, OrganelleRef, IOrganelleRef, FieldMouse, ForestMouse } from '../models/Organism';
+import { Substance, SubstanceType } from '../models/Substance';
+import { AppStore, appStore } from './AppStore';
 
 export enum Mode {
   Normal = 'NORMAL',
@@ -16,7 +17,8 @@ const RootStore = types
     activeAssay: types.maybe(OrganelleRef),
     lockedAssays: types.optional(types.array(OrganelleRef), []),
     activeSubstanceManipulation: types.maybe(Substance),
-    time: types.optional(types.number, 0)
+    time: types.optional(types.number, 0),
+    appStore: AppStore
   })
   .actions(self => ({
     setMode(newMode: string) {
@@ -58,5 +60,6 @@ export const rootStore = RootStore.create({
   organisms: {
     'Field Mouse': FieldMouse,
     'Forest Mouse': ForestMouse
-  }
+  },
+  appStore: appStore
 });
