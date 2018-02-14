@@ -142,10 +142,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       ],
       species: [
         'organelles/melanosome.yml',
-        'organelles/hexagon.yml',
-        'organelles/triangle.yml'
-        // 'organelles/g-protein.yml',
-        // 'organelles/g-protein-part.yml'
+        'organelles/dots.yml'
       ],
       hotStart: 1000
     }).then((m: any) => {
@@ -222,7 +219,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       if (this.state.hoveredOrganelle) {
         opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
       }
-      
+
       if (mode === Mode.Assay) {
         this.props.lockedAssays.forEach((lockedAssay) => {
           if (lockedAssay.organism.getName() === this.props.organism.getName()) {
