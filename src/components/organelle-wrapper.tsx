@@ -1,8 +1,8 @@
 import * as React from 'react';
+// import Organelle from 'organelle';       // this does not work yet because Organelle has no type defs
+const Organelle: any = require('organelle');
 import { CellPart, Mode } from '../Types';
 import Organism, { OrganelleInfo } from '../models/Organism';
-
-declare var Organelle: any;
 
 interface OrganelleWrapperProps {
   name: string;
