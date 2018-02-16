@@ -22,7 +22,7 @@ interface OrganelleWrapperState {
 @observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
     model: any;
-    organelleSelectorInfo: {[organelleType in OrganelleType]: any} = {
+    organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
         selector: '#nucleus'
       },
