@@ -5,10 +5,10 @@ import { SubstanceType } from '../../models/Substance';
 import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from '../../stores/RootStore';
+import { assayStore } from '../../stores/AssayStore';
 import { observer } from 'mobx-react';
 
 interface AssayLineProps {
-  displaySubstances: { [substance in SubstanceType]: boolean};
   colors: string[];
   time: number;
 }
@@ -41,9 +41,9 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
     }
   }
 
-  createLine(activeSubstance: string, assayInfo: IOrganelleRef, lineNum: number) {
-    let data = this.state.organismsOverTime.map((organisms, index) => {
-      let organism = organisms.get(assayInfo.organism.id);
+  createLine(activeSubstance: SubstanceType, assayInfo: IOrganelleRef, lineNum: number) {
+    let data = this.state.organismsOverTime.map((orgs, index) => {
+      let organism = orgs.get(assayInfo.organism.id);
       let substanceLevel = organism.getLevelForOrganelleSubstance(assayInfo.organelleType, activeSubstance);
       let substanceDelta = organism.getDeltaForOrganelleSubstance(assayInfo.organelleType, activeSubstance);
       return {
@@ -64,9 +64,12 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
   }
 
   render() {
-    let {displaySubstances} = this.props;
+    let {visibleSubstances} = assayStore;
     let {activeAssay, lockedAssays} = rootStore;
-    let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
+    let activeSubstances = visibleSubstances.keys()
+      .filter((substanceKey) => visibleSubstances.get(substanceKey))
+      .map((activeSubstance) => 
+        SubstanceType[Object.keys(SubstanceType).filter((key) => SubstanceType[key] === activeSubstance)[0]]);
 
     let data: any = {
       datasets: []

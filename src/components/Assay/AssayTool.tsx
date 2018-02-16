@@ -8,20 +8,14 @@ import AssayLineGraph from './AssayLineGraph';
 import './AssayTool.css';
 import AssayBarChart from './AssayBarChart';
 import { rootStore, Mode } from '../../stores/RootStore';
+import { assayStore, GraphType } from '../../stores/AssayStore';
 
 interface AssayToolProps {
   onAssayToggle(): void;
   onAssayClear(): void;
 }
 
-interface AssayToolState {
-  displaySubstances: { [substance in SubstanceType]: boolean};
-  graphType: GraphType;
-}
-
-enum GraphType {
-  Bar, Line
-}
+interface AssayToolState {}
 
 const defaultColors = ['#3366CC', '#FF9900', '#990099', '#3B3EAC', '#0099C6',
   '#DD4477', '#66AA00', '#B82E2E', '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC', '#E67300',
@@ -31,43 +25,32 @@ const defaultColors = ['#3366CC', '#FF9900', '#990099', '#3B3EAC', '#0099C6',
 class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      displaySubstances: {
-        [SubstanceType.Substance1]: false,
-        [SubstanceType.Substance2]: true,
-        [SubstanceType.Substance3]: true
-      },
-      graphType: GraphType.Bar
-    };
     this.updateCheck = this.updateCheck.bind(this);
     this.onGraphSwitch = this.onGraphSwitch.bind(this);
   }
 
   updateCheck(event: any, isInputChecked: boolean) {
-    let newDisplaySubstances = Object.assign({}, this.state.displaySubstances);
-    newDisplaySubstances[event.target.id] = isInputChecked;
-    this.setState({displaySubstances: newDisplaySubstances});
+    let substanceType = SubstanceType[Object.keys(SubstanceType)
+      .filter((key) => SubstanceType[key] === event.target.id)[0]];
+    assayStore.setSubstanceVisibility(substanceType, isInputChecked);
   }
 
   onGraphSwitch() {
-    if (this.state.graphType === GraphType.Bar) {
-      this.setState({graphType: GraphType.Line});
+    if (assayStore.graphType === GraphType.Bar) {
+      assayStore.setGraphType(GraphType.Line);
     } else {
-      this.setState({graphType: GraphType.Bar});
+      assayStore.setGraphType(GraphType.Bar);
     }
   }
 
   render() {
     let {mode, time} = rootStore;
-    let {displaySubstances} = this.state;
-    let graph = this.state.graphType === GraphType.Line ? (
+    let graph = assayStore.graphType === GraphType.Line ? (
       <AssayLineGraph
-        displaySubstances={displaySubstances}
         colors={defaultColors}
         time={time}
       />) : (
       <AssayBarChart
-        displaySubstances={displaySubstances}
         colors={defaultColors}
       />);
     
@@ -96,27 +79,27 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             style={{width: '150px', margin: '5px'}}
             primary={true}
             labelPosition="before"
-            icon={this.state.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
+            icon={assayStore.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
           />
         </div>
         <div className="chart-boxes">
           <Checkbox 
             style={{width: '150px'}} 
-            checked={this.state.displaySubstances[SubstanceType.Substance1]} 
+            checked={assayStore.visibleSubstances.get(SubstanceType.Substance1)} 
             id={SubstanceType.Substance1} 
             label={'Substance 1'} 
             onCheck={this.updateCheck} 
           />
           <Checkbox 
             style={{width: '150px'}} 
-            checked={this.state.displaySubstances[SubstanceType.Substance2]} 
+            checked={assayStore.visibleSubstances.get(SubstanceType.Substance2)} 
             id={SubstanceType.Substance2} 
             label={'Substance 2'} 
             onCheck={this.updateCheck} 
           />
           <Checkbox 
             style={{width: '150px'}} 
-            checked={this.state.displaySubstances[SubstanceType.Substance3]} 
+            checked={assayStore.visibleSubstances.get(SubstanceType.Substance3)} 
             id={SubstanceType.Substance3} 
             label={'Substance 3'} 
             onCheck={this.updateCheck} 

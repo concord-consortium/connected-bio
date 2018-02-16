@@ -5,9 +5,9 @@ import { SubstanceType } from '../../models/Substance';
 import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from '../../stores/RootStore';
+import { assayStore } from '../../stores/AssayStore';
 
 interface AssayBarProps {
-  displaySubstances: { [substance in SubstanceType]: boolean};
   colors: string[];
 }
 
@@ -57,9 +57,9 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
   }
 
   render() {
-    let {displaySubstances} = this.props;
+    let {visibleSubstances} = assayStore;
     let {activeAssay, lockedAssays} = rootStore;
-    let activeSubstances = Object.keys(displaySubstances).filter((substanceKey) => displaySubstances[substanceKey]);
+    let activeSubstances = visibleSubstances.keys().filter((substanceKey) => visibleSubstances.get(substanceKey));
 
     let data: Chart.ChartData = {
       datasets: [],
