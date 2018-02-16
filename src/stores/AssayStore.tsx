@@ -1,5 +1,6 @@
 import { types } from 'mobx-state-tree';
 import { SubstanceType } from '../models/Substance';
+import { stringToEnum } from '../utils';
 
 export enum GraphType {
   Bar = 'BAR',
@@ -13,7 +14,7 @@ export const AssayStore = types
   })
   .views(self => ({
     get graphType(): GraphType {
-      return GraphType[Object.keys(GraphType).filter((key) => GraphType[key] === self.graph)[0]]; 
+      return stringToEnum(self.graph, GraphType);
     }
   }))
   .actions(self => ({

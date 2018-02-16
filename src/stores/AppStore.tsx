@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree';
 import { v4 as uuid } from 'uuid';
 import { Organism, IOrganism, FieldMouse, ForestMouse } from '../models/Organism';
+import { stringToEnum } from '../utils';
 
 export enum View {
   None = 'NONE',
@@ -16,7 +17,7 @@ const Box = types
   })
   .views(self => ({
     get viewType(): View {
-      return View[Object.keys(View).filter((key) => View[key] === self.view)[0]];
+      return stringToEnum(self.view, View);
     }
   }));
 

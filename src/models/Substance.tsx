@@ -1,4 +1,5 @@
 import { types } from 'mobx-state-tree';
+import { stringToEnum } from '../utils';
 
 const HALF_LIFE_MS: number = 1000;
 
@@ -15,7 +16,7 @@ export const Substance = types
   })
   .views(self => ({
     get substanceType(): SubstanceType {
-      return SubstanceType[Object.keys(SubstanceType).filter((key) => SubstanceType[key] === self.type)[0]];
+      return stringToEnum(self.type, SubstanceType);
     }
   }))
   .actions(self => ({

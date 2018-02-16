@@ -7,6 +7,7 @@ import { IOrganism, IOrganelleRef } from './models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
+import { stringToEnum } from './utils';
 
 import OrganelleWrapper from './components/organelle-wrapper';
 import AssayTool from './components/Assay/AssayTool';
@@ -45,7 +46,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleViewChange(event: any) {
-    let view: View = View[Object.keys(View).filter((key) => View[key] === event.target.value)[0]];
+    let view: View = stringToEnum(event.target.value, View);
     appStore.setBoxView(event.target.name, view);
   }
 

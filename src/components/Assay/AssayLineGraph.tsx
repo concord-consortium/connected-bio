@@ -7,6 +7,7 @@ import { isEqual } from 'lodash';
 import { rootStore } from '../../stores/RootStore';
 import { assayStore } from '../../stores/AssayStore';
 import { observer } from 'mobx-react';
+import { stringToEnum } from '../../utils';
 
 interface AssayLineProps {
   colors: string[];
@@ -69,7 +70,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
     let activeSubstances = visibleSubstances.keys()
       .filter((substanceKey) => visibleSubstances.get(substanceKey))
       .map((activeSubstance) => 
-        SubstanceType[Object.keys(SubstanceType).filter((key) => SubstanceType[key] === activeSubstance)[0]]);
+        stringToEnum(activeSubstance, SubstanceType));
 
     let data: any = {
       datasets: []

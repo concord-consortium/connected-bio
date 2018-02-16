@@ -9,6 +9,7 @@ import './AssayTool.css';
 import AssayBarChart from './AssayBarChart';
 import { rootStore, Mode } from '../../stores/RootStore';
 import { assayStore, GraphType } from '../../stores/AssayStore';
+import { stringToEnum } from '../../utils';
 
 interface AssayToolProps {
   onAssayToggle(): void;
@@ -30,8 +31,7 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
   }
 
   updateCheck(event: any, isInputChecked: boolean) {
-    let substanceType = SubstanceType[Object.keys(SubstanceType)
-      .filter((key) => SubstanceType[key] === event.target.id)[0]];
+    let substanceType = stringToEnum(event.target.id, SubstanceType);
     assayStore.setSubstanceVisibility(substanceType, isInputChecked);
   }
 
