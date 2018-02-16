@@ -94,7 +94,6 @@ class App extends React.Component<AppProps, AppState> {
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
           currentView={view}
-          mode={rootStore.mode}
           organism={org}
         />
       );

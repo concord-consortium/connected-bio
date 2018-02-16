@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
@@ -11,7 +12,6 @@ interface OrganelleWrapperProps {
   doAddHormone: boolean;
   addEnzyme: boolean;
   currentView: any;
-  mode: string;
   organism: IOrganism;
 }
 
@@ -150,6 +150,12 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       this.model = m;
       this.completeLoad();
     });
+
+    autorun(() => {
+      if (rootStore.mode === Mode.Normal) {
+        this.setState({hoveredOrganelle: null});
+      }
+    });
   }
 
   completeLoad() {
@@ -180,7 +186,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
-      if (this.props.mode === Mode.Normal) {
+      if (rootStore.mode === Mode.Normal) {
         return;
       }
 
@@ -199,7 +205,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.hover.exit', (evt: any) => {
-      if (this.props.mode !== Mode.Assay) {
+      if (rootStore.mode !== Mode.Assay) {
         return;
       }
 
@@ -214,7 +220,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   updateCellOpacity() {
-    let {mode} = this.props;
+    let {mode} = rootStore;
     if (mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract) {
       let opaqueSelectors: string[] = [];
       if (this.state.hoveredOrganelle) {
@@ -254,14 +260,14 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   organelleClick(organelleType: OrganelleType) {
-    if (this.props.mode === Mode.Assay) {
+    if (rootStore.mode === Mode.Assay) {
       let org = rootStore.organisms.get(this.props.organism.id);
       let organelleInfo = OrganelleRef.create({ 
         organism: org, 
         organelleType 
       });
       rootStore.setActiveAssay(organelleInfo);
-    } else if (this.props.mode === Mode.Add || this.props.mode === Mode.Subtract) {
+    } else if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
       rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
     }
   }
@@ -283,10 +289,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
     if (!this.props.doAddHormone && nextProps.doAddHormone) {
       this.addHormone();
-    }
-
-    if (this.props.mode === Mode.Assay && nextProps.mode !== Mode.Assay) {
-      this.setState({hoveredOrganelle: null});
     }
 
     // if (nextProps.addEnzyme) {
