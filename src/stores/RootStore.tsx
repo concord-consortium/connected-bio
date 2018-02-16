@@ -52,6 +52,22 @@ const RootStore = types
       });
 
       self.time += msPassed;
+    },
+
+    changeSubstanceLevel(organelleRef: IOrganelleRef) {
+      let {substanceType, amount} = self.activeSubstanceManipulation;
+      self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
+        organelleRef.organelleType, substanceType, amount);
+      }
+  }))
+  .actions(self => ({
+    toggleSubstanceManipulator(manipulationMode: Mode, substance: SubstanceType, amount: number) {
+      if (self.mode === Mode.Normal) {
+        self.setMode(manipulationMode);
+        self.setActiveSubstanceManipulation(substance, amount);
+      } else {
+        self.setMode(Mode.Normal);
+      }
     }
   }));
 

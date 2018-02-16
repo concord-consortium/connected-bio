@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { IOrganism, IOrganelleRef, OrganelleRef } from '../models/Organism';
+import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
 
@@ -13,7 +13,6 @@ interface OrganelleWrapperProps {
   currentView: any;
   mode: string;
   organism: IOrganism;
-  changeSubstanceLevel(organelle: IOrganelleRef): void;
 }
 
 interface OrganelleWrapperState {
@@ -263,7 +262,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       });
       rootStore.setActiveAssay(organelleInfo);
     } else if (this.props.mode === Mode.Add || this.props.mode === Mode.Subtract) {
-      this.props.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
+      rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
     }
   }
 

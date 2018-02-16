@@ -4,7 +4,6 @@ import { clone } from 'mobx-state-tree';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { IOrganism, IOrganelleRef } from './models/Organism';
-import { SubstanceType } from './models/Substance';
 import { isEqual } from 'lodash';
 import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
@@ -32,7 +31,6 @@ class App extends React.Component<AppProps, AppState> {
     };
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
-    this.handleSubstanceManipulatorToggle = this.handleSubstanceManipulatorToggle.bind(this);
     this.simulationTick = this.simulationTick.bind(this);
     this.forceDropper = this.forceDropper.bind(this);
   }
@@ -44,12 +42,6 @@ class App extends React.Component<AppProps, AppState> {
   simulationTick(msPassed: number) {
     rootStore.step(msPassed);
     setTimeout(this.simulationTick.bind(this, STEP_MS), STEP_MS);
-  }
-
-  changeSubstanceLevel(organelleRef: IOrganelleRef) {
-    let {substanceType, amount} = rootStore.activeSubstanceManipulation;
-    rootStore.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-      organelleRef.organelleType, substanceType, amount);
   }
 
   handleViewChange(event: any) {
@@ -86,15 +78,6 @@ class App extends React.Component<AppProps, AppState> {
     rootStore.setLockedAssays([]);
   }
 
-  handleSubstanceManipulatorToggle(manipulationMode: Mode, substance: SubstanceType, amount: number) {
-    if (rootStore.mode === Mode.Normal) {
-      rootStore.setMode(manipulationMode);
-      rootStore.setActiveSubstanceManipulation(substance, amount);
-    } else {
-      rootStore.setMode(Mode.Normal);
-    }
-  }
-
   getBoxView(boxId: string) {
     const org: IOrganism = rootStore.organisms.get(appStore.getBoxOrgName(boxId));
     const view: View = appStore.getBoxView(boxId);
@@ -113,7 +96,6 @@ class App extends React.Component<AppProps, AppState> {
           currentView={view}
           mode={rootStore.mode}
           organism={org}
-          changeSubstanceLevel={this.changeSubstanceLevel}
         />
       );
     }
@@ -193,9 +175,7 @@ class App extends React.Component<AppProps, AppState> {
                 onAssayToggle={this.handleAssayToggle}
                 onAssayClear={this.handleAssayClear}
               />
-              <SubstanceManipulator 
-                onSubstanceManipulatorToggle={this.handleSubstanceManipulatorToggle}
-              />
+              <SubstanceManipulator />
             </div>
           </div>
         </div>

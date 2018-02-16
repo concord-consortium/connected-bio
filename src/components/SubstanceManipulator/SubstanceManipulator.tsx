@@ -6,9 +6,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import { SubstanceType } from '../../models/Substance';
 import { rootStore, Mode } from '../../stores/RootStore';
 
-interface SubstanceManipulatorProps {
-  onSubstanceManipulatorToggle(manipulationMode: Mode, substance: SubstanceType, amount: number): void;
-}
+interface SubstanceManipulatorProps {}
 
 interface SubstanceManipulatorState {
   selectedSubstance: SubstanceType;
@@ -35,11 +33,11 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
   }
 
   handleAddModeToggle() {
-    this.props.onSubstanceManipulatorToggle(Mode.Add, this.state.selectedSubstance, SUBSTANCE_DELTA);
+    rootStore.toggleSubstanceManipulator(Mode.Add, this.state.selectedSubstance, SUBSTANCE_DELTA);
   }
 
   handleSubtractModeToggle() {
-    this.props.onSubstanceManipulatorToggle(Mode.Subtract, this.state.selectedSubstance, SUBSTANCE_DELTA * -1);
+    rootStore.toggleSubstanceManipulator(Mode.Subtract, this.state.selectedSubstance, SUBSTANCE_DELTA * -1);
   }
 
   render() {
