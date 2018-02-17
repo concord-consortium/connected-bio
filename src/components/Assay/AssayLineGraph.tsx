@@ -32,10 +32,10 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
   componentWillReceiveProps(nextProps: AssayLineProps) {
     if (this.props.time < nextProps.time) {
       let nextOrganisms = this.state.organismsOverTime.slice(0);
-      nextOrganisms.push(clone(rootStore.organisms));
-      if (nextOrganisms.length > MAX_STORED_STATES) {
-        nextOrganisms.splice(0, 1);
+      if (nextOrganisms.length >= MAX_STORED_STATES) {
+        nextOrganisms = [];
       }
+      nextOrganisms.push(clone(rootStore.organisms));
       this.setState({
         organismsOverTime: nextOrganisms
       });
@@ -109,8 +109,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
       scales: {
         yAxes: [{
           ticks: {
-            min: 0,
-            max: 100
+            min: 0
           }
         }],
         xAxes: [{

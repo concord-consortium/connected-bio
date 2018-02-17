@@ -57,15 +57,15 @@ export const FieldMouse = Organism.create({
       substanceLevels: {
         [SubstanceType.Substance1] : {
           type: SubstanceType.Substance1,
-          amount: 50
+          amount: 286
         },
         [SubstanceType.Substance2] : {
           type: SubstanceType.Substance2,
-          amount: 30
+          amount: 589
         },
         [SubstanceType.Substance3] : {
           type: SubstanceType.Substance3,
-          amount: 40
+          amount: 533
         },
       }
     },

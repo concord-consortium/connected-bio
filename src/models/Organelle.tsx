@@ -1,5 +1,5 @@
 import { types } from 'mobx-state-tree';
-import { Substance, SubstanceType } from './Substance';
+import { Substance, ISubstance, SubstanceType } from './Substance';
 
 export enum OrganelleType {
   Nucleus = 'NUCLEUS',
@@ -17,15 +17,22 @@ export const Organelle = types
   })
   .views(self => ({
     getLevelForSubstance(substanceType: SubstanceType) {
-      return self.substanceLevels.get(substanceType) ? self.substanceLevels.get(substanceType).amount : 0;
+      let substanceLevel: ISubstance = self.substanceLevels.get(substanceType);
+      return substanceLevel ? substanceLevel.amount : 0;
     },
     getDeltaForSubstance(substanceType: SubstanceType) {
-      return self.substanceDeltas.get(substanceType) ? self.substanceDeltas.get(substanceType).amount : 0;
+      let substanceDelta: ISubstance = self.substanceDeltas.get(substanceType);
+      return substanceDelta ? substanceDelta.amount : 0;
+    }
+  }))
+  .views(self => ({
+    getTotalForSubstance(substanceType: SubstanceType) {
+      return self.getLevelForSubstance(substanceType) + self.getDeltaForSubstance(substanceType);
     }
   }))
   .actions(self => ({
     incrementSubstance(substanceType: SubstanceType, amount: number) {
-      let substanceLevel = self.substanceDeltas.get(substanceType);
+      let substanceLevel: ISubstance = self.substanceDeltas.get(substanceType);
       if (substanceLevel) {
         substanceLevel.increment(amount);
       } else {
@@ -36,3 +43,4 @@ export const Organelle = types
       }
     }
   }));
+export type IOrganelle = typeof Organelle.Type;

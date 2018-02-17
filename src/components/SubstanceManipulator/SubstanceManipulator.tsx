@@ -12,7 +12,7 @@ interface SubstanceManipulatorState {
   selectedSubstance: SubstanceType;
 }
 
-const SUBSTANCE_DELTA: number = 5;
+const SUBSTANCE_DELTA: number = 200;
 
 @observer
 class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, SubstanceManipulatorState> {
@@ -68,21 +68,21 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
           onChange={this.updateSelection}
         >
           <RadioButton
-            style={{width: '150px'}} 
+            style={{width: '200px'}} 
             value={SubstanceType.Substance1}
-            label="Substance 1"
+            label="Hormone"
             disabled={mode !== Mode.Normal}
           />
           <RadioButton
-            style={{width: '150px'}} 
+            style={{width: '200px'}} 
             value={SubstanceType.Substance2}
-            label="Substance 2"
+            label="Activated G-Protein"
             disabled={mode !== Mode.Normal}
           />
           <RadioButton
-            style={{width: '150px'}} 
+            style={{width: '200px'}} 
             value={SubstanceType.Substance3}
-            label="Substance 3"
+            label="Eumelanin"
             disabled={mode !== Mode.Normal}
           />
         </RadioButtonGroup>

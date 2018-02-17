@@ -84,24 +84,24 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
         </div>
         <div className="chart-boxes">
           <Checkbox 
-            style={{width: '150px'}} 
+            style={{width: '200px'}} 
             checked={assayStore.visibleSubstances.get(SubstanceType.Substance1)} 
             id={SubstanceType.Substance1} 
-            label={'Substance 1'} 
+            label={'Hormone'} 
             onCheck={this.updateCheck} 
           />
           <Checkbox 
-            style={{width: '150px'}} 
+            style={{width: '200px'}} 
             checked={assayStore.visibleSubstances.get(SubstanceType.Substance2)} 
             id={SubstanceType.Substance2} 
-            label={'Substance 2'} 
+            label={'Activated G-Protein'} 
             onCheck={this.updateCheck} 
           />
           <Checkbox 
-            style={{width: '150px'}} 
+            style={{width: '200px'}} 
             checked={assayStore.visibleSubstances.get(SubstanceType.Substance3)} 
             id={SubstanceType.Substance3} 
-            label={'Substance 3'} 
+            label={'Eumelanin'} 
             onCheck={this.updateCheck} 
           />
         </div>

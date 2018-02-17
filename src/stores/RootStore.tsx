@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
 import { Organism, OrganelleRef, IOrganelleRef, FieldMouse, ForestMouse } from '../models/Organism';
-import { Substance, SubstanceType } from '../models/Substance';
+import { Substance, ISubstance, SubstanceType } from '../models/Substance';
 import { AppStore, appStore } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
 
@@ -47,8 +47,9 @@ const RootStore = types
         let organism = self.organisms.get(orgKey);
         organism.organelles.keys().forEach(organelleKey => {
           let organelle = organism.organelles.get(organelleKey);
-          organelle.substanceDeltas.keys().forEach(substanceKey => {
-            organelle.substanceDeltas.get(substanceKey).step(msPassed);
+          Object.keys(SubstanceType).map(key => SubstanceType[key]).forEach(substanceType => {
+            organelle.incrementSubstance(substanceType, 0);
+            (organelle.substanceDeltas.get(substanceType) as ISubstance).step(msPassed, organelle);
           });
         });
       });
@@ -57,7 +58,7 @@ const RootStore = types
     },
 
     changeSubstanceLevel(organelleRef: IOrganelleRef) {
-      let {substanceType, amount} = self.activeSubstanceManipulation;
+      let {substanceType, amount} = self.activeSubstanceManipulation as ISubstance;
       self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
         organelleRef.organelleType, substanceType, amount);
       }
