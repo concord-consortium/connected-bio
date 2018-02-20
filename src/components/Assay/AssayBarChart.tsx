@@ -96,7 +96,8 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
       scales: {
         xAxes: [{
           ticks: {
-            min: 0
+            min: 0,
+            max: 800
           },
           stacked: true
         }],

@@ -33,21 +33,25 @@ export const Substance: any = types
 
       switch (self.type) {
         case SubstanceType.Hormone:
-          birthRate = parentOrganelle.type === OrganelleType.Intercell ? 
-            (300 - .5 * hormoneAmount) / 20 :
-            0;
+          birthRate = parentOrganelle.type === OrganelleType.Intercell 
+            ? (300 - .5 * hormoneAmount) / 20
+            : 0;
           deathRate = (100 + .2 * hormoneAmount) / 20;
           break;
         case SubstanceType.GProtein:
-          birthRate = parentOrganelle.type === OrganelleType.Cytoplasm ? 
-            (150 - .1 * gProteinAmount + .8 * hormoneAmount) / 10 :
-            0;
+          birthRate = parentOrganelle.type === OrganelleType.Cytoplasm
+            ? parentOrganism.id === 'Forest Mouse'
+              ? (150 - .1 * gProteinAmount + .8 * hormoneAmount) / 10
+              : (150 - .1 * gProteinAmount) / 10
+            : 0;
           deathRate = (25 + .5 * gProteinAmount) / 10;
           break;
         case SubstanceType.Eumelanin:
-          birthRate = parentOrganelle.type === OrganelleType.Melanosome ? 
-            (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 3 : 
-            0;
+          birthRate = parentOrganelle.type === OrganelleType.Melanosome
+            ? parentOrganism.id === 'Forest Mouse'
+              ? (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 3
+              : (-79 - .1 * eumelaninAmount + .5 * gProteinAmount) / 3
+            : 0;
           deathRate = (25 + .5 * eumelaninAmount) / 3;
           break;
         default:

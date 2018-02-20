@@ -87,6 +87,39 @@ export const FieldMouse = Organism.create({
       substanceLevels: {
         [SubstanceType.GProtein] : {
           type: SubstanceType.GProtein,
+          amount: 208
+        }
+      }
+    },
+    [OrganelleType.Melanosome]: {
+      type: OrganelleType.Melanosome,
+      substanceLevels: {
+        [SubstanceType.Eumelanin] : {
+          type: SubstanceType.Eumelanin,
+          amount: 0
+        }
+      }
+    }
+  }
+});
+
+export const ForestMouse = Organism.create({
+  id: 'Forest Mouse',
+  organelles: {
+    [OrganelleType.Intercell]: {
+      type: OrganelleType.Intercell,
+      substanceLevels: {
+        [SubstanceType.Hormone] : {
+          type: SubstanceType.Hormone,
+          amount: 286
+        }
+      }
+    },
+    [OrganelleType.Cytoplasm]: {
+      type: OrganelleType.Cytoplasm,
+      substanceLevels: {
+        [SubstanceType.GProtein] : {
+          type: SubstanceType.GProtein,
           amount: 589
         }
       }
@@ -98,29 +131,6 @@ export const FieldMouse = Organism.create({
           type: SubstanceType.Eumelanin,
           amount: 533
         }
-      }
-    }
-  }
-});
-
-export const ForestMouse = Organism.create({
-  id: 'Forest Mouse',
-  organelles: {
-    [OrganelleType.Nucleus]: {
-      type: OrganelleType.Nucleus,
-      substanceLevels: {
-        [SubstanceType.Hormone] : {
-          type: SubstanceType.Hormone,
-          amount: 10
-        },
-        [SubstanceType.GProtein] : {
-          type: SubstanceType.GProtein,
-          amount: 90
-        },
-        [SubstanceType.Eumelanin] : {
-          type: SubstanceType.Eumelanin,
-          amount: 80
-        },
       }
     }
   }

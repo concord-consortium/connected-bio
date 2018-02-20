@@ -107,6 +107,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         position: 'bottom',
       },
       scales: {
+        display: false,
         yAxes: [{
           ticks: {
             min: 0
