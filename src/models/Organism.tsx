@@ -38,6 +38,11 @@ export const Organism = types
         newOrganelle.incrementSubstance(substanceType, amount);
         self.organelles.set(organelleType, newOrganelle);
       }
+    },
+    step(msPassed: number) {
+      self.organelles.keys().forEach(organelleKey => {
+        self.organelles.get(organelleKey).step(msPassed);
+      });
     }
   }));
 export type IOrganism = typeof Organism.Type;

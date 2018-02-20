@@ -26,7 +26,6 @@ export const Substance: any = types
       let hormoneAmount = parentOrganelle.getTotalForSubstance(SubstanceType.Substance1);
       let gProteinAmount = parentOrganelle.getTotalForSubstance(SubstanceType.Substance2);
       let eumelaninAmount = parentOrganelle.getTotalForSubstance(SubstanceType.Substance3);
-      console.log(hormoneAmount);
 
       switch (self.type) {
         case SubstanceType.Substance1:

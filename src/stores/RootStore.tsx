@@ -44,14 +44,7 @@ const RootStore = types
 
     step(msPassed: number) {
       self.organisms.keys().forEach(orgKey => {
-        let organism = self.organisms.get(orgKey);
-        organism.organelles.keys().forEach(organelleKey => {
-          let organelle = organism.organelles.get(organelleKey);
-          Object.keys(SubstanceType).map(key => SubstanceType[key]).forEach(substanceType => {
-            organelle.incrementSubstance(substanceType, 0);
-            (organelle.substanceDeltas.get(substanceType) as ISubstance).step(msPassed, organelle);
-          });
-        });
+        self.organisms.get(orgKey).step(msPassed);
       });
 
       self.time += msPassed;

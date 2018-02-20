@@ -41,6 +41,16 @@ export const Organelle = types
           amount: amount
         }));
       }
+    },
+    step(msPassed: number) {
+      Object.keys(SubstanceType).map(key => SubstanceType[key]).forEach(substanceType => {
+        let substance = self.substanceDeltas.get(substanceType) as ISubstance;
+        if (!substance) {
+          substance = Substance.create({type: substanceType});
+          self.substanceDeltas.set(substanceType, substance);
+        }
+        substance.step(msPassed, self);
+      });
     }
   }));
 export type IOrganelle = typeof Organelle.Type;
