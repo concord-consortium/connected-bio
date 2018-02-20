@@ -19,7 +19,7 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
   constructor(props: any) {
     super(props);
     this.state = {
-      selectedSubstance: SubstanceType.Substance1
+      selectedSubstance: SubstanceType.Hormone
     };
     this.updateSelection = this.updateSelection.bind(this);
     this.handleAddModeToggle = this.handleAddModeToggle.bind(this);
@@ -69,19 +69,19 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
         >
           <RadioButton
             style={{width: '200px'}} 
-            value={SubstanceType.Substance1}
+            value={SubstanceType.Hormone}
             label="Hormone"
             disabled={mode !== Mode.Normal}
           />
           <RadioButton
             style={{width: '200px'}} 
-            value={SubstanceType.Substance2}
+            value={SubstanceType.GProtein}
             label="Activated G-Protein"
             disabled={mode !== Mode.Normal}
           />
           <RadioButton
             style={{width: '200px'}} 
-            value={SubstanceType.Substance3}
+            value={SubstanceType.Eumelanin}
             label="Eumelanin"
             disabled={mode !== Mode.Normal}
           />

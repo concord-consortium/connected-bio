@@ -60,16 +60,16 @@ export const FieldMouse = Organism.create({
     [OrganelleType.Nucleus]: {
       type: OrganelleType.Nucleus,
       substanceLevels: {
-        [SubstanceType.Substance1] : {
-          type: SubstanceType.Substance1,
+        [SubstanceType.Hormone] : {
+          type: SubstanceType.Hormone,
           amount: 286
         },
-        [SubstanceType.Substance2] : {
-          type: SubstanceType.Substance2,
+        [SubstanceType.GProtein] : {
+          type: SubstanceType.GProtein,
           amount: 589
         },
-        [SubstanceType.Substance3] : {
-          type: SubstanceType.Substance3,
+        [SubstanceType.Eumelanin] : {
+          type: SubstanceType.Eumelanin,
           amount: 533
         },
       }
@@ -77,16 +77,16 @@ export const FieldMouse = Organism.create({
     [OrganelleType.Cytoplasm]: {
       type: OrganelleType.Cytoplasm,
       substanceLevels: {
-        [SubstanceType.Substance1] : {
-          type: SubstanceType.Substance1,
+        [SubstanceType.Hormone] : {
+          type: SubstanceType.Hormone,
           amount: 10
         },
-        [SubstanceType.Substance2] : {
-          type: SubstanceType.Substance2,
+        [SubstanceType.GProtein] : {
+          type: SubstanceType.GProtein,
           amount: 65
         },
-        [SubstanceType.Substance3] : {
-          type: SubstanceType.Substance3,
+        [SubstanceType.Eumelanin] : {
+          type: SubstanceType.Eumelanin,
           amount: 85
         },
       }
@@ -100,16 +100,16 @@ export const ForestMouse = Organism.create({
     [OrganelleType.Nucleus]: {
       type: OrganelleType.Nucleus,
       substanceLevels: {
-        [SubstanceType.Substance1] : {
-          type: SubstanceType.Substance1,
+        [SubstanceType.Hormone] : {
+          type: SubstanceType.Hormone,
           amount: 10
         },
-        [SubstanceType.Substance2] : {
-          type: SubstanceType.Substance2,
+        [SubstanceType.GProtein] : {
+          type: SubstanceType.GProtein,
           amount: 90
         },
-        [SubstanceType.Substance3] : {
-          type: SubstanceType.Substance3,
+        [SubstanceType.Eumelanin] : {
+          type: SubstanceType.Eumelanin,
           amount: 80
         },
       }

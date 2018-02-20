@@ -29,9 +29,9 @@ export const AssayStore = types
 
 export const assayStore = AssayStore.create({
   visibleSubstances: {
-    [SubstanceType.Substance1]: false,
-    [SubstanceType.Substance2]: true,
-    [SubstanceType.Substance3]: true
+    [SubstanceType.Hormone]: false,
+    [SubstanceType.GProtein]: true,
+    [SubstanceType.Eumelanin]: true
   },
   graph: GraphType.Bar
 });
