@@ -39,6 +39,9 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       [OrganelleType.Intercell]: {
         selector: `#intercell`,
         opaqueSelector: '#Layer6_0_FILL'
+      },
+      [OrganelleType.Melanosome]: {
+        selector: '#melanosome_2'
       }
     };
   constructor(props: OrganelleWrapperProps) {
@@ -136,6 +139,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         {
           selector: this.organelleSelectorInfo[OrganelleType.Gates].selector,
           action: this.organelleClick.bind(this, OrganelleType.Gates)
+        },
+        {
+          selector: this.organelleSelectorInfo[OrganelleType.Melanosome].selector,
+          action: this.organelleClick.bind(this, OrganelleType.Melanosome)
         }
       ],
       species: [

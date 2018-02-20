@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree';
 import { stringToEnum } from '../utils';
-import { IOrganelle } from './Organelle';
+import { IOrganism } from './Organism';
+import { OrganelleType, IOrganelle } from './Organelle';
 
 export enum SubstanceType {
   Hormone = 'Hormone',
@@ -21,23 +22,32 @@ export const Substance: any = types
   .actions(self => ({
     // Cell models can be viewed here: 
     // https://docs.google.com/spreadsheets/d/19f0nk-F3UQ_-A-agq5JnuhJXGCtFYMT_JcYCQkyqnQI/edit?usp=sharing
-    step(milliseconds: number, parentOrganelle: IOrganelle) {
+    step(milliseconds: number, parentOrganism: IOrganism, parentOrganelle: IOrganelle) {
       let birthRate, deathRate;
-      let hormoneAmount = parentOrganelle.getTotalForSubstance(SubstanceType.Hormone);
-      let gProteinAmount = parentOrganelle.getTotalForSubstance(SubstanceType.GProtein);
-      let eumelaninAmount = parentOrganelle.getTotalForSubstance(SubstanceType.Eumelanin);
+      let hormoneAmount = parentOrganism.getTotalForOrganelleSubstance(
+        OrganelleType.Intercell, SubstanceType.Hormone);
+      let gProteinAmount = parentOrganism.getTotalForOrganelleSubstance(
+        OrganelleType.Cytoplasm, SubstanceType.GProtein);
+      let eumelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
+        OrganelleType.Melanosome, SubstanceType.Eumelanin);
 
       switch (self.type) {
         case SubstanceType.Hormone:
-          birthRate = (300 - .5 * hormoneAmount) / 20;
+          birthRate = parentOrganelle.type === OrganelleType.Intercell ? 
+            (300 - .5 * hormoneAmount) / 20 :
+            0;
           deathRate = (100 + .2 * hormoneAmount) / 20;
           break;
         case SubstanceType.GProtein:
-          birthRate = (150 - .1 * gProteinAmount + .8 * hormoneAmount) / 10;
+          birthRate = parentOrganelle.type === OrganelleType.Cytoplasm ? 
+            (150 - .1 * gProteinAmount + .8 * hormoneAmount) / 10 :
+            0;
           deathRate = (25 + .5 * gProteinAmount) / 10;
           break;
         case SubstanceType.Eumelanin:
-          birthRate = (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 3;
+          birthRate = parentOrganelle.type === OrganelleType.Melanosome ? 
+            (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 3 : 
+            0;
           deathRate = (25 + .5 * eumelaninAmount) / 3;
           break;
         default:
@@ -45,7 +55,7 @@ export const Substance: any = types
           deathRate = 0;
           break;
       }
-      self.amount = self.amount + birthRate - deathRate;
+      self.amount = Math.max(self.amount + birthRate - deathRate, 0);
     },
 
     increment(amount: number) {

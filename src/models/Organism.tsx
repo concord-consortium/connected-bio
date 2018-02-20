@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
 import { v4 as uuid } from 'uuid';
-import { Organelle, OrganelleType } from './Organelle';
+import { Organelle, IOrganelle, OrganelleType } from './Organelle';
 import { SubstanceType } from './Substance';
 
 export const ModelProperties = types
@@ -21,16 +21,27 @@ export const Organism = types
     getImageSrc() {
       return self.id === 'Field Mouse' ? 'assets/sandrat-light.png' : 'assets/sandrat-dark.png';
     },
-    getLevelForOrganelleSubstance(organelle: string, substanceType: SubstanceType) {
-      return self.organelles.get(organelle) ? self.organelles.get(organelle).getLevelForSubstance(substanceType) : 0;
+    getLevelForOrganelleSubstance(organelleType: string, substanceType: SubstanceType) {
+      let organelle = self.organelles.get(organelleType) as IOrganelle;
+      return organelle ? organelle.getLevelForSubstance(substanceType) : 0;
     },
-    getDeltaForOrganelleSubstance(organelle: string, substanceType: SubstanceType) {
-      return self.organelles.get(organelle) ? self.organelles.get(organelle).getDeltaForSubstance(substanceType) : 0;
+    getDeltaForOrganelleSubstance(organelleType: string, substanceType: SubstanceType) {
+      let organelle = self.organelles.get(organelleType) as IOrganelle;
+      return organelle ? organelle.getDeltaForSubstance(substanceType) : 0;
+    }
+  }))
+  .views(self => ({
+    getTotalForOrganelleSubstance(organelleType: string, substanceType: SubstanceType) {
+      let organelle = self.organelles.get(organelleType) as IOrganelle;
+      return organelle ? 
+        self.getLevelForOrganelleSubstance(organelleType, substanceType) + 
+          self.getDeltaForOrganelleSubstance(organelleType, substanceType) :
+        0;
     }
   }))
   .actions(self => ({
     incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number) {
-      let organelle = self.organelles.get(organelleType);
+      let organelle = self.organelles.get(organelleType) as IOrganelle;
       if (organelle) {
         organelle.incrementSubstance(substanceType, amount);
       } else {
@@ -40,8 +51,13 @@ export const Organism = types
       }
     },
     step(msPassed: number) {
-      self.organelles.keys().forEach(organelleKey => {
-        self.organelles.get(organelleKey).step(msPassed);
+      Object.keys(OrganelleType).map(key => OrganelleType[key]).forEach(organelleType => {
+        let organelle = self.organelles.get(organelleType) as IOrganelle;
+        if (!organelle) {
+          organelle = Organelle.create({type: organelleType});
+          self.organelles.set(organelleType, organelle);
+        }
+        organelle.step(msPassed, self);
       });
     }
   }));
@@ -57,38 +73,31 @@ export type IOrganelleRef = typeof OrganelleRef.Type;
 export const FieldMouse = Organism.create({
   id: 'Field Mouse',
   organelles: {
-    [OrganelleType.Nucleus]: {
-      type: OrganelleType.Nucleus,
+    [OrganelleType.Intercell]: {
+      type: OrganelleType.Intercell,
       substanceLevels: {
         [SubstanceType.Hormone] : {
           type: SubstanceType.Hormone,
           amount: 286
-        },
-        [SubstanceType.GProtein] : {
-          type: SubstanceType.GProtein,
-          amount: 589
-        },
-        [SubstanceType.Eumelanin] : {
-          type: SubstanceType.Eumelanin,
-          amount: 533
-        },
+        }
       }
     },
     [OrganelleType.Cytoplasm]: {
       type: OrganelleType.Cytoplasm,
       substanceLevels: {
-        [SubstanceType.Hormone] : {
-          type: SubstanceType.Hormone,
-          amount: 10
-        },
         [SubstanceType.GProtein] : {
           type: SubstanceType.GProtein,
-          amount: 65
-        },
+          amount: 589
+        }
+      }
+    },
+    [OrganelleType.Melanosome]: {
+      type: OrganelleType.Melanosome,
+      substanceLevels: {
         [SubstanceType.Eumelanin] : {
           type: SubstanceType.Eumelanin,
-          amount: 85
-        },
+          amount: 533
+        }
       }
     }
   }

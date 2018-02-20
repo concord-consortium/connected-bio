@@ -1,4 +1,5 @@
 import { types } from 'mobx-state-tree';
+import { IOrganism } from './Organism';
 import { Substance, ISubstance, SubstanceType } from './Substance';
 
 export enum OrganelleType {
@@ -6,10 +7,11 @@ export enum OrganelleType {
   Cytoplasm = 'CYTOPLASM',
   Golgi = 'GOLGI',
   Gates = 'GATES',
-  Intercell = 'INTERCELL'
+  Intercell = 'INTERCELL',
+  Melanosome = 'MELANOSOME'
 }
 
-export const Organelle = types
+export const Organelle: any = types
   .model('Organelle', {
     type: types.enumeration('OrganelleType', Object.keys(OrganelleType).map(key => OrganelleType[key])),
     substanceLevels: types.optional(types.map(Substance), {}),
@@ -42,14 +44,14 @@ export const Organelle = types
         }));
       }
     },
-    step(msPassed: number) {
+    step(msPassed: number, parentOrganism: IOrganism) {
       Object.keys(SubstanceType).map(key => SubstanceType[key]).forEach(substanceType => {
         let substance = self.substanceDeltas.get(substanceType) as ISubstance;
         if (!substance) {
           substance = Substance.create({type: substanceType});
           self.substanceDeltas.set(substanceType, substance);
         }
-        substance.step(msPassed, self);
+        substance.step(msPassed, parentOrganism, self);
       });
     }
   }));
