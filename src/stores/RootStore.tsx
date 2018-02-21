@@ -1,5 +1,5 @@
 import { types } from 'mobx-state-tree';
-import { Organism, OrganelleRef, IOrganelleRef, FieldMouse, ForestMouse } from '../models/Organism';
+import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, ForestMouse } from '../models/Organism';
 import { Substance, ISubstance, SubstanceType } from '../models/Substance';
 import { AppStore, appStore } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
@@ -70,7 +70,7 @@ const RootStore = types
 export const rootStore = RootStore.create({
   mode: Mode.Normal,
   organisms: {
-    'Field Mouse': FieldMouse,
+    'Beach Mouse': BeachMouse,
     'Forest Mouse': ForestMouse
   },
   appStore,

@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
 import { v4 as uuid } from 'uuid';
-import { Organism, IOrganism, FieldMouse, ForestMouse } from '../models/Organism';
+import { Organism, IOrganism, BeachMouse, ForestMouse } from '../models/Organism';
 import { stringToEnum } from '../utils';
 
 export enum View {
@@ -48,7 +48,7 @@ export const appStore = AppStore.create({
   boxes: {
     'box-1': {
       id: 'box-1',
-      organism: FieldMouse,
+      organism: BeachMouse,
       view: View.Cell
     },
     'box-2': {

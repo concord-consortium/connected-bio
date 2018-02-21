@@ -117,8 +117,8 @@ export const OrganelleRef = types
   });
 export type IOrganelleRef = typeof OrganelleRef.Type;
 
-export const FieldMouse = Organism.create({
-  id: 'Field Mouse',
+export const BeachMouse = Organism.create({
+  id: 'Beach Mouse',
   organelles: {
     [OrganelleType.Intercell]: {
       type: OrganelleType.Intercell,
