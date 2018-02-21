@@ -4,8 +4,8 @@ import { observer } from 'mobx-react';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
-
-declare var Organelle: any;
+// import Organelle from 'organelle';       // this does not work yet because Organelle has no type defs
+const Organelle: any = require('organelle');
 
 interface OrganelleWrapperProps {
   name: string;
@@ -136,10 +136,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       ],
       species: [
         'organelles/melanosome.yml',
-        'organelles/hexagon.yml',
-        'organelles/triangle.yml'
-        // 'organelles/g-protein.yml',
-        // 'organelles/g-protein-part.yml'
+        'organelles/dots.yml'
       ],
       hotStart: 1000
     }).then((m: any) => {
@@ -229,7 +226,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       if (this.state.hoveredOrganelle) {
         opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
       }
-      
+
       if (mode === Mode.Assay) {
         rootStore.lockedAssays.forEach((lockedAssay) => {
           if (lockedAssay.organism.id === this.props.organism.id) {
