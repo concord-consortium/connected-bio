@@ -134,7 +134,7 @@ export const FieldMouse = Organism.create({
       substanceLevels: {
         [SubstanceType.GProtein] : {
           type: SubstanceType.GProtein,
-          amount: 208
+          amount: 0
         }
       }
     },

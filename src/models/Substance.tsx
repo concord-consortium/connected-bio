@@ -42,7 +42,7 @@ export const Substance: any = types
           birthRate = parentOrganelle.type === OrganelleType.Cytoplasm
             ? parentOrganism.id === 'Forest Mouse'
               ? (150 - .1 * gProteinAmount + .8 * hormoneAmount) / 10
-              : (150 - .1 * gProteinAmount) / 10
+              : (25 - .1 * gProteinAmount) / 10
             : 0;
           deathRate = (25 + .5 * gProteinAmount) / 10;
           break;
@@ -50,7 +50,7 @@ export const Substance: any = types
           birthRate = parentOrganelle.type === OrganelleType.Melanosome
             ? parentOrganism.id === 'Forest Mouse'
               ? (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
-              : (-79 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
+              : (25 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
             : 0;
           deathRate = (25 + .5 * eumelaninAmount) / 10;
           break;

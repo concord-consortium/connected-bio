@@ -110,7 +110,8 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         display: false,
         yAxes: [{
           ticks: {
-            min: 0
+            min: 0,
+            max: 800
           }
         }],
         xAxes: [{
