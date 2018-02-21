@@ -3,24 +3,25 @@ import { v4 as uuid } from 'uuid';
 import { Organelle, IOrganelle, OrganelleType } from './Organelle';
 import { SubstanceType } from './Substance';
 
+export enum Darkness {
+  LIGHT, DARK, DARKEST
+}
+
 export const ModelProperties = types
   .model('ModelProperties', {
     albino: types.optional(types.boolean, false),
     working_tyr1: types.optional(types.boolean, false),
     working_myosin_5a: types.optional(types.boolean, true),
-    open_gates: types.optional(types.boolean, false)
+    open_gates: types.optional(types.boolean, false),
+    lightness: types.number
   });
 
 export const Organism = types
   .model('Organism', {
     id: types.optional(types.identifier(types.string), () => uuid()),
     organelles: types.map(Organelle),
-    modelProperties: types.optional(ModelProperties, () => ModelProperties.create())
   })
   .views(self => ({
-    getImageSrc() {
-      return self.id === 'Field Mouse' ? 'assets/sandrat-light.png' : 'assets/sandrat-dark.png';
-    },
     getLevelForOrganelleSubstance(organelleType: string, substanceType: SubstanceType) {
       let organelle = self.organelles.get(organelleType) as IOrganelle;
       return organelle ? organelle.getLevelForSubstance(substanceType) : 0;
@@ -38,6 +39,52 @@ export const Organism = types
           self.getDeltaForOrganelleSubstance(organelleType, substanceType) :
         0;
     }
+  }))
+  .views(self => ({
+    get darkness() {
+      let eumelaninLevel = self.getTotalForOrganelleSubstance(
+        OrganelleType.Melanosome, SubstanceType.Eumelanin
+      );
+      return eumelaninLevel < 10
+        ? Darkness.LIGHT
+        : eumelaninLevel > 575
+          ? Darkness.DARKEST
+          : Darkness.DARK;
+    },
+  }))
+  .views(self => ({
+    get modelProperties() {
+      let lightness;
+      switch (self.darkness) {
+        case Darkness.LIGHT:
+        default:
+          lightness = 10;
+          break;
+        case Darkness.DARK:
+          lightness = -1;
+          break;
+        case Darkness.DARKEST:
+          lightness = -2.5;
+      }
+      return {
+        albino: false,
+        working_tyr1: false,
+        working_myosin_5a: true,
+        open_gates: false,
+        lightness: lightness
+      };
+    },
+    getImageSrc() {
+      switch (self.darkness) {
+        case Darkness.LIGHT:
+        default:
+          return 'assets/sandrat-light.png';
+        case Darkness.DARK:
+          return 'assets/sandrat-dark.png';
+        case Darkness.DARKEST:
+          return 'assets/sandrat-darkest.png';
+      }
+    },
   }))
   .actions(self => ({
     incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number) {

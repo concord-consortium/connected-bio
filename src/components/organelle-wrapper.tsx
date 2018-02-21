@@ -80,17 +80,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
             denominator: 20
           }
         },
-        lightness: {
-          ratio: {
-            numerator: {
-              count: {
-                species: 'melanosome',
-                state: 'waiting_on_nuclear_actin_terminal'
-              }
-            },
-            denominator: 10
-          }
-        },
         grayness: {
           ratio: {
             numerator: {
@@ -161,6 +150,13 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     autorun(() => {
       if (rootStore.mode === Mode.Normal) {
         this.setState({hoveredOrganelle: null});
+      }
+    });
+
+    autorun(() => {
+      let lightness = this.props.organism.modelProperties.lightness;
+      if (this.model) {
+        this.model.world.setProperty('lightness', lightness);
       }
     });
   }

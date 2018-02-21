@@ -49,10 +49,10 @@ export const Substance: any = types
         case SubstanceType.Eumelanin:
           birthRate = parentOrganelle.type === OrganelleType.Melanosome
             ? parentOrganism.id === 'Forest Mouse'
-              ? (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 3
-              : (-79 - .1 * eumelaninAmount + .5 * gProteinAmount) / 3
+              ? (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
+              : (-79 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
             : 0;
-          deathRate = (25 + .5 * eumelaninAmount) / 3;
+          deathRate = (25 + .5 * eumelaninAmount) / 10;
           break;
         default:
           birthRate = 0;
