@@ -36,7 +36,7 @@ export const Organelle: any = types
     incrementSubstance(substanceType: SubstanceType, amount: number) {
       let substanceLevel: ISubstance = self.substanceDeltas.get(substanceType);
       if (substanceLevel) {
-        substanceLevel.increment(amount);
+        substanceLevel.increment(amount, self);
       } else {
         self.substanceDeltas.set(substanceType, Substance.create({
           type: substanceType,

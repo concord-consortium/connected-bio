@@ -20,8 +20,14 @@ export const Substance: any = types
     }
   }))
   .actions(self => ({
+    increment(amount: number, parentOrganelle: IOrganelle) {
+      let base = parentOrganelle.getLevelForSubstance(self.type);
+      self.amount = Math.max(self.amount + amount, -1 * base);
+    }
+  }))
+  .actions(self => ({
     // Cell models can be viewed here: 
-    // https://docs.google.com/spreadsheets/d/19f0nk-F3UQ_-A-agq5JnuhJXGCtFYMT_JcYCQkyqnQI/edit?usp=sharing
+    // https://docs.google.com/spreadsheets/d/19f0nk-F3UQ_-A-agq5JnuhJXGCtFYMT_JcYCQkyqnQI/edit
     step(milliseconds: number, parentOrganism: IOrganism, parentOrganelle: IOrganelle) {
       let birthRate, deathRate;
       let hormoneAmount = parentOrganism.getTotalForOrganelleSubstance(
@@ -59,11 +65,7 @@ export const Substance: any = types
           deathRate = 0;
           break;
       }
-      self.amount = Math.max(self.amount + birthRate - deathRate, 0);
-    },
-
-    increment(amount: number) {
-      self.amount += amount;
+      self.increment(birthRate - deathRate, parentOrganelle);
     }
   }));
 export type ISubstance = typeof Substance.Type;
