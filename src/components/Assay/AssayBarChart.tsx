@@ -6,6 +6,7 @@ import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from '../../stores/RootStore';
 import { assayStore } from '../../stores/AssayStore';
+import { stringToEnum } from '../../utils';
 
 interface AssayBarProps {
   colors: string[];
@@ -15,68 +16,90 @@ interface AssayBarState {}
 
 @observer
 class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
-  createBar(activeSubstances: string[], assayInfo: IOrganelleRef, barNum: number) {
-    let organism = rootStore.organisms.get(assayInfo.organism.id);
-    let organelleType = assayInfo.organelleType;
+  createBars(allAssays: IOrganelleRef[], substanceType: SubstanceType, barNum: number) {
     let bars = [];
     
-    let barColor = this.props.colors[barNum % this.props.colors.length];
+    let barColor = this.getBarColor(substanceType, this.props.colors);
     bars.push({
-      data: activeSubstances.map(function(substance: SubstanceType) {
-              let substanceLevel = organism.getLevelForOrganelleSubstance(organelleType, substance);
-              let deltaLevel = organism.getDeltaForOrganelleSubstance(organelleType, substance);
-              // Shorten any bars with substance removed so total bar length is unchanged
-              if (deltaLevel < 0) {
-                substanceLevel += deltaLevel;
-              }
-              return substanceLevel;
-            }),
-      label: organism.id + ' ' + assayInfo.organelleType.toLowerCase(),
+      data: allAssays.map(function(assayInfo: IOrganelleRef) {
+        let organism = rootStore.organisms.get(assayInfo.organism.id);
+        let organelleType = assayInfo.organelleType;
+        let substanceLevel = organism.getLevelForOrganelleSubstance(organelleType, substanceType);
+        let deltaLevel = organism.getDeltaForOrganelleSubstance(organelleType, substanceType);
+        // Shorten any bars with substance removed so total bar length is unchanged
+        if (deltaLevel < 0) {
+          substanceLevel += deltaLevel;
+        }
+        return substanceLevel;
+      }),
+      label: substanceType,
       backgroundColor: barColor,
       stack: 'Stack ' + barNum
     });
 
     bars.push({
-      data: activeSubstances.map(function(substance: SubstanceType) {
-              return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substance));
-            }),
-      label: organism.id + ' ' + assayInfo.organelleType + ' ADDED#',
+      data: allAssays.map(function(assayInfo: IOrganelleRef) {
+        let organism = rootStore.organisms.get(assayInfo.organism.id);
+        let organelleType = assayInfo.organelleType;
+        return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substanceType));
+      }),
+      label: substanceType + ' ADDED#',
       backgroundColor: 'green',
       stack: 'Stack ' + barNum
     });
 
     bars.push({
-      data: activeSubstances.map(function(substance: SubstanceType) {
-              return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substance) * -1);
-            }),
-      label: organism.id + ' ' + assayInfo.organelleType + ' SUBTRACTED#',
+      data: allAssays.map(function(assayInfo: IOrganelleRef) {
+        let organism = rootStore.organisms.get(assayInfo.organism.id);
+        let organelleType = assayInfo.organelleType;
+        return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substanceType) * -1);
+      }),
+      label: substanceType + ' SUBTRACTED#',
       backgroundColor: barColor + '77',
       stack: 'Stack ' + barNum
     });
     return bars;
   }
 
+  getBarColor(substanceType: SubstanceType, allColors: string[]) {
+    switch (substanceType) {
+      case SubstanceType.Hormone:
+      default:
+        return allColors[0];
+      case SubstanceType.GProtein:
+        return allColors[1];
+      case SubstanceType.Eumelanin:
+        return allColors[2];
+    }
+  }
+
   render() {
     let {visibleSubstances} = assayStore;
     let {activeAssay, lockedAssays} = rootStore;
-    let activeSubstances = visibleSubstances.keys().filter((substanceKey) => visibleSubstances.get(substanceKey));
+    let activeSubstances: string[] = visibleSubstances.keys()
+      .filter((substanceKey) => visibleSubstances.get(substanceKey));
+    let allAssays: IOrganelleRef[] = [];
+
+    let activeGraphed = false;
+    lockedAssays.forEach(lockedAssay => {
+      allAssays.push(lockedAssay);
+      if (activeAssay && isEqual(lockedAssay, activeAssay)) {
+        activeGraphed = true;
+      }
+    });
+    if (activeAssay && !activeGraphed) {
+      allAssays.push(activeAssay);
+    }
 
     let data: Chart.ChartData = {
       datasets: [],
-      labels: activeSubstances,
+      labels: allAssays.map(assay => assay.organism.id + ' ' + assay.organelleType.toLowerCase()),
     };
-    let activeGraphed = false;
-    lockedAssays.forEach((lockedAssay, i) => {
-        data.datasets = data.datasets.concat(this.createBar(activeSubstances, lockedAssay, i));
-        if (activeAssay && isEqual(lockedAssay, activeAssay)) {
-          activeGraphed = true;
-        }
-    });
-    if (activeAssay && !activeGraphed) {
+    activeSubstances.forEach((activeSubstance, i) => {
       data.datasets = data.datasets.concat(
-        this.createBar(activeSubstances, activeAssay, lockedAssays.length));
-    }
-    
+        this.createBars(allAssays, stringToEnum(activeSubstance, SubstanceType), i));
+    });
+
     let options: any = {
       title: {
         display: true,

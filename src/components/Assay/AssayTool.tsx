@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { RaisedButton, Checkbox } from 'material-ui';
+import { RaisedButton, /*Checkbox*/ } from 'material-ui';
 import ClockIcon from 'material-ui/svg-icons/action/alarm-on';
 import NoClockIcon from 'material-ui/svg-icons/action/alarm-off';
 import { SubstanceType } from '../../models/Substance';
@@ -18,7 +18,7 @@ interface AssayToolProps {
 
 interface AssayToolState {}
 
-const defaultColors = ['#3366CC', '#FF9900', '#990099', '#3B3EAC', '#0099C6',
+const defaultColors = ['#3366CC', '#DC3912', '#FF9900', '#990099', '#3B3EAC', '#0099C6',
   '#DD4477', '#66AA00', '#B82E2E', '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC', '#E67300',
   '#8B0707', '#329262', '#5574A6', '#3B3EAC'];
 
@@ -82,6 +82,7 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             icon={assayStore.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
           />
         </div>
+        {/*
         <div className="chart-boxes">
           <Checkbox 
             style={{width: '200px'}} 
@@ -105,6 +106,7 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             onCheck={this.updateCheck} 
           />
         </div>
+        */}
       </div>
     );
   }
