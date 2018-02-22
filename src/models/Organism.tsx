@@ -150,8 +150,8 @@ export const BeachMouse = Organism.create({
   }
 });
 
-export const ForestMouse = Organism.create({
-  id: 'Forest Mouse',
+export const FieldMouse = Organism.create({
+  id: 'Field Mouse',
   organelles: {
     [OrganelleType.Intercell]: {
       type: OrganelleType.Intercell,

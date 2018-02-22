@@ -46,7 +46,7 @@ export const Substance: any = types
           break;
         case SubstanceType.GProtein:
           birthRate = parentOrganelle.type === OrganelleType.Cytoplasm
-            ? parentOrganism.id === 'Forest Mouse'
+            ? parentOrganism.id === 'Field Mouse'
               ? (150 - .1 * gProteinAmount + .8 * hormoneAmount) / 10
               : (25 - .1 * gProteinAmount) / 10
             : 0;
@@ -54,7 +54,7 @@ export const Substance: any = types
           break;
         case SubstanceType.Eumelanin:
           birthRate = parentOrganelle.type === OrganelleType.Melanosome
-            ? parentOrganism.id === 'Forest Mouse'
+            ? parentOrganism.id === 'Field Mouse'
               ? (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
               : (25 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
             : 0;

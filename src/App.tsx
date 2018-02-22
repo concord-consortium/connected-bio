@@ -129,7 +129,7 @@ class App extends React.Component<AppProps, AppState> {
                 <div>
                   <select name="box-1" value={appStore.getBoxOrgName('box-1')} onChange={this.handleOrgChange}>
                     <option value="Beach Mouse">Beach Mouse</option>
-                    <option value="Forest Mouse">Forest Mouse</option>
+                    <option value="Field Mouse">Field Mouse</option>
                   </select>
                   <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
                     <option value={View.None}>None</option>
@@ -151,7 +151,7 @@ class App extends React.Component<AppProps, AppState> {
                 <div>
                   <select name="box-2" value={appStore.getBoxOrgName('box-2')} onChange={this.handleOrgChange}>
                     <option value="Beach Mouse">Beach Mouse</option>
-                    <option value="Forest Mouse">Forest Mouse</option>
+                    <option value="Field Mouse">Field Mouse</option>
                   </select>
                   <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
                     <option value={View.None}>None</option>

@@ -80,7 +80,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
     let options: any = {
       title: {
         display: true,
-        text: 'SubstanceType Breakdown',
+        text: 'Substance Breakdown',
         fontSize: 25
       },
       legend: {
