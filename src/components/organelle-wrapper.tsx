@@ -4,8 +4,7 @@ import { observer } from 'mobx-react';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
-// import Organelle from 'organelle';       // this does not work yet because Organelle has no type defs
-const Organelle: any = require('organelle');
+import { createModel } from 'organelle';
 
 interface OrganelleWrapperProps {
   name: string;
@@ -57,7 +56,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   componentDidMount() {
     const {modelProperties} = this.props.organism;
 
-    Organelle.createModel({
+    createModel({
       container: {
         elId: this.props.name,
         width: 500,
@@ -262,9 +261,9 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   organelleClick(organelleType: OrganelleType) {
     if (rootStore.mode === Mode.Assay) {
       let org = rootStore.organisms.get(this.props.organism.id);
-      let organelleInfo = OrganelleRef.create({ 
-        organism: org, 
-        organelleType 
+      let organelleInfo = OrganelleRef.create({
+        organism: org,
+        organelleType
       });
       rootStore.setActiveAssay(organelleInfo);
     } else if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
