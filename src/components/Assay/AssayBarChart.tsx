@@ -103,8 +103,8 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
     let options: any = {
       title: {
         display: true,
-        text: 'Substance Breakdown',
-        fontSize: 25
+        text: 'Substance Amount',
+        fontSize: 22
       },
       legend: {
         display: true,
@@ -136,9 +136,10 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
         <HorizontalBar
           data={data}
           options={options}
+          height={300}
         />
     );
   }
 }
-  
+
 export default AssayBarChart;

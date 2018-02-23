@@ -95,12 +95,12 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         );
       }
     }
-    
+
     let options: any = {
       title: {
         display: true,
-        text: 'SubstanceType Breakdown Over Time',
-        fontSize: 25
+        text: 'Substance Amount Over Time',
+        fontSize: 22
       },
       legend: {
         display: true,
@@ -129,9 +129,10 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         <Scatter
           data={data}
           options={options}
+          height={300}
         />
     );
   }
 }
-  
+
 export default AssayLineGraph;

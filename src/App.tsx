@@ -90,7 +90,7 @@ class App extends React.Component<AppProps, AppState> {
       return <img src={imgSrc} width="500px" />;
     } else {
       return (
-        <OrganelleWrapper 
+        <OrganelleWrapper
           name={boxId + '-model'}
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
@@ -120,13 +120,10 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <MuiThemeProvider>
         <div className={'App' + (this.isModeDropper(rootStore.mode) ? ' dropper' : '')}>
-          <header className="App-header">
-            <h1 className="App-title">Connected Bio</h1>
-          </header>
           <div className="four-up">
             <div>
-              <div>
-                <div>
+              <div className="view-box" id="top-left">
+                <div className="view-selection-container">
                   <select name="box-1" value={appStore.getBoxOrgName('box-1')} onChange={this.handleOrgChange}>
                     <option value="Beach Mouse">Beach Mouse</option>
                     <option value="Field Mouse">Field Mouse</option>
@@ -137,18 +134,18 @@ class App extends React.Component<AppProps, AppState> {
                     <option value={View.Cell}>Cell</option>
                   </select>
                 </div>
-                <div 
-                  className="box" 
+                <div
+                  className="box"
                   onClick={this.forceDropper}
-                  onMouseUp={this.forceDropper} 
-                  onMouseDown={this.forceDropper}  
+                  onMouseUp={this.forceDropper}
+                  onMouseDown={this.forceDropper}
                   onMouseMove={this.forceDropper}
                 >
                   {this.getBoxView('box-1')}
                 </div>
               </div>
-              <div>
-                <div>
+              <div className="view-box" id="bottom-left">
+                <div className="view-selection-container">
                   <select name="box-2" value={appStore.getBoxOrgName('box-2')} onChange={this.handleOrgChange}>
                     <option value="Beach Mouse">Beach Mouse</option>
                     <option value="Field Mouse">Field Mouse</option>
@@ -159,11 +156,11 @@ class App extends React.Component<AppProps, AppState> {
                     <option value={View.Cell}>Cell</option>
                   </select>
                 </div>
-                <div 
-                  className="box" 
+                <div
+                  className="box"
                   onClick={this.forceDropper}
-                  onMouseUp={this.forceDropper} 
-                  onMouseDown={this.forceDropper}  
+                  onMouseUp={this.forceDropper}
+                  onMouseDown={this.forceDropper}
                   onMouseMove={this.forceDropper}
                 >
                   {this.getBoxView('box-2')}
@@ -171,7 +168,7 @@ class App extends React.Component<AppProps, AppState> {
               </div>
             </div>
             <div className="tools">
-              <AssayTool 
+              <AssayTool
                 onAssayToggle={this.handleAssayToggle}
                 onAssayClear={this.handleAssayClear}
               />

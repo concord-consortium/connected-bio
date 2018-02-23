@@ -45,42 +45,47 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
     return (
       <div className="substance-manipulator">
         <div className="substance-buttons">
-          <RaisedButton 
+          <RaisedButton
             label={'Add substance'}
             onClick={this.handleAddModeToggle}
             disabled={!(mode === Mode.Normal || mode === Mode.Add)}
-            style={{width: '200px', margin: '5px'}}
+            style={{width: '150px', margin: '5px'}}
+            labelStyle={{ fontSize: '11px'}}
             primary={mode !== Mode.Add}
             secondary={mode === Mode.Add}
           />
-          <RaisedButton 
-            label={'Subtract substance'}
+          <RaisedButton
+            label={'Remove substance'}
             onClick={this.handleSubtractModeToggle}
             disabled={!(mode === Mode.Normal || mode === Mode.Subtract)}
-            style={{width: '200px', margin: '5px'}}
+            style={{width: '150px', margin: '5px'}}
+            labelStyle={{ fontSize: '11px'}}
             primary={mode !== Mode.Subtract}
             secondary={mode === Mode.Subtract}
           />
         </div>
-        <RadioButtonGroup 
-          name="substance-picker" 
-          defaultSelected={this.state.selectedSubstance} 
+        <RadioButtonGroup
+          name="substance-picker"
+          defaultSelected={this.state.selectedSubstance}
           onChange={this.updateSelection}
         >
           <RadioButton
-            style={{width: '200px'}} 
+            style={{width: '200px'}}
+            labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Hormone}
             label="Hormone"
             disabled={mode !== Mode.Normal}
           />
           <RadioButton
-            style={{width: '200px'}} 
+            style={{width: '200px'}}
+            labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.GProtein}
             label="Activated G-Protein"
             disabled={mode !== Mode.Normal}
           />
           <RadioButton
-            style={{width: '200px'}} 
+            style={{width: '200px'}}
+            labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Eumelanin}
             label="Eumelanin"
             disabled={mode !== Mode.Normal}
@@ -90,5 +95,5 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
     );
   }
 }
-  
+
 export default SubstanceManipulator;

@@ -53,30 +53,33 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
       <AssayBarChart
         colors={defaultColors}
       />);
-    
+
     return (
       <div className="chart">
         {graph}
         <div className="chart-buttons">
-          <RaisedButton 
+          <RaisedButton
             label={'Add assay'}
             disabled={!(mode === Mode.Normal || mode === Mode.Assay)}
             onClick={this.props.onAssayToggle}
-            style={{width: '150px', margin: '5px'}}
+            style={{width: '120px', margin: '5px'}}
+            labelStyle={{ fontSize: '11px'}}
             primary={mode !== Mode.Assay}
             secondary={mode === Mode.Assay}
           />
-          <RaisedButton 
+          <RaisedButton
             label={'Clear assays'}
             disabled={!(mode === Mode.Normal)}
             onClick={this.props.onAssayClear}
-            style={{width: '150px', margin: '5px'}}
+            style={{width: '120px', margin: '5px'}}
+            labelStyle={{ fontSize: '11px'}}
             primary={true}
           />
-          <RaisedButton 
+          <RaisedButton
             disabled={mode !== Mode.Normal}
             onClick={this.onGraphSwitch}
-            style={{width: '150px', margin: '5px'}}
+            style={{width: '120px', margin: '5px'}}
+            labelStyle={{ fontSize: '11px'}}
             primary={true}
             labelPosition="before"
             icon={assayStore.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
@@ -84,26 +87,26 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
         </div>
         {/*
         <div className="chart-boxes">
-          <Checkbox 
-            style={{width: '200px'}} 
-            checked={assayStore.visibleSubstances.get(SubstanceType.Hormone)} 
-            id={SubstanceType.Hormone} 
-            label={'Hormone'} 
-            onCheck={this.updateCheck} 
+          <Checkbox
+            style={{width: '200px'}}
+            checked={assayStore.visibleSubstances.get(SubstanceType.Hormone)}
+            id={SubstanceType.Hormone}
+            label={'Hormone'}
+            onCheck={this.updateCheck}
           />
-          <Checkbox 
-            style={{width: '200px'}} 
-            checked={assayStore.visibleSubstances.get(SubstanceType.GProtein)} 
-            id={SubstanceType.GProtein} 
-            label={'Activated G-Protein'} 
-            onCheck={this.updateCheck} 
+          <Checkbox
+            style={{width: '200px'}}
+            checked={assayStore.visibleSubstances.get(SubstanceType.GProtein)}
+            id={SubstanceType.GProtein}
+            label={'Activated G-Protein'}
+            onCheck={this.updateCheck}
           />
-          <Checkbox 
-            style={{width: '200px'}} 
-            checked={assayStore.visibleSubstances.get(SubstanceType.Eumelanin)} 
-            id={SubstanceType.Eumelanin} 
-            label={'Eumelanin'} 
-            onCheck={this.updateCheck} 
+          <Checkbox
+            style={{width: '200px'}}
+            checked={assayStore.visibleSubstances.get(SubstanceType.Eumelanin)}
+            id={SubstanceType.Eumelanin}
+            label={'Eumelanin'}
+            onCheck={this.updateCheck}
           />
         </div>
         */}
@@ -111,5 +114,5 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
     );
   }
 }
-  
+
 export default AssayTool;
