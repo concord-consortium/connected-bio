@@ -1,19 +1,23 @@
 ---
 name: triangle
 image: assets/triangle.svg
-selector: "#triangle"
 spawn:
   'on':
     selector: "#intercellular-paths path"
     which: random
-  every: 50
+  every: 25
+  # never: true
 dieWhenExitingWorld: false
 properties:
-  speed: 1.2
+  speed: [0.9, 1.2]
   size: 1
+  rotation_speed: [-2, 2]
 initialState: flowing
 rules:
   flowing:
+  - change:
+      prop: direction
+      by: rotation_speed
   - follow:
       selector: "#intercellular-paths path"
       which: nearest

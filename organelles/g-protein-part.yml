@@ -1,31 +1,62 @@
 ---
-name: g-protein-part
-image: assets/g-protein-part.svg
-selector: "#gbody_x5F_part"
+name: gProteinPart
+image: assets/g-protein.svg
 spawn:
   'on':
-    selector: "#g-protein-paths path"
-    which: 1
+    selector: "#path-away-from-receptor-part"
+    which: random
   never: true
+dieWhenExitingWorld: false
 properties:
-  speed: 0.6
   size: 1
-initialState: starting
+  speed: 0.9
+  image_selector: gbodypart1
+initialState: findPathStart
 rules:
-  starting:
-  - wait:
-      for: 200
+  findPathStart:
+  - move_to:
+      selector: "#path-away-from-receptor-part"
+      which: random
       finally:
-        switch_state: away_from_receptor
-  away_from_receptor:
+        switch_state: away
+  away:
   - follow:
-      selector: "#g-protein-paths path"
-      which: 1
+      selector: "#path-away-from-receptor-part"
+      which: nearest
       direction: forward
       finally:
-        switch_state: dying
-  dying:
-  - wait:
-      for: 200
+        die: true
+  # *** click functions ***
+  in_cell_from_click:
+  - move_to:
+      selector: "#path-away-from-receptor-part"
+      which: nearest
+      at: 1
+      finally:
+        die: true
+  diffuse:
+  - set:
+      speed: 0.2
+  - diffuse:
+      for: 300
+      bounding_paths:
+        - "#intercell_zoom_bounds path"
+      finally:
+        die: true
+  find_flowing_path:
+  - move_to:
+      selector: "#intercellular-paths path"
+      which:
+        any_of_nearest: 2
+      at: nearest
+      direction: random
+      finally:
+        switch_state: flowing
+  flowing:
+  - follow:
+      selector: "#intercellular-paths path"
+      which: nearest
+      at: nearest
+      direction: forward
       finally:
         die: true
