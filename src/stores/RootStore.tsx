@@ -34,7 +34,7 @@ const RootStore = types
     setLockedAssays(assayOrganelles: any) {
       self.lockedAssays = assayOrganelles;
     },
-    
+
     setActiveSubstanceManipulation(substanceType: SubstanceType, amount: number) {
       self.activeSubstanceManipulation = Substance.create({
         type: substanceType,
@@ -48,13 +48,7 @@ const RootStore = types
       });
 
       self.time += msPassed;
-    },
-
-    changeSubstanceLevel(organelleRef: IOrganelleRef) {
-      let {substanceType, amount} = self.activeSubstanceManipulation as ISubstance;
-      self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-        organelleRef.organelleType, substanceType, amount);
-      }
+    }
   }))
   .actions(self => ({
     toggleSubstanceManipulator(manipulationMode: Mode, substance: SubstanceType, amount: number) {
@@ -64,6 +58,13 @@ const RootStore = types
       } else {
         self.setMode(Mode.Normal);
       }
+    },
+
+    changeSubstanceLevel(organelleRef: IOrganelleRef) {
+      let {substanceType, amount} = self.activeSubstanceManipulation as ISubstance;
+      self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
+        organelleRef.organelleType, substanceType, amount);
+      self.setMode(Mode.Normal);
     }
   }));
 
