@@ -1,4 +1,5 @@
-import { types } from 'mobx-state-tree';
+import { types, clone } from 'mobx-state-tree';
+import { isEqual } from 'lodash';
 import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse } from '../models/Organism';
 import { Substance, ISubstance, SubstanceType } from '../models/Substance';
 import { AppStore, appStore } from './AppStore';
@@ -27,10 +28,6 @@ const RootStore = types
       self.mode = newMode;
     },
 
-    setActiveAssay(assayOrganelle: IOrganelleRef) {
-      self.activeAssay = assayOrganelle;
-    },
-
     setLockedAssays(assayOrganelles: any) {
       self.lockedAssays = assayOrganelles;
     },
@@ -51,6 +48,21 @@ const RootStore = types
     }
   }))
   .actions(self => ({
+    setActiveAssay(assayOrganelle: IOrganelleRef) {
+      self.activeAssay = assayOrganelle;
+
+      // add to locked assays immediately
+      let repeatAssay = self.lockedAssays.some((assay: IOrganelleRef) => {
+        return isEqual(assay, self.activeAssay);
+      });
+      if (!repeatAssay) {
+        self.setLockedAssays(self.lockedAssays.concat([clone(self.activeAssay)]));
+      }
+
+      // switch back to normal mode
+      self.setMode(Mode.Normal);
+    },
+
     toggleSubstanceManipulator(manipulationMode: Mode, substance: SubstanceType, amount: number) {
       if (self.mode === Mode.Normal) {
         self.setMode(manipulationMode);

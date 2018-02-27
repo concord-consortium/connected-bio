@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { clone } from 'mobx-state-tree';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { IOrganism, IOrganelleRef } from './models/Organism';
-import { isEqual } from 'lodash';
+import { IOrganism } from './models/Organism';
 import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
 import { stringToEnum } from './utils';
@@ -48,18 +46,6 @@ class App extends React.Component<AppProps> {
   handleAssayToggle() {
     if (rootStore.mode === Mode.Assay) {
       rootStore.setMode(Mode.Normal);
-      // Lock an assay after it is finished, if one exists
-      let { activeAssay } = rootStore;
-      if (activeAssay) {
-        let repeatAssay = rootStore.lockedAssays
-          .reduce((accumulator: boolean, assay: IOrganelleRef) => {
-            return accumulator || isEqual(assay, activeAssay);
-          },      false);
-        if (!repeatAssay) {
-          rootStore.setLockedAssays(rootStore.lockedAssays.concat([clone(activeAssay)]));
-        }
-      }
-      rootStore.setActiveAssay(null);
     } else {
       rootStore.setMode(Mode.Assay);
     }
