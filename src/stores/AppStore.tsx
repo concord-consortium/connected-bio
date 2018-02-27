@@ -6,7 +6,8 @@ import { stringToEnum } from '../utils';
 export enum View {
   None = 'NONE',
   Organism = 'ORGANISM',
-  Cell = 'CELL'
+  Cell = 'CELL',
+  Receptor = 'RECEPTOR'
 }
 
 const Box = types

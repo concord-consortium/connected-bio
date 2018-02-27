@@ -91,6 +91,7 @@ class App extends React.Component<AppProps, AppState> {
     } else {
       return (
         <OrganelleWrapper
+          key={view}        // unmount and remount OrganelleWrapper when `view` changes
           name={boxId + '-model'}
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}
@@ -132,6 +133,7 @@ class App extends React.Component<AppProps, AppState> {
                     <option value={View.None}>None</option>
                     <option value={View.Organism}>Organism</option>
                     <option value={View.Cell}>Cell</option>
+                    <option value={View.Receptor}>Receptor</option>
                   </select>
                 </div>
                 <div
@@ -154,6 +156,7 @@ class App extends React.Component<AppProps, AppState> {
                     <option value={View.None}>None</option>
                     <option value={View.Organism}>Organism</option>
                     <option value={View.Cell}>Cell</option>
+                    <option value={View.Receptor}>Receptor</option>
                   </select>
                 </div>
                 <div

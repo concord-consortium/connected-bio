@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
+import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
@@ -11,7 +12,7 @@ interface OrganelleWrapperProps {
   name: string;
   doAddHormone: boolean;
   addEnzyme: boolean;
-  currentView: any;
+  currentView: View;
   organism: IOrganism;
 }
 
@@ -52,6 +53,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#melanosome_2'
       }
     };
+    modelDefs: any = {
+      CELL: CellModels.cell,
+      RECEPTOR: CellModels.receptor
+    };
   constructor(props: OrganelleWrapperProps) {
     super(props);
     this.state = {
@@ -64,18 +69,18 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   componentDidMount() {
     const {modelProperties} = this.props.organism;
+    const {currentView} = this.props;
+    let modelDef = this.modelDefs[currentView];
 
-    let model = CellModels.cell;
-
-    model.container = {
+    modelDef.container = {
       elId: this.props.name,
       width: 500,
       height: 312
     };
 
-    model.properties = modelProperties;
+    modelDef.properties = modelProperties;
 
-    createModel(model).then((m: any) => {
+    createModel(modelDef).then((m: any) => {
       this.model = m;
       this.completeLoad();
     });
@@ -92,6 +97,11 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         this.model.world.setProperty('lightness', lightness);
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.model.destroy();
+    delete this.model;
   }
 
   completeLoad() {
