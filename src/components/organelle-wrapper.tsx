@@ -10,8 +10,6 @@ import * as CellModels from '../cell-models/index';
 
 interface OrganelleWrapperProps {
   name: string;
-  doAddHormone: boolean;
-  addEnzyme: boolean;
   currentView: View;
   organism: IOrganism;
 }
@@ -63,7 +61,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       hoveredOrganelle: null
     };
     this.model = null;
-    this.addHormone = this.addHormone.bind(this);
     this.completeLoad = this.completeLoad.bind(this);
   }
 
@@ -187,7 +184,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
     this.model.on('view.click', (evt: any) => {
       let clickTarget: OrganelleType = this.clickTargets.find((t) => {
-        console.log('evt.target._organelle', evt.target._organelle);
         return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
       });
       if (clickTarget) {
@@ -286,18 +282,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         this.model.world.setProperty(key, nextProps.organism.modelProperties[key]);
       });
     }
-
-    if (!this.props.doAddHormone && nextProps.doAddHormone) {
-      this.addHormone();
-    }
-
-    // if (nextProps.addEnzyme) {
-    //   let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-    //   cell.style.fill = 'rgb(177,122,50)';
-    // } else {
-    //   let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-    //   cell.style.fill = 'rgb(241,212,151)';
-    // }
   }
 
   componentDidUpdate() {

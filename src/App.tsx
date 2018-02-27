@@ -13,23 +13,14 @@ import OrganelleWrapper from './components/organelle-wrapper';
 import AssayTool from './components/Assay/AssayTool';
 import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
 
-interface AppState {
-  addHormone: boolean;
-  addEnzyme: boolean;
-}
-
 interface AppProps { }
 
 const STEP_MS = 100;
 
 @observer
-class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<AppProps> {
   constructor(props: AppProps) {
     super(props);
-    this.state = {
-      addHormone: false,
-      addEnzyme: false
-    };
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.simulationTick = this.simulationTick.bind(this);
@@ -93,8 +84,6 @@ class App extends React.Component<AppProps, AppState> {
         <OrganelleWrapper
           key={view + org.id}        // unmount and remount OrganelleWrapper when `view` changes
           name={boxId + '-model'}
-          doAddHormone={this.state.addHormone}
-          addEnzyme={this.state.addEnzyme}
           currentView={view}
           organism={org}
         />
