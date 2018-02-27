@@ -18,7 +18,7 @@ interface AssayBarState {}
 class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
   createBars(allAssays: IOrganelleRef[], substanceType: SubstanceType, barNum: number) {
     let bars = [];
-    
+
     let barColor = this.getBarColor(substanceType, this.props.colors);
     bars.push({
       data: allAssays.map(function(assayInfo: IOrganelleRef) {
@@ -44,7 +44,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
         return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substanceType));
       }),
       label: substanceType + ' ADDED#',
-      backgroundColor: 'green',
+      backgroundColor: barColor + 'AA',
       stack: 'Stack ' + barNum
     });
 
@@ -55,7 +55,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
         return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substanceType) * -1);
       }),
       label: substanceType + ' SUBTRACTED#',
-      backgroundColor: barColor + '77',
+      backgroundColor: barColor + '44',
       stack: 'Stack ' + barNum
     });
     return bars;
