@@ -7,6 +7,7 @@ import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
 import * as CellModels from '../cell-models/index';
+import { SubstanceType, ISubstance } from '../models/Substance';
 
 interface OrganelleWrapperProps {
   name: string;
@@ -187,7 +188,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
       });
       if (clickTarget) {
-        this.organelleClick(clickTarget);
+        let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
+        this.organelleClick(clickTarget, location);
       }
     });
   }
@@ -255,7 +257,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
   }
 
-  organelleClick(organelleType: OrganelleType) {
+  organelleClick(organelleType: OrganelleType, location: {x: number, y: number}) {
     if (rootStore.mode === Mode.Assay) {
       let org = rootStore.organisms.get(this.props.organism.id);
       let organelleInfo = OrganelleRef.create({
@@ -264,16 +266,53 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       });
       rootStore.setActiveAssay(organelleInfo);
     } else if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
+      // update substance levels
       rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
+      // show animation in model
+      let {substanceType} = rootStore.activeSubstanceManipulation as ISubstance;
+      if (substanceType === SubstanceType.Hormone) {
+        this.addHormone(organelleType, location);
+      } else if (substanceType === SubstanceType.GProtein && this.props.currentView === View.Receptor) {
+        this.addGProtein(organelleType, location);
+      }
     }
   }
 
-  addHormone() {
-    for (let i = 0; i < 30; i++) {
-      this.model.setTimeout(() => {
-        this.model.world.createAgent(this.model.world.species[0]);
-      },                    50 * i);
-    }
+  addAgentsOverTime(species: string, state: string, props: object, countAtOnce: number, times: number, period: number) {
+    const addAgents = () => {
+      for (let i = 0; i < countAtOnce; i++) {
+        const a = this.model.world.createAgent(this.model.world.species[species]);
+        a.state = state;
+        a.setProperties(props);
+      }
+    };
+
+    let added = 0;
+    const addAgentsAgent = () => {
+      addAgents();
+      added++;
+      if (added < times) {
+        this.model.setTimeout(addAgentsAgent, period);
+      }
+    };
+    addAgentsAgent();
+  }
+
+  addHormone(organelleType: OrganelleType, location: {x: number, y: number}) {
+    let inZoom = this.props.currentView === View.Receptor;
+    let inIntercell = organelleType === OrganelleType.Intercell;
+    let species = inZoom ? 'hexagon' : 'hormoneDot';
+    let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
+    let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
+    let count = inIntercell ? 3 : 2;
+    this.addAgentsOverTime(species, state, props, count, 7, 350);
+  }
+
+  addGProtein(organelleType: OrganelleType, location: {x: number, y: number}) {
+    let inIntercell = organelleType === OrganelleType.Intercell;
+    let species = 'gProteinPart';
+    let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';
+    this.addAgentsOverTime(species, state, location, 1, 7, 350);
   }
 
   componentWillReceiveProps(nextProps: any) {
