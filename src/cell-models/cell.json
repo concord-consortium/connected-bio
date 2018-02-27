@@ -1,0 +1,51 @@
+{
+  "modelSvg": "assets/melanocyte.svg",
+  "calculatedProperties": {
+    "saturation": {
+      "ratio": {
+        "numerator": {
+          "count": {
+            "species": "melanosome",
+            "state": [
+              "waiting_on_actin_terminal",
+              "waiting_on_nuclear_actin_terminal"
+            ]
+          }
+        },
+        "denominator": 20
+      }
+    },
+    "grayness": {
+      "ratio": {
+        "numerator": {
+          "count": {
+            "species": "melanosome",
+            "state": [
+              "waiting_on_actin_terminal",
+              "waiting_on_nuclear_actin_terminal"
+            ],
+            "rules": {
+              "fact": "size",
+              "greaterThan": 0.7
+            }
+          }
+        },
+        "denominator": {
+          "count": {
+            "species": "melanosome",
+            "state": ["waiting_on_actin_terminal", "waiting_on_nuclear_actin_terminal"],
+            "rules": {
+              "fact": "size",
+              "lessThan": 0.7
+            }
+          }
+        }
+      }
+    }
+  },
+  "species": [
+    "organelles/melanosome.yml",
+    "organelles/dots.yml"
+  ],
+  "hotStart": 1000
+}

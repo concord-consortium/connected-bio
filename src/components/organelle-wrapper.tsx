@@ -5,6 +5,7 @@ import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
+import * as CellModels from '../cell-models/index';
 
 interface OrganelleWrapperProps {
   name: string;
@@ -21,6 +22,14 @@ interface OrganelleWrapperState {
 @observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
     model: any;
+    clickTargets = [
+      OrganelleType.Cytoplasm,
+      OrganelleType.Nucleus,
+      OrganelleType.Golgi,
+      OrganelleType.Gates,
+      OrganelleType.Intercell,
+      OrganelleType.Melanosome
+    ];
     organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
         selector: '#nucleus'
@@ -56,89 +65,17 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   componentDidMount() {
     const {modelProperties} = this.props.organism;
 
-    createModel({
-      container: {
-        elId: this.props.name,
-        width: 500,
-        height: 312
-      },
-      modelSvg: 'assets/melanocyte.svg',
-      properties: modelProperties,
-      calculatedProperties: {
-        saturation: {
-          ratio: {
-            numerator: {
-              count: {
-                species: 'melanosome',
-                state: [
-                  'waiting_on_actin_terminal',
-                  'waiting_on_nuclear_actin_terminal'
-                ],
-              }
-            },
-            denominator: 20
-          }
-        },
-        grayness: {
-          ratio: {
-            numerator: {
-              count: {
-                species: 'melanosome',
-                state: [
-                  'waiting_on_actin_terminal',
-                  'waiting_on_nuclear_actin_terminal'
-                ],
-                rules: {
-                  fact: 'size',
-                  greaterThan: 0.7
-                }
-              }
-            },
-            denominator: {
-              count: {
-                species: 'melanosome',
-                state: ['waiting_on_actin_terminal', 'waiting_on_nuclear_actin_terminal'],
-                rules: {
-                  fact: 'size',
-                  lessThan: 0.7
-                }
-              }
-            }
-          }
-        }
-      },
-      clickHandlers: [
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Cytoplasm].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Cytoplasm)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Nucleus].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Nucleus)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Golgi].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Golgi)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Intercell].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Intercell)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Gates].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Gates)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Melanosome].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Melanosome)
-        }
-      ],
-      species: [
-        'organelles/melanosome.yml',
-        'organelles/dots.yml'
-      ],
-      hotStart: 1000
-    }).then((m: any) => {
+    let model = CellModels.cell;
+
+    model.container = {
+      elId: this.props.name,
+      width: 500,
+      height: 312
+    };
+
+    model.properties = modelProperties;
+
+    createModel(model).then((m: any) => {
       this.model = m;
       this.completeLoad();
     });
@@ -209,6 +146,15 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       }
 
       this.setState({hoveredOrganelle: null});
+    });
+
+    this.model.on('view.click', (evt: any) => {
+      let clickTarget: OrganelleType = this.clickTargets.find((t) => {
+        return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
+      });
+      if (clickTarget) {
+        this.organelleClick(clickTarget);
+      }
     });
   }
 

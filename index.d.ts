@@ -6,3 +6,8 @@ declare module 'organelle' {
 
   export function createModel(parms: Object): any;
 }
+
+declare module "*.json" {
+  const value: any;
+  export default value;
+}
