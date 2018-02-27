@@ -91,7 +91,7 @@ class App extends React.Component<AppProps, AppState> {
     } else {
       return (
         <OrganelleWrapper
-          key={view}        // unmount and remount OrganelleWrapper when `view` changes
+          key={view + org.id}        // unmount and remount OrganelleWrapper when `view` changes
           name={boxId + '-model'}
           doAddHormone={this.state.addHormone}
           addEnzyme={this.state.addEnzyme}

@@ -36,8 +36,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#nucleus'
       },
       [OrganelleType.Cytoplasm]: {
-        selector: '#cytoplasm',
-        opaqueSelector: '#cellshape_0_Layer0_0_FILL'
+        selector: '#cytoplasm, #intercell_zoom_bounds, #microtubules_x5F_grouped',
+        opaqueSelector: '#cellshape_0_Layer0_0_FILL, #intercell_zoom_bounds'
       },
       [OrganelleType.Golgi]: {
         selector: '#golgi_x5F_apparatus'
@@ -106,15 +106,11 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   completeLoad() {
     this.model.on('model.step', () => {
-      // let saturation = Math.min(model.world.getProperty('saturation'), 1) || 0
       let lightness = Math.min(this.model.world.getProperty('lightness'), 1);
-      let grayness = Math.min(this.model.world.getProperty('grayness'), 1);
+      let grayness = 0;
 
       if (isNaN(lightness)) {
         lightness = 0;
-      }
-      if (isNaN(grayness)) {
-        grayness = 1;
       }
 
       let gray = [123, 116, 110],
@@ -125,7 +121,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       const cellFill = this.model.view.getModelSvgObjectById('cellshape_0_Layer0_0_FILL');
       if (cellFill) {
         cellFill.setColor(colorStr);
-        // cellFill.set({opacity: saturation})
       }
 
       this.updateCellOpacity();
@@ -160,6 +155,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
     this.model.on('view.click', (evt: any) => {
       let clickTarget: OrganelleType = this.clickTargets.find((t) => {
+        console.log('evt.target._organelle', evt.target._organelle);
         return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
       });
       if (clickTarget) {
