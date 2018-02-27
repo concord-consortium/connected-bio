@@ -105,6 +105,38 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   completeLoad() {
+    if (this.props.currentView === 'RECEPTOR') {
+      this.model.on('view.loaded', () => {
+        this.updateReceptorImage();
+      });
+
+      this.model.setTimeout(
+        () => {
+          for (var i = 0; i < 3; i++) {
+            this.model.world.createAgent(this.model.world.species.gProtein);
+          }
+        },
+        1300);
+
+      this.model.on('hexagon.notify', () => this.updateReceptorImage());
+
+      this.model.on('gProtein.notify.break_time', (evt: any) => {
+        let proteinToBreak = evt.agent;
+        let location = {x: proteinToBreak.getProperty('x'), y: proteinToBreak.getProperty('y')};
+        var body = this.model.world.createAgent(this.model.world.species.gProteinBody);
+        body.setProperties(location);
+
+        var part = this.model.world.createAgent(this.model.world.species.gProteinPart);
+        part.setProperties(location);
+
+        proteinToBreak.die();
+
+        this.model.world.setProperty('g_protein_bound', false);
+
+        this.model.world.createAgent(this.model.world.species.gProtein);
+      });
+    }
+
     this.model.on('model.step', () => {
       let lightness = Math.min(this.model.world.getProperty('lightness'), 1);
       let grayness = 0;
@@ -194,6 +226,23 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
     } else {
       this.makeEverythingOpaque();
+    }
+  }
+
+  updateReceptorImage() {
+    if (this.model.world.getProperty('working_receptor')) {
+      this.model.view.hide('#receptor_x5F_protein_broken', true);
+      if (this.model.world.getProperty('hormone_bound')) {
+        this.model.view.hide('#receptor_x5F_protein', true);
+        this.model.view.show('#receptor_x5F_protein_bound', true);
+      } else {
+        this.model.view.show('#receptor_x5F_protein', true);
+        this.model.view.hide('#receptor_x5F_protein_bound', true);
+      }
+    } else {
+      this.model.view.hide('#receptor_x5F_protein', true);
+      this.model.view.hide('#receptor_x5F_protein_bound', true);
+      this.model.view.show('#receptor_x5F_protein_broken', true);
     }
   }
 

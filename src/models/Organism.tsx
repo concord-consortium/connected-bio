@@ -15,7 +15,8 @@ export const ModelProperties = types
     open_gates: types.optional(types.boolean, false),
     lightness: types.number,
     activated_g_protein: types.number,
-    hormone_spawn_period: types.number
+    hormone_spawn_period: types.number,
+    working_receptor: types.boolean
   });
 
 export const Organism = types
@@ -57,7 +58,8 @@ export const Organism = types
   .views(self => ({
     get modelProperties() {
       let lightness,
-          percentGProtein;
+          percentGProtein,
+          workingReceptor;
       switch (self.darkness) {
         case Darkness.LIGHT:
         default:
@@ -72,6 +74,15 @@ export const Organism = types
           lightness = -2.5;
           percentGProtein = 100;
       }
+      switch (self.id) {
+        case 'Beach Mouse':
+          workingReceptor = false;
+          break;
+        case 'Field Mouse':
+        default:
+          workingReceptor = true;
+          break;
+      }
       return {
         albino: false,
         working_tyr1: false,
@@ -79,7 +90,8 @@ export const Organism = types
         open_gates: false,
         lightness: lightness,
         activated_g_protein: percentGProtein,
-        hormone_spawn_period: 35
+        hormone_spawn_period: 35,
+        working_receptor: workingReceptor
       };
     },
     getImageSrc() {
