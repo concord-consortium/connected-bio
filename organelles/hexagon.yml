@@ -65,7 +65,7 @@ rules:
       finally:
         die: true
   # *** click functions ***
-  enter_from_click:
+  find_path_from_anywhere:
   - if:
       fact: rand
       greaterThan: 80
