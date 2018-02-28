@@ -48,9 +48,9 @@ export const Organism = types
       let eumelaninLevel = self.getTotalForOrganelleSubstance(
         OrganelleType.Melanosome, SubstanceType.Eumelanin
       );
-      return eumelaninLevel < 10
+      return eumelaninLevel < 200
         ? Darkness.LIGHT
-        : eumelaninLevel > 575
+        : eumelaninLevel > 400
           ? Darkness.DARKEST
           : Darkness.DARK;
     },
@@ -145,7 +145,7 @@ export const BeachMouse = Organism.create({
       substanceLevels: {
         [SubstanceType.Hormone] : {
           type: SubstanceType.Hormone,
-          amount: 286
+          amount: 125
         }
       }
     },
@@ -178,7 +178,7 @@ export const FieldMouse = Organism.create({
       substanceLevels: {
         [SubstanceType.Hormone] : {
           type: SubstanceType.Hormone,
-          amount: 286
+          amount: 125
         }
       }
     },
@@ -187,7 +187,7 @@ export const FieldMouse = Organism.create({
       substanceLevels: {
         [SubstanceType.GProtein] : {
           type: SubstanceType.GProtein,
-          amount: 589
+          amount: 170
         }
       }
     },
@@ -196,7 +196,7 @@ export const FieldMouse = Organism.create({
       substanceLevels: {
         [SubstanceType.Eumelanin] : {
           type: SubstanceType.Eumelanin,
-          amount: 533
+          amount: 340
         }
       }
     }

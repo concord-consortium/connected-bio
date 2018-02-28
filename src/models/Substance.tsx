@@ -59,25 +59,25 @@ export const Substance: any = types
       switch (self.type) {
         case SubstanceType.Hormone:
           birthRate = parentOrganelle.type === OrganelleType.Intercell
-            ? (300 - .5 * hormoneAmount) / 20
+            ? 300 / 20
             : 0;
-          deathRate = (100 + .2 * hormoneAmount) / 20;
+          deathRate = (100 + 1.6 * hormoneAmount) / 20;
           break;
         case SubstanceType.GProtein:
           birthRate = parentOrganelle.type === OrganelleType.Cytoplasm
             ? parentOrganism.id === 'Field Mouse'
-              ? (150 - .1 * gProteinAmount + .8 * hormoneAmount) / 10
-              : (25 - .1 * gProteinAmount) / 10
+              ? (180 + .8 * hormoneAmount) / 10
+              : 25 / 10
             : 0;
-          deathRate = (25 + .5 * gProteinAmount) / 10;
+          deathRate = (25 + 1.5 * gProteinAmount) / 10;
           break;
         case SubstanceType.Eumelanin:
           birthRate = parentOrganelle.type === OrganelleType.Melanosome
             ? parentOrganism.id === 'Field Mouse'
-              ? (50 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
-              : (25 - .1 * eumelaninAmount + .5 * gProteinAmount) / 10
+              ? (280 + 1.5 * gProteinAmount) / 10
+              : (25 + 1.8 * gProteinAmount) / 10
             : 0;
-          deathRate = (25 + .5 * eumelaninAmount) / 10;
+          deathRate = (25 + 1.5 * eumelaninAmount) / 10;
           break;
         default:
           birthRate = 0;
