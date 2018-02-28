@@ -138,7 +138,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
         <HorizontalBar
           data={data}
           options={options}
-          height={300}
+          height={346}
         />
     );
   }
