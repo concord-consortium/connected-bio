@@ -63,6 +63,11 @@ const RootStore = types
       self.setMode(Mode.Normal);
     },
 
+    clearAssays() {
+      self.activeAssay = null;
+      self.setLockedAssays([]);
+    },
+
     toggleSubstanceManipulator(manipulationMode: Mode, substance: SubstanceType, amount: number) {
       if (self.mode === Mode.Normal) {
         self.setMode(manipulationMode);

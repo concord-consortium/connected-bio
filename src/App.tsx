@@ -52,8 +52,7 @@ class App extends React.Component<AppProps> {
   }
 
   handleAssayClear() {
-    rootStore.setActiveAssay(null);
-    rootStore.setLockedAssays([]);
+    rootStore.clearAssays();
   }
 
   getBoxView(boxId: string) {
