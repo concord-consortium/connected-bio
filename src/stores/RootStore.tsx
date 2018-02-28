@@ -18,6 +18,8 @@ const RootStore = types
     organisms: types.map(Organism),
     activeAssay: types.maybe(OrganelleRef),
     lockedAssays: types.optional(types.array(OrganelleRef), []),
+    activeSubstance: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
+    activeSubstanceAmount: types.optional(types.number, 0),
     activeSubstanceManipulation: types.maybe(Substance),
     time: types.optional(types.number, 0),
     appStore: AppStore,
@@ -32,11 +34,24 @@ const RootStore = types
       self.lockedAssays = assayOrganelles;
     },
 
-    setActiveSubstanceManipulation(substanceType: SubstanceType, amount: number) {
-      self.activeSubstanceManipulation = Substance.create({
-        type: substanceType,
-        amount
-      });
+    setActiveSubstance(substance: SubstanceType) {
+      self.activeSubstance = substance;
+      if (self.activeSubstanceAmount) {
+        self.activeSubstanceManipulation = Substance.create({
+          type: substance,
+          amount: self.activeSubstanceAmount
+        });
+      }
+    },
+
+    setActiveSubstanceAmount(amount: number) {
+      self.activeSubstanceAmount = amount;
+      if (self.activeSubstance) {
+        self.activeSubstanceManipulation = Substance.create({
+          type: self.activeSubstance,
+          amount: amount
+        });
+      }
     },
 
     step(msPassed: number) {
@@ -68,10 +83,10 @@ const RootStore = types
       self.setLockedAssays([]);
     },
 
-    toggleSubstanceManipulator(manipulationMode: Mode, substance: SubstanceType, amount: number) {
+    toggleSubstanceManipulator(manipulationMode: Mode, amount: number) {
       if (self.mode === Mode.Normal) {
         self.setMode(manipulationMode);
-        self.setActiveSubstanceManipulation(substance, amount);
+        self.setActiveSubstanceAmount(amount);
       } else {
         self.setMode(Mode.Normal);
       }
@@ -91,6 +106,7 @@ export const rootStore = RootStore.create({
     'Beach Mouse': BeachMouse,
     'Field Mouse': FieldMouse
   },
+  activeSubstance: SubstanceType.Hormone,
   appStore,
   assayStore
 });

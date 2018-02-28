@@ -23,10 +23,14 @@ export const Substance: any = types
     increment(amount: number, parentOrganelle: IOrganelle) {
       let base = parentOrganelle.getLevelForSubstance(self.type);
       self.amount = Math.max(self.amount + amount, -1 * base);
+    },
+
+    setType(substanceType: SubstanceType) {
+      self.type = substanceType;
     }
   }))
   .actions(self => ({
-    // Cell models can be viewed here: 
+    // Cell models can be viewed here:
     // https://docs.google.com/spreadsheets/d/19f0nk-F3UQ_-A-agq5JnuhJXGCtFYMT_JcYCQkyqnQI/edit
     step(milliseconds: number, parentOrganism: IOrganism, parentOrganelle: IOrganelle) {
       let birthRate, deathRate;
@@ -39,7 +43,7 @@ export const Substance: any = types
 
       switch (self.type) {
         case SubstanceType.Hormone:
-          birthRate = parentOrganelle.type === OrganelleType.Intercell 
+          birthRate = parentOrganelle.type === OrganelleType.Intercell
             ? (300 - .5 * hormoneAmount) / 20
             : 0;
           deathRate = (100 + .2 * hormoneAmount) / 20;
