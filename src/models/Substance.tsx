@@ -6,7 +6,8 @@ import { OrganelleType, IOrganelle } from './Organelle';
 export enum SubstanceType {
   Hormone = 'Hormone',
   GProtein = 'G-Protein',
-  Eumelanin = 'Eumelanin'
+  Eumelanin = 'Eumelanin',
+  Pheomelanin = 'Pheomelanin'
 }
 
 const substanceManipulationTime = 2500;
@@ -50,6 +51,8 @@ export const Substance: any = types
         OrganelleType.Cytoplasm, SubstanceType.GProtein);
       let eumelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Melanosome, SubstanceType.Eumelanin);
+      let pheomelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
+        OrganelleType.Melanosome, SubstanceType.Pheomelanin);
 
       if (self.fixedValueEndTime > milliseconds) {
         // User has recently set value, and we want to stay at this value
@@ -78,6 +81,12 @@ export const Substance: any = types
               : (25 + 1.8 * gProteinAmount) / 10
             : 0;
           deathRate = (25 + 1.5 * eumelaninAmount) / 10;
+          break;
+        case SubstanceType.Pheomelanin:
+          birthRate = parentOrganelle.type === OrganelleType.Melanosome
+            ? (500 - 1.5 * gProteinAmount) / 10
+            : 0;
+          deathRate = (25 + 1.5 * pheomelaninAmount) / 10;
           break;
         default:
           birthRate = 0;

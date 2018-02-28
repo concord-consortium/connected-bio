@@ -164,6 +164,10 @@ export const BeachMouse = Organism.create({
         [SubstanceType.Eumelanin] : {
           type: SubstanceType.Eumelanin,
           amount: 0
+        },
+        [SubstanceType.Pheomelanin] : {
+          type: SubstanceType.Pheomelanin,
+          amount: 316
         }
       }
     }
@@ -197,6 +201,10 @@ export const FieldMouse = Organism.create({
         [SubstanceType.Eumelanin] : {
           type: SubstanceType.Eumelanin,
           amount: 340
+        },
+        [SubstanceType.Pheomelanin] : {
+          type: SubstanceType.Pheomelanin,
+          amount: 147
         }
       }
     }

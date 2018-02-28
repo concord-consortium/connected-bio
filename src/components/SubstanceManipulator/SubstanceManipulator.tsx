@@ -88,6 +88,12 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             value={SubstanceType.Eumelanin}
             label="Eumelanin"
           />
+          <RadioButton
+            style={{width: '200px'}}
+            labelStyle={{ fontSize: '12px'}}
+            value={SubstanceType.Pheomelanin}
+            label="Pheomelanin"
+          />
         </RadioButtonGroup>
       </div>
     );
