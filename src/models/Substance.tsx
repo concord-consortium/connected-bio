@@ -9,10 +9,14 @@ export enum SubstanceType {
   Eumelanin = 'Eumelanin'
 }
 
+const substanceManipulationTime = 2500;
+
 export const Substance: any = types
   .model('Substance', {
     type: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
-    amount: types.optional(types.number, 0)
+    amount: types.optional(types.number, 0),
+    currentTime: types.optional(types.number, 0),
+    fixedValueEndTime: types.optional(types.number, 0)
   })
   .views(self => ({
     get substanceType(): SubstanceType {
@@ -30,9 +34,15 @@ export const Substance: any = types
     }
   }))
   .actions(self => ({
+    manuallyIncrement(amount: number, parentOrganelle: IOrganelle) {
+      self.increment(amount, parentOrganelle);
+      self.fixedValueEndTime = self.currentTime + substanceManipulationTime;
+    },
+
     // Cell models can be viewed here:
     // https://docs.google.com/spreadsheets/d/19f0nk-F3UQ_-A-agq5JnuhJXGCtFYMT_JcYCQkyqnQI/edit
     step(milliseconds: number, parentOrganism: IOrganism, parentOrganelle: IOrganelle) {
+      self.currentTime = milliseconds;
       let birthRate, deathRate;
       let hormoneAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Intercell, SubstanceType.Hormone);
@@ -40,6 +50,11 @@ export const Substance: any = types
         OrganelleType.Cytoplasm, SubstanceType.GProtein);
       let eumelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Melanosome, SubstanceType.Eumelanin);
+
+      if (self.fixedValueEndTime > milliseconds) {
+        // User has recently set value, and we want to stay at this value
+        return;
+      }
 
       switch (self.type) {
         case SubstanceType.Hormone:
