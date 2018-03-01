@@ -90,7 +90,7 @@ export const Organism = types
         open_gates: false,
         lightness: lightness,
         activated_g_protein: percentGProtein,
-        hormone_spawn_period: 35,
+        hormone_spawn_period: 40,
         working_receptor: workingReceptor
       };
     },
