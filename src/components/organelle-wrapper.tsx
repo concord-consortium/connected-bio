@@ -138,6 +138,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     this.model.on('model.step', () => {
       let lightness = Math.min(this.model.world.getProperty('lightness'), 1);
       let grayness = 0;
+      // update model properties from Organism model every step
+      Object.keys(this.props.organism.modelProperties).forEach((key) => {
+        this.model.world.setProperty(key, this.props.organism.modelProperties[key]);
+      });
 
       if (isNaN(lightness)) {
         lightness = 0;
@@ -313,14 +317,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     let species = 'gProteinPart';
     let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';
     this.addAgentsOverTime(species, state, location, 1, 7, 350);
-  }
-
-  componentWillReceiveProps(nextProps: any) {
-    if (this.model && nextProps.organism.modelProperties) {
-      Object.keys(nextProps.organism.modelProperties).forEach((key) => {
-        this.model.world.setProperty(key, nextProps.organism.modelProperties[key]);
-      });
-    }
   }
 
   componentDidUpdate() {
