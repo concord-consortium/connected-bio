@@ -13,8 +13,8 @@ export const ModelProperties = types
     working_tyr1: types.optional(types.boolean, false),
     working_myosin_5a: types.optional(types.boolean, true),
     open_gates: types.optional(types.boolean, false),
-    lightness: types.number,
-    activated_g_protein: types.number,
+    // lightness: types.number,
+    eumelanin: types.number,
     hormone_spawn_period: types.number,
     working_receptor: types.boolean
   });
@@ -57,23 +57,13 @@ export const Organism = types
   }))
   .views(self => ({
     get modelProperties() {
-      let lightness,
-          percentGProtein,
+      let eumelaninLevel = self.getTotalForOrganelleSubstance(
+            OrganelleType.Melanosome, SubstanceType.Eumelanin
+          ),
+          // normalize 200-370 to 0-100
+          eumelaninInCell = Math.max(0, Math.min(100, (eumelaninLevel - 200) / 1.7)),
           workingReceptor;
-      switch (self.darkness) {
-        case Darkness.LIGHT:
-        default:
-          lightness = 10;
-          percentGProtein = 0;
-          break;
-        case Darkness.DARK:
-          lightness = -1;
-          percentGProtein = 80;
-          break;
-        case Darkness.DARKEST:
-          lightness = -2.5;
-          percentGProtein = 100;
-      }
+
       switch (self.id) {
         case 'Beach Mouse':
           workingReceptor = false;
@@ -88,8 +78,7 @@ export const Organism = types
         working_tyr1: false,
         working_myosin_5a: true,
         open_gates: false,
-        lightness: lightness,
-        activated_g_protein: percentGProtein,
+        eumelanin: eumelaninInCell,
         hormone_spawn_period: 40,
         working_receptor: workingReceptor
       };
