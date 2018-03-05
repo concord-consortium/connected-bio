@@ -10,7 +10,7 @@ export enum SubstanceType {
   Pheomelanin = 'Pheomelanin'
 }
 
-const substanceManipulationTime = 2500;
+const substanceManipulationTime = 3500;
 
 export const Substance: any = types
   .model('Substance', {
