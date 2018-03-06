@@ -28,7 +28,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       OrganelleType.Cytoplasm,
       OrganelleType.Nucleus,
       OrganelleType.Golgi,
-      OrganelleType.Gates,
       OrganelleType.Extracellular,
       OrganelleType.Melanosome
     ];
@@ -43,11 +42,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       [OrganelleType.Golgi]: {
         selector: '#golgi_x5F_apparatus'
       },
-      [OrganelleType.Gates]: {
-        selector: '.gate-a, .gate-b, .gate-c, .gate-d'
-      },
       [OrganelleType.Extracellular]: {
-        selector: `#intercell`,
+        selector: `#intercell, .gate-a, .gate-b, .gate-c, .gate-d`,
         opaqueSelector: '#Layer6_0_FILL'
       },
       [OrganelleType.Melanosome]: {

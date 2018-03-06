@@ -6,7 +6,6 @@ export enum OrganelleType {
   Nucleus = 'Nucleus',
   Cytoplasm = 'Cytoplasm',
   Golgi = 'Golgi',
-  Gates = 'Gates',
   Extracellular = 'Extracellular',
   Melanosome = 'Melanosome'
 }
