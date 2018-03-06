@@ -142,8 +142,8 @@ export type IOrganelleRef = typeof OrganelleRef.Type;
 export const BeachMouse = Organism.create({
   id: 'Beach Mouse',
   organelles: {
-    [OrganelleType.Intercell]: {
-      type: OrganelleType.Intercell,
+    [OrganelleType.Extracellular]: {
+      type: OrganelleType.Extracellular,
       substanceLevels: {
         [SubstanceType.Hormone] : {
           type: SubstanceType.Hormone,
@@ -179,8 +179,8 @@ export const BeachMouse = Organism.create({
 export const FieldMouse = Organism.create({
   id: 'Field Mouse',
   organelles: {
-    [OrganelleType.Intercell]: {
-      type: OrganelleType.Intercell,
+    [OrganelleType.Extracellular]: {
+      type: OrganelleType.Extracellular,
       substanceLevels: {
         [SubstanceType.Hormone] : {
           type: SubstanceType.Hormone,
