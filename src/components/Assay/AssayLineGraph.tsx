@@ -3,7 +3,6 @@ import { clone } from 'mobx-state-tree';
 import { Scatter } from 'react-chartjs-2';
 import { SubstanceType } from '../../models/Substance';
 import { IOrganelleRef } from '../../models/Organism';
-import { isEqual } from 'lodash';
 import { rootStore } from '../../stores/RootStore';
 import { assayStore } from '../../stores/AssayStore';
 import { observer } from 'mobx-react';
@@ -66,7 +65,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
 
   render() {
     let {visibleSubstances} = assayStore;
-    let {activeAssay, lockedAssays} = rootStore;
+    let {lockedAssays} = rootStore;
     let activeSubstances = visibleSubstances.keys()
       .filter((substanceKey) => visibleSubstances.get(substanceKey))
       .map((activeSubstance) =>
@@ -76,23 +75,10 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
       datasets: []
     };
 
-    let activeGraphed = false;
     for (let i = 0; i < lockedAssays.length; i++) {
       for (let j = 0; j < activeSubstances.length; j++) {
         data.datasets = data.datasets.concat(
           this.createLine(activeSubstances[j], lockedAssays[i], data.datasets.length));
-
-        if (activeAssay && isEqual(activeAssay, lockedAssays[i])) {
-          activeGraphed = true;
-        }
-      }
-    }
-
-    if (activeAssay && !activeGraphed) {
-      for (let i = 0; i < activeSubstances.length; i++) {
-        data.datasets = data.datasets.concat(
-          this.createLine(activeSubstances[i], activeAssay, data.datasets.length)
-        );
       }
     }
 
