@@ -1,6 +1,6 @@
 ---
 name: gProteinPart
-image: assets/g-protein.svg
+image: assets/g-protein-2.svg
 spawn:
   'on':
     selector: "#path-away-from-receptor-part"
@@ -11,6 +11,7 @@ properties:
   size: 1
   speed: 0.9
   image_selector: gbodypart1
+  direction: 172
 initialState: findPathStart
 rules:
   findPathStart:
