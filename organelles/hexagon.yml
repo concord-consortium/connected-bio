@@ -6,7 +6,7 @@ spawn:
     selector: "#intercellular-paths path"
     which: random
     at: 0.05
-  every: 0 #orld.hormone_spawn_period
+  every: world.hormone_spawn_period
   # never: true
 dieWhenExitingWorld: false
 properties:
