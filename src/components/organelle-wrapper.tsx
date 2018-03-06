@@ -165,6 +165,9 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       if (cellFill) {
         cellFill.setColor(colorStr);
       }
+
+      // set lightness on model object so it can change organism image
+      this.props.organism.setCellLightness(percentLightness);
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
