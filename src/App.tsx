@@ -7,7 +7,7 @@ import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
 import { stringToEnum } from './utils';
 
-import OrganelleWrapper from './components/organelle-wrapper';
+import OrganelleWrapper from './components/OrganelleWrapper';
 import AssayTool from './components/Assay/AssayTool';
 import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
 

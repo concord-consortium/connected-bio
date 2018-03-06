@@ -3,12 +3,12 @@ import { IOrganism } from './Organism';
 import { Substance, ISubstance, SubstanceType } from './Substance';
 
 export enum OrganelleType {
-  Nucleus = 'NUCLEUS',
-  Cytoplasm = 'CYTOPLASM',
-  Golgi = 'GOLGI',
-  Gates = 'GATES',
-  Intercell = 'INTERCELL',
-  Melanosome = 'MELANOSOME'
+  Nucleus = 'Nucleus',
+  Cytoplasm = 'Cytoplasm',
+  Golgi = 'Golgi',
+  Gates = 'Gates',
+  Extracellular = 'Extracellular',
+  Melanosome = 'Melanosome'
 }
 
 export const Organelle: any = types
