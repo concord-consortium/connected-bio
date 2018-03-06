@@ -9,7 +9,7 @@ import { assayStore } from '../../stores/AssayStore';
 import { stringToEnum } from '../../utils';
 
 interface AssayBarProps {
-  colors: string[];
+  colors: object;
 }
 
 interface AssayBarState {}
@@ -19,7 +19,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
   createBars(allAssays: IOrganelleRef[], substanceType: SubstanceType, barNum: number) {
     let bars = [];
 
-    let barColor = this.getBarColor(substanceType, this.props.colors);
+    let barColor =  this.props.colors[substanceType];
     bars.push({
       data: allAssays.map(function(assayInfo: IOrganelleRef) {
         let organism = rootStore.organisms.get(assayInfo.organism.id);
@@ -61,20 +61,6 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
     return bars;
   }
 
-  getBarColor(substanceType: SubstanceType, allColors: string[]) {
-    switch (substanceType) {
-      case SubstanceType.Hormone:
-      default:
-        return allColors[0];
-      case SubstanceType.GProtein:
-        return allColors[1];
-      case SubstanceType.Eumelanin:
-        return allColors[2];
-        case SubstanceType.Pheomelanin:
-          return allColors[3];
-    }
-  }
-
   render() {
     let {visibleSubstances} = assayStore;
     let {activeAssay, lockedAssays} = rootStore;
@@ -95,7 +81,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
 
     let data: Chart.ChartData = {
       datasets: [],
-      labels: allAssays.map(assay => assay.organism.id + ' ' + assay.organelleType.toLowerCase()),
+      labels: allAssays.map(assay => [assay.organism.id, assay.organelleType.toLowerCase()]),
     };
     activeSubstances.forEach((activeSubstance, i) => {
       data.datasets = data.datasets.concat(
