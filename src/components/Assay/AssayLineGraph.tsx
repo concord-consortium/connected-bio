@@ -46,9 +46,14 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
       let organism = orgs.get(assayInfo.organism.id);
       let substanceLevel = organism.getLevelForOrganelleSubstance(assayInfo.organelleType, activeSubstance);
       let substanceDelta = organism.getDeltaForOrganelleSubstance(assayInfo.organelleType, activeSubstance);
+      let val = substanceLevel + substanceDelta;
+      if (val <= 0) {
+        // hide lines with value 0 by shoving them well below axis
+        val -= 100;
+      }
       return {
         x: index,
-        y: substanceLevel + substanceDelta
+        y: val
       };
     });
     let color =  this.props.colors[activeSubstance];
