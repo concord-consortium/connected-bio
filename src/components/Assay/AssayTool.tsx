@@ -50,7 +50,8 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
     let {mode, time} = rootStore;
     let graph = assayStore.graphType === GraphType.Line ? (
       <AssayLineGraph
-        colors={defaultColors}
+        key={rootStore.lockedAssays.length}
+        colors={colors}
         time={time}
       />) : (
       <AssayBarChart

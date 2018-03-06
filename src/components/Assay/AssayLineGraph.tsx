@@ -9,7 +9,7 @@ import { observer } from 'mobx-react';
 import { stringToEnum } from '../../utils';
 
 interface AssayLineProps {
-  colors: string[];
+  colors: object;
   time: number;
 }
 
@@ -51,47 +51,42 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         y: substanceLevel + substanceDelta
       };
     });
+    let color =  this.props.colors[activeSubstance];
     return {
       data,
-      label: assayInfo.organism.id + ' ' + assayInfo.organelleType.toLowerCase() + ' '
-        + activeSubstance.toLowerCase(),
+      label: activeSubstance,
       borderWidth: 3,
-      backgroundColor: this.props.colors[lineNum],
-      borderColor: this.props.colors[lineNum],
+      backgroundColor: color,
+      borderColor: color,
       fill: false,
       tension: 0
     };
   }
 
   render() {
-    let {visibleSubstances} = assayStore;
-    let {lockedAssays} = rootStore;
-    let activeSubstances = visibleSubstances.keys()
+    const {visibleSubstances} = assayStore;
+    const {lockedAssays} = rootStore;
+    const activeSubstances = visibleSubstances.keys()
       .filter((substanceKey) => visibleSubstances.get(substanceKey))
       .map((activeSubstance) =>
         stringToEnum(activeSubstance, SubstanceType));
 
-    let data: any = {
-      datasets: []
+    const graphs: JSX.Element[] = [];
+
+    const chartTitle = {
+      display: true,
+      text: 'Substance Amount Over Time',
+      fontSize: 22
     };
 
-    for (let i = 0; i < lockedAssays.length; i++) {
-      for (let j = 0; j < activeSubstances.length; j++) {
-        data.datasets = data.datasets.concat(
-          this.createLine(activeSubstances[j], lockedAssays[i], data.datasets.length));
-      }
-    }
+    const chartLegend = {
+      display: true,
+      position: 'bottom',
+    };
 
-    let options: any = {
-      title: {
-        display: true,
-        text: 'Substance Amount Over Time',
-        fontSize: 22
-      },
-      legend: {
-        display: true,
-        position: 'bottom',
-      },
+    const defaultOptions: any = {
+      title: chartTitle,
+      legend: chartLegend,
       scales: {
         display: false,
         yAxes: [{
@@ -111,12 +106,89 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
       elements: { point: { radius: 0 } },
       showLines: true
     };
-    return (
+
+    lockedAssays.forEach((lockedAssay, i) => {
+      const data: any = {
+        datasets: []
+      };
+
+      for (let j = 0; j < activeSubstances.length; j++) {
+        data.datasets = data.datasets.concat(
+          this.createLine(activeSubstances[j], lockedAssay, data.datasets.length));
+      }
+
+      const title = i === 0 ? chartTitle : null;
+
+      const legend = i === lockedAssays.length - 1 ? chartLegend : {
+        display: false
+      };
+
+      let height = lockedAssays.length < 3 ?
+            430 / lockedAssays.length : 410 / lockedAssays.length;
+      if (i === 0) {
+        height += 20;
+      }
+      if (i === lockedAssays.length - 1) {
+        height += 30;
+      }
+      const yAxisFontSize = lockedAssays.length < 4 ? 12 : 9;
+
+      const options: any = Object.assign({}, defaultOptions, {
+        title,
+        legend,
+        scales: {
+          display: false,
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 800
+            },
+            scaleLabel: {
+              display: true,
+              fontSize: yAxisFontSize,
+              labelString: lockedAssays[i].organism.id + ' ' + lockedAssay.organelleType.toLowerCase()
+            }
+          }],
+          xAxes: [{
+            display: false,
+            ticks: {
+              min: 0,
+              max: MAX_STORED_STATES
+            }
+          }]
+        }
+      });
+
+      graphs.push(
+          <Scatter
+            key={i}
+            data={data}
+            options={options}
+            height={height}
+            width={400}
+          />
+      );
+    });
+
+    if (lockedAssays.length === 0) {
+      const data: any = {
+        datasets: []
+      };
+      graphs.push(
         <Scatter
+          key="0"
           data={data}
-          options={options}
-          height={346}
+          options={defaultOptions}
+          height={485}
+          width={400}
         />
+    );
+    }
+
+    return (
+      <div>
+        {graphs}
+      </div>
     );
   }
 }
