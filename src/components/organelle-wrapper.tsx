@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
+import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
+import * as CellModels from '../cell-models/index';
+import { SubstanceType, ISubstance } from '../models/Substance';
 
 interface OrganelleWrapperProps {
   name: string;
-  doAddHormone: boolean;
-  addEnzyme: boolean;
-  currentView: any;
+  currentView: View;
   organism: IOrganism;
 }
 
@@ -21,13 +22,21 @@ interface OrganelleWrapperState {
 @observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
     model: any;
+    clickTargets = [
+      OrganelleType.Cytoplasm,
+      OrganelleType.Nucleus,
+      OrganelleType.Golgi,
+      OrganelleType.Gates,
+      OrganelleType.Intercell,
+      OrganelleType.Melanosome
+    ];
     organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
         selector: '#nucleus'
       },
       [OrganelleType.Cytoplasm]: {
-        selector: '#cytoplasm',
-        opaqueSelector: '#cellshape_0_Layer0_0_FILL'
+        selector: '#cytoplasm, #intercell_zoom_bounds, #microtubules_x5F_grouped',
+        opaqueSelector: '#cellshape_0_Layer0_0_FILL, #intercell_zoom_bounds'
       },
       [OrganelleType.Golgi]: {
         selector: '#golgi_x5F_apparatus'
@@ -43,102 +52,33 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#melanosome_2'
       }
     };
+    modelDefs: any = {
+      CELL: CellModels.cell,
+      RECEPTOR: CellModels.receptor
+    };
   constructor(props: OrganelleWrapperProps) {
     super(props);
     this.state = {
       hoveredOrganelle: null
     };
     this.model = null;
-    this.addHormone = this.addHormone.bind(this);
     this.completeLoad = this.completeLoad.bind(this);
   }
 
   componentDidMount() {
     const {modelProperties} = this.props.organism;
+    const {currentView} = this.props;
+    let modelDef = this.modelDefs[currentView];
 
-    createModel({
-      container: {
-        elId: this.props.name,
-        width: 500,
-        height: 312
-      },
-      modelSvg: 'assets/melanocyte.svg',
-      properties: modelProperties,
-      calculatedProperties: {
-        saturation: {
-          ratio: {
-            numerator: {
-              count: {
-                species: 'melanosome',
-                state: [
-                  'waiting_on_actin_terminal',
-                  'waiting_on_nuclear_actin_terminal'
-                ],
-              }
-            },
-            denominator: 20
-          }
-        },
-        grayness: {
-          ratio: {
-            numerator: {
-              count: {
-                species: 'melanosome',
-                state: [
-                  'waiting_on_actin_terminal',
-                  'waiting_on_nuclear_actin_terminal'
-                ],
-                rules: {
-                  fact: 'size',
-                  greaterThan: 0.7
-                }
-              }
-            },
-            denominator: {
-              count: {
-                species: 'melanosome',
-                state: ['waiting_on_actin_terminal', 'waiting_on_nuclear_actin_terminal'],
-                rules: {
-                  fact: 'size',
-                  lessThan: 0.7
-                }
-              }
-            }
-          }
-        }
-      },
-      clickHandlers: [
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Cytoplasm].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Cytoplasm)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Nucleus].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Nucleus)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Golgi].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Golgi)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Intercell].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Intercell)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Gates].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Gates)
-        },
-        {
-          selector: this.organelleSelectorInfo[OrganelleType.Melanosome].selector,
-          action: this.organelleClick.bind(this, OrganelleType.Melanosome)
-        }
-      ],
-      species: [
-        'organelles/melanosome.yml',
-        'organelles/dots.yml'
-      ],
-      hotStart: 1000
-    }).then((m: any) => {
+    modelDef.container = {
+      elId: this.props.name,
+      width: 500,
+      height: 312
+    };
+
+    modelDef.properties = modelProperties;
+
+    createModel(modelDef).then((m: any) => {
       this.model = m;
       this.completeLoad();
     });
@@ -157,17 +97,50 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
   }
 
+  componentWillUnmount() {
+    this.model.destroy();
+    delete this.model;
+  }
+
   completeLoad() {
+    if (this.props.currentView === 'RECEPTOR') {
+      this.model.on('view.loaded', () => {
+        this.updateReceptorImage();
+      });
+
+      this.model.setTimeout(
+        () => {
+          for (var i = 0; i < 3; i++) {
+            this.model.world.createAgent(this.model.world.species.gProtein);
+          }
+        },
+        1300);
+
+      this.model.on('hexagon.notify', () => this.updateReceptorImage());
+
+      this.model.on('gProtein.notify.break_time', (evt: any) => {
+        let proteinToBreak = evt.agent;
+        let location = {x: proteinToBreak.getProperty('x'), y: proteinToBreak.getProperty('y')};
+        var body = this.model.world.createAgent(this.model.world.species.gProteinBody);
+        body.setProperties(location);
+
+        var part = this.model.world.createAgent(this.model.world.species.gProteinPart);
+        part.setProperties(location);
+
+        proteinToBreak.die();
+
+        this.model.world.setProperty('g_protein_bound', false);
+
+        this.model.world.createAgent(this.model.world.species.gProtein);
+      });
+    }
+
     this.model.on('model.step', () => {
-      // let saturation = Math.min(model.world.getProperty('saturation'), 1) || 0
       let lightness = Math.min(this.model.world.getProperty('lightness'), 1);
-      let grayness = Math.min(this.model.world.getProperty('grayness'), 1);
+      let grayness = 0;
 
       if (isNaN(lightness)) {
         lightness = 0;
-      }
-      if (isNaN(grayness)) {
-        grayness = 1;
       }
 
       let gray = [123, 116, 110],
@@ -178,7 +151,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       const cellFill = this.model.view.getModelSvgObjectById('cellshape_0_Layer0_0_FILL');
       if (cellFill) {
         cellFill.setColor(colorStr);
-        // cellFill.set({opacity: saturation})
       }
 
       this.updateCellOpacity();
@@ -209,6 +181,16 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       }
 
       this.setState({hoveredOrganelle: null});
+    });
+
+    this.model.on('view.click', (evt: any) => {
+      let clickTarget: OrganelleType = this.clickTargets.find((t) => {
+        return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
+      });
+      if (clickTarget) {
+        let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
+        this.organelleClick(clickTarget, location);
+      }
     });
   }
 
@@ -245,6 +227,23 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
   }
 
+  updateReceptorImage() {
+    if (this.model.world.getProperty('working_receptor')) {
+      this.model.view.hide('#receptor_x5F_protein_broken', true);
+      if (this.model.world.getProperty('hormone_bound')) {
+        this.model.view.hide('#receptor_x5F_protein', true);
+        this.model.view.show('#receptor_x5F_protein_bound', true);
+      } else {
+        this.model.view.show('#receptor_x5F_protein', true);
+        this.model.view.hide('#receptor_x5F_protein_bound', true);
+      }
+    } else {
+      this.model.view.hide('#receptor_x5F_protein', true);
+      this.model.view.hide('#receptor_x5F_protein_bound', true);
+      this.model.view.show('#receptor_x5F_protein_broken', true);
+    }
+  }
+
   makeEverythingTransparentExcept(skip: any) {
     if (this.model) {
       this.makeEverythingOpaque();
@@ -258,7 +257,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
   }
 
-  organelleClick(organelleType: OrganelleType) {
+  organelleClick(organelleType: OrganelleType, location: {x: number, y: number}) {
     if (rootStore.mode === Mode.Assay) {
       let org = rootStore.organisms.get(this.props.organism.id);
       let organelleInfo = OrganelleRef.create({
@@ -267,16 +266,53 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       });
       rootStore.setActiveAssay(organelleInfo);
     } else if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
+      // update substance levels
       rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
+      // show animation in model
+      let {substanceType} = rootStore.activeSubstanceManipulation as ISubstance;
+      if (substanceType === SubstanceType.Hormone) {
+        this.addHormone(organelleType, location);
+      } else if (substanceType === SubstanceType.GProtein && this.props.currentView === View.Receptor) {
+        this.addGProtein(organelleType, location);
+      }
     }
   }
 
-  addHormone() {
-    for (let i = 0; i < 30; i++) {
-      this.model.setTimeout(() => {
-        this.model.world.createAgent(this.model.world.species[0]);
-      },                    50 * i);
-    }
+  addAgentsOverTime(species: string, state: string, props: object, countAtOnce: number, times: number, period: number) {
+    const addAgents = () => {
+      for (let i = 0; i < countAtOnce; i++) {
+        const a = this.model.world.createAgent(this.model.world.species[species]);
+        a.state = state;
+        a.setProperties(props);
+      }
+    };
+
+    let added = 0;
+    const addAgentsAgent = () => {
+      addAgents();
+      added++;
+      if (added < times) {
+        this.model.setTimeout(addAgentsAgent, period);
+      }
+    };
+    addAgentsAgent();
+  }
+
+  addHormone(organelleType: OrganelleType, location: {x: number, y: number}) {
+    let inZoom = this.props.currentView === View.Receptor;
+    let inIntercell = organelleType === OrganelleType.Intercell;
+    let species = inZoom ? 'hexagon' : 'hormoneDot';
+    let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
+    let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
+    let count = inIntercell ? 3 : 2;
+    this.addAgentsOverTime(species, state, props, count, 7, 350);
+  }
+
+  addGProtein(organelleType: OrganelleType, location: {x: number, y: number}) {
+    let inIntercell = organelleType === OrganelleType.Intercell;
+    let species = 'gProteinPart';
+    let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';
+    this.addAgentsOverTime(species, state, location, 1, 7, 350);
   }
 
   componentWillReceiveProps(nextProps: any) {
@@ -285,18 +321,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         this.model.world.setProperty(key, nextProps.organism.modelProperties[key]);
       });
     }
-
-    if (!this.props.doAddHormone && nextProps.doAddHormone) {
-      this.addHormone();
-    }
-
-    // if (nextProps.addEnzyme) {
-    //   let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-    //   cell.style.fill = 'rgb(177,122,50)';
-    // } else {
-    //   let cell: any = document.querySelector(`#${this.props.name} #cellshape_0_Layer0_0_FILL`);
-    //   cell.style.fill = 'rgb(241,212,151)';
-    // }
   }
 
   componentDidUpdate() {

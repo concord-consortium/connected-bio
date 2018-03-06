@@ -13,7 +13,10 @@ export const ModelProperties = types
     working_tyr1: types.optional(types.boolean, false),
     working_myosin_5a: types.optional(types.boolean, true),
     open_gates: types.optional(types.boolean, false),
-    lightness: types.number
+    lightness: types.number,
+    activated_g_protein: types.number,
+    hormone_spawn_period: types.number,
+    working_receptor: types.boolean
   });
 
 export const Organism = types
@@ -34,8 +37,8 @@ export const Organism = types
   .views(self => ({
     getTotalForOrganelleSubstance(organelleType: string, substanceType: SubstanceType) {
       let organelle = self.organelles.get(organelleType) as IOrganelle;
-      return organelle ? 
-        self.getLevelForOrganelleSubstance(organelleType, substanceType) + 
+      return organelle ?
+        self.getLevelForOrganelleSubstance(organelleType, substanceType) +
           self.getDeltaForOrganelleSubstance(organelleType, substanceType) :
         0;
     }
@@ -54,24 +57,41 @@ export const Organism = types
   }))
   .views(self => ({
     get modelProperties() {
-      let lightness;
+      let lightness,
+          percentGProtein,
+          workingReceptor;
       switch (self.darkness) {
         case Darkness.LIGHT:
         default:
           lightness = 10;
+          percentGProtein = 0;
           break;
         case Darkness.DARK:
           lightness = -1;
+          percentGProtein = 80;
           break;
         case Darkness.DARKEST:
           lightness = -2.5;
+          percentGProtein = 100;
+      }
+      switch (self.id) {
+        case 'Beach Mouse':
+          workingReceptor = false;
+          break;
+        case 'Field Mouse':
+        default:
+          workingReceptor = true;
+          break;
       }
       return {
         albino: false,
         working_tyr1: false,
         working_myosin_5a: true,
         open_gates: false,
-        lightness: lightness
+        lightness: lightness,
+        activated_g_protein: percentGProtein,
+        hormone_spawn_period: 35,
+        working_receptor: workingReceptor
       };
     },
     getImageSrc() {

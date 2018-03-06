@@ -1,0 +1,9 @@
+{
+  "modelSvg": "assets/melanocyte.svg",
+  "species": [
+    "organelles/melanosome.yml",
+    "organelles/dots.yml",
+    "organelles/hormone-dot.yml"
+  ],
+  "hotStart": 1000
+}
