@@ -51,8 +51,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       }
     };
     modelDefs: any = {
-      CELL: CellModels.cell,
-      RECEPTOR: CellModels.receptor
+      Cell: CellModels.cell,
+      Receptor: CellModels.receptor
     };
 
   constructor(props: OrganelleWrapperProps) {
@@ -105,7 +105,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   completeLoad() {
-    if (this.props.currentView === 'RECEPTOR') {
+    if (this.props.currentView === View.Receptor) {
       this.model.on('view.loaded', () => {
         this.updateReceptorImage();
       });

@@ -115,10 +115,7 @@ class App extends React.Component<AppProps> {
                     <option value="Field Mouse">Field Mouse</option>
                   </select>
                   <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
-                    <option value={View.None}>None</option>
-                    <option value={View.Organism}>Organism</option>
-                    <option value={View.Cell}>Cell</option>
-                    <option value={View.Receptor}>Receptor</option>
+                    {appStore.getAvailableViews().map(view => <option key={view} value={view}>{view}</option>)}
                   </select>
                 </div>
                 <div
@@ -138,10 +135,7 @@ class App extends React.Component<AppProps> {
                     <option value="Field Mouse">Field Mouse</option>
                   </select>
                   <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
-                    <option value={View.None}>None</option>
-                    <option value={View.Organism}>Organism</option>
-                    <option value={View.Cell}>Cell</option>
-                    <option value={View.Receptor}>Receptor</option>
+                    {appStore.getAvailableViews().map(view => <option key={view} value={view}>{view}</option>)}
                   </select>
                 </div>
                 <div

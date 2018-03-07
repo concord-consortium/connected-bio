@@ -4,10 +4,10 @@ import { Organism, IOrganism, FieldMouse } from '../models/Organism';
 import { stringToEnum, getUrlParamValue } from '../utils';
 
 export enum View {
-  None = 'NONE',
-  Organism = 'ORGANISM',
-  Cell = 'CELL',
-  Receptor = 'RECEPTOR'
+  None = 'None',
+  Organism = 'Organism',
+  Cell = 'Cell',
+  Receptor = 'Receptor'
 }
 
 const Box = types
@@ -27,9 +27,16 @@ export const AppStore = types
     boxes: types.map(Box),
     // whether we show graphs and add/remove buttons. In future we should explicitly say what views we want.
     // Default: true, set with `?showSubstances=false`
-    showSubstances: types.boolean
+    showSubstances: types.boolean,
+    // which views we allow in the organism boxes
+    // Default: ['None', 'Organism', 'Cell', 'Receptor'], set with `?availableViews=Organism,Cell`
+    availableViews: types.array(types.string)
   })
   .views(self => ({
+    getAvailableViews() {
+      return self.availableViews.map(id => stringToEnum(id, View));
+    },
+
     getBoxOrgName(boxId: string): string {
       return self.boxes.get(boxId).organism.id;
     },
@@ -53,6 +60,9 @@ export const AppStore = types
   }));
 
 const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : true;
+const availableViews = getUrlParamValue('availableViews') ?
+  getUrlParamValue('availableViews').split(',') :
+  [View.None, View.Organism, View.Cell, View.Receptor];
 
 export const appStore = AppStore.create({
   boxes: {
@@ -67,5 +77,6 @@ export const appStore = AppStore.create({
       view: View.Cell
     }
   },
-  showSubstances: showSubstances
+  showSubstances: showSubstances,
+  availableViews: availableViews
 });
