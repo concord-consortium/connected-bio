@@ -37,10 +37,12 @@ class App extends React.Component<AppProps> {
   handleViewChange(event: any) {
     let view: View = stringToEnum(event.target.value, View);
     appStore.setBoxView(event.target.name, view);
+    rootStore.checkAssays();
   }
 
   handleOrgChange(event: any) {
     appStore.setBoxOrg(event.target.name, rootStore.organisms.get(event.target.value));
+    rootStore.checkAssays();
   }
 
   handleAssayToggle() {

@@ -33,6 +33,10 @@ export const AppStore = types
 
     getBoxView(boxId: string): View {
       return self.boxes.get(boxId).viewType;
+    },
+
+    getAllViews() {
+      return self.boxes.values();
     }
   }))
   .actions(self => ({
