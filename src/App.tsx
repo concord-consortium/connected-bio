@@ -94,6 +94,15 @@ class App extends React.Component<AppProps> {
   }
 
   render() {
+    const substanceTools = appStore.showSubstances ? (
+      <div className="tools">
+        <AssayTool
+          onAssayToggle={this.handleAssayToggle}
+          onAssayClear={this.handleAssayClear}
+        />
+        <SubstanceManipulator />
+      </div>
+    ) : null;
     return (
       <MuiThemeProvider>
         <div className={'App' + (this.isModeDropper(rootStore.mode) ? ' dropper' : '')}>
@@ -146,13 +155,7 @@ class App extends React.Component<AppProps> {
                 </div>
               </div>
             </div>
-            <div className="tools">
-              <AssayTool
-                onAssayToggle={this.handleAssayToggle}
-                onAssayClear={this.handleAssayClear}
-              />
-              <SubstanceManipulator />
-            </div>
+            {substanceTools}
           </div>
         </div>
       </MuiThemeProvider>
