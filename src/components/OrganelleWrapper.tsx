@@ -36,7 +36,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#nucleus'
       },
       [OrganelleType.Cytoplasm]: {
-        selector: '#cytoplasm, #intercell_zoom_bounds, #microtubules_x5F_grouped',
+        selector: `#cytoplasm, #intercell_zoom_bounds, #microtubules_x5F_grouped,
+                    #intracellular-paths, #intercellular-paths`,
         opaqueSelector: '#cellshape_0_Layer0_0_FILL, #intercell_zoom_bounds'
       },
       [OrganelleType.Golgi]: {
