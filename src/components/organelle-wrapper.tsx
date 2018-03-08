@@ -247,7 +247,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   makeEverythingTransparentExcept(skip: any) {
     if (this.model) {
       this.makeEverythingOpaque();
-      this.model.view.setPropertiesOnAllObjects({opacity: '*0.2'}, true, skip, true);
+      this.model.view.setPropertiesOnAllObjects({opacity: '*0.7'}, true, skip, true);
     }
   }
 
