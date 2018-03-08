@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
 import { v4 as uuid } from 'uuid';
-import { Organism, IOrganism, FieldMouse } from '../models/Organism';
+import { Organism, IOrganism, FieldMouse, BeachMouse } from '../models/Organism';
 import { stringToEnum, getUrlParamValue } from '../utils';
 
 export enum View {
@@ -63,18 +63,24 @@ const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : 
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
   [View.None, View.Organism, View.Cell, View.Receptor];
+const initialOrg = getUrlParamValue('initialOrg') ?
+  (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse) :
+  FieldMouse;
+const initialViews = getUrlParamValue('initialViews') ?
+  getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
+  [View.Organism, View.Cell];
 
 export const appStore = AppStore.create({
   boxes: {
     'box-1': {
       id: 'box-1',
-      organism: FieldMouse,
-      view: View.Organism
+      organism: initialOrg,
+      view: initialViews[0]
     },
     'box-2': {
       id: 'box-2',
-      organism: FieldMouse,
-      view: View.Cell
+      organism: initialOrg,
+      view: initialViews[1]
     }
   },
   showSubstances: showSubstances,
