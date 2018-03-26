@@ -1,9 +1,10 @@
 import { types, clone } from 'mobx-state-tree';
 import { isEqual } from 'lodash';
 import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse } from '../models/Organism';
-import { Substance, ISubstance, SubstanceType } from '../models/Substance';
+import { SubstanceType } from '../models/Substance';
 import { AppStore, appStore } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
+import { stringToEnum } from '../utils';
 
 export enum Mode {
   Normal = 'NORMAL',
@@ -18,7 +19,8 @@ const RootStore = types
     organisms: types.map(Organism),
     activeAssay: types.maybe(OrganelleRef),
     lockedAssays: types.optional(types.array(OrganelleRef), []),
-    activeSubstanceManipulation: types.maybe(Substance),
+    activeSubstance: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
+    activeSubstanceAmount: types.optional(types.number, 0),
     time: types.optional(types.number, 0),
     appStore: AppStore,
     assayStore: AssayStore
@@ -32,16 +34,17 @@ const RootStore = types
       self.lockedAssays = assayOrganelles;
     },
 
-    setActiveSubstanceManipulation(substanceType: SubstanceType, amount: number) {
-      self.activeSubstanceManipulation = Substance.create({
-        type: substanceType,
-        amount
-      });
+    setActiveSubstance(substance: SubstanceType) {
+      self.activeSubstance = substance;
+    },
+
+    setActiveSubstanceAmount(amount: number) {
+      self.activeSubstanceAmount = amount;
     },
 
     step(msPassed: number) {
       self.organisms.keys().forEach(orgKey => {
-        self.organisms.get(orgKey).step(msPassed);
+        self.organisms.get(orgKey).step(self.time);
       });
 
       self.time += msPassed;
@@ -68,19 +71,21 @@ const RootStore = types
       self.setLockedAssays([]);
     },
 
-    toggleSubstanceManipulator(manipulationMode: Mode, substance: SubstanceType, amount: number) {
+    toggleSubstanceManipulator(manipulationMode: Mode, amount: number) {
       if (self.mode === Mode.Normal) {
         self.setMode(manipulationMode);
-        self.setActiveSubstanceManipulation(substance, amount);
+        self.setActiveSubstanceAmount(amount);
       } else {
         self.setMode(Mode.Normal);
       }
     },
 
     changeSubstanceLevel(organelleRef: IOrganelleRef) {
-      let {substanceType, amount} = self.activeSubstanceManipulation as ISubstance;
       self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-        organelleRef.organelleType, substanceType, amount);
+        organelleRef.organelleType, 
+        stringToEnum(self.activeSubstance, SubstanceType), 
+        self.activeSubstanceAmount, 
+        self.time);
       self.setMode(Mode.Normal);
     }
   }));
@@ -91,6 +96,7 @@ export const rootStore = RootStore.create({
     'Beach Mouse': BeachMouse,
     'Field Mouse': FieldMouse
   },
+  activeSubstance: SubstanceType.Hormone,
   appStore,
   assayStore
 });

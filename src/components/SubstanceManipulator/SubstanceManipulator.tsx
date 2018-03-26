@@ -30,14 +30,15 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
     this.setState({
       selectedSubstance: value
     });
+    rootStore.setActiveSubstance(value);
   }
 
   handleAddModeToggle() {
-    rootStore.toggleSubstanceManipulator(Mode.Add, this.state.selectedSubstance, SUBSTANCE_DELTA);
+    rootStore.toggleSubstanceManipulator(Mode.Add, SUBSTANCE_DELTA);
   }
 
   handleSubtractModeToggle() {
-    rootStore.toggleSubstanceManipulator(Mode.Subtract, this.state.selectedSubstance, SUBSTANCE_DELTA * -1);
+    rootStore.toggleSubstanceManipulator(Mode.Subtract, SUBSTANCE_DELTA * -1);
   }
 
   render() {
@@ -74,21 +75,24 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Hormone}
             label="Hormone"
-            disabled={mode !== Mode.Normal}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.GProtein}
             label="Activated G-Protein"
-            disabled={mode !== Mode.Normal}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Eumelanin}
             label="Eumelanin"
-            disabled={mode !== Mode.Normal}
+          />
+          <RadioButton
+            style={{width: '200px'}}
+            labelStyle={{ fontSize: '12px'}}
+            value={SubstanceType.Pheomelanin}
+            label="Pheomelanin"
           />
         </RadioButtonGroup>
       </div>

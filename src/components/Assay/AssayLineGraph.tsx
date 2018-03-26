@@ -54,7 +54,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
     });
     return {
       data,
-      label: assayInfo.organism.id + ' ' + assayInfo.organelleType.toLowerCase() + ' ' 
+      label: assayInfo.organism.id + ' ' + assayInfo.organelleType.toLowerCase() + ' '
         + activeSubstance.toLowerCase(),
       borderWidth: 3,
       backgroundColor: this.props.colors[lineNum],
@@ -69,7 +69,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
     let {activeAssay, lockedAssays} = rootStore;
     let activeSubstances = visibleSubstances.keys()
       .filter((substanceKey) => visibleSubstances.get(substanceKey))
-      .map((activeSubstance) => 
+      .map((activeSubstance) =>
         stringToEnum(activeSubstance, SubstanceType));
 
     let data: any = {
@@ -129,7 +129,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         <Scatter
           data={data}
           options={options}
-          height={300}
+          height={346}
         />
     );
   }

@@ -85,31 +85,6 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             icon={assayStore.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
           />
         </div>
-        {/*
-        <div className="chart-boxes">
-          <Checkbox
-            style={{width: '200px'}}
-            checked={assayStore.visibleSubstances.get(SubstanceType.Hormone)}
-            id={SubstanceType.Hormone}
-            label={'Hormone'}
-            onCheck={this.updateCheck}
-          />
-          <Checkbox
-            style={{width: '200px'}}
-            checked={assayStore.visibleSubstances.get(SubstanceType.GProtein)}
-            id={SubstanceType.GProtein}
-            label={'Activated G-Protein'}
-            onCheck={this.updateCheck}
-          />
-          <Checkbox
-            style={{width: '200px'}}
-            checked={assayStore.visibleSubstances.get(SubstanceType.Eumelanin)}
-            id={SubstanceType.Eumelanin}
-            label={'Eumelanin'}
-            onCheck={this.updateCheck}
-          />
-        </div>
-        */}
       </div>
     );
   }

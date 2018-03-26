@@ -31,7 +31,8 @@ export const assayStore = AssayStore.create({
   visibleSubstances: {
     [SubstanceType.Hormone]: true,
     [SubstanceType.GProtein]: true,
-    [SubstanceType.Eumelanin]: true
+    [SubstanceType.Eumelanin]: true,
+    [SubstanceType.Pheomelanin]: true
   },
   graph: GraphType.Bar
 });

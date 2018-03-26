@@ -70,6 +70,8 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
         return allColors[1];
       case SubstanceType.Eumelanin:
         return allColors[2];
+        case SubstanceType.Pheomelanin:
+          return allColors[3];
     }
   }
 
@@ -136,7 +138,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
         <HorizontalBar
           data={data}
           options={options}
-          height={300}
+          height={346}
         />
     );
   }
