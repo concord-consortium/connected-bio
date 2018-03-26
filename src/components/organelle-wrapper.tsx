@@ -7,7 +7,7 @@ import { OrganelleType } from '../models/Organelle';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
 import * as CellModels from '../cell-models/index';
-import { SubstanceType, ISubstance } from '../models/Substance';
+import { SubstanceType } from '../models/Substance';
 
 interface OrganelleWrapperProps {
   name: string;
@@ -269,7 +269,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       // update substance levels
       rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
       // show animation in model
-      let {substanceType} = rootStore.activeSubstanceManipulation as ISubstance;
+      let substanceType = rootStore.activeSubstance;
       if (substanceType === SubstanceType.Hormone) {
         this.addHormone(organelleType, location);
       } else if (substanceType === SubstanceType.GProtein && this.props.currentView === View.Receptor) {

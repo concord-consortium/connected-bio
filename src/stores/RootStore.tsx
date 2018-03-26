@@ -1,9 +1,10 @@
 import { types, clone } from 'mobx-state-tree';
 import { isEqual } from 'lodash';
 import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse } from '../models/Organism';
-import { Substance, ISubstance, SubstanceType } from '../models/Substance';
+import { SubstanceType } from '../models/Substance';
 import { AppStore, appStore } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
+import { stringToEnum } from '../utils';
 
 export enum Mode {
   Normal = 'NORMAL',
@@ -20,7 +21,6 @@ const RootStore = types
     lockedAssays: types.optional(types.array(OrganelleRef), []),
     activeSubstance: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
     activeSubstanceAmount: types.optional(types.number, 0),
-    activeSubstanceManipulation: types.maybe(Substance),
     time: types.optional(types.number, 0),
     appStore: AppStore,
     assayStore: AssayStore
@@ -36,22 +36,10 @@ const RootStore = types
 
     setActiveSubstance(substance: SubstanceType) {
       self.activeSubstance = substance;
-      if (self.activeSubstanceAmount) {
-        self.activeSubstanceManipulation = Substance.create({
-          type: substance,
-          amount: self.activeSubstanceAmount
-        });
-      }
     },
 
     setActiveSubstanceAmount(amount: number) {
       self.activeSubstanceAmount = amount;
-      if (self.activeSubstance) {
-        self.activeSubstanceManipulation = Substance.create({
-          type: self.activeSubstance,
-          amount: amount
-        });
-      }
     },
 
     step(msPassed: number) {
@@ -93,9 +81,8 @@ const RootStore = types
     },
 
     changeSubstanceLevel(organelleRef: IOrganelleRef) {
-      let {substanceType, amount} = self.activeSubstanceManipulation as ISubstance;
       self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-        organelleRef.organelleType, substanceType, amount);
+        organelleRef.organelleType, stringToEnum(self.activeSubstance, SubstanceType), self.activeSubstanceAmount);
       self.setMode(Mode.Normal);
     }
   }));
