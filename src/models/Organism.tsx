@@ -109,7 +109,8 @@ export const Organism = types
     },
   }))
   .actions(self => ({
-    incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number, currentTime: number) {
+    incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number, 
+                                currentTime: number) {
       let organelle = self.organelles.get(organelleType) as IOrganelle;
       if (organelle) {
         organelle.incrementSubstance(substanceType, amount, currentTime);
