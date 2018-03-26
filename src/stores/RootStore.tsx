@@ -44,7 +44,7 @@ const RootStore = types
 
     step(msPassed: number) {
       self.organisms.keys().forEach(orgKey => {
-        self.organisms.get(orgKey).step(msPassed);
+        self.organisms.get(orgKey).step(self.time);
       });
 
       self.time += msPassed;
@@ -82,7 +82,10 @@ const RootStore = types
 
     changeSubstanceLevel(organelleRef: IOrganelleRef) {
       self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-        organelleRef.organelleType, stringToEnum(self.activeSubstance, SubstanceType), self.activeSubstanceAmount);
+        organelleRef.organelleType, 
+        stringToEnum(self.activeSubstance, SubstanceType), 
+        self.activeSubstanceAmount, 
+        self.time);
       self.setMode(Mode.Normal);
     }
   }));

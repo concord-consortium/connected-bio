@@ -107,24 +107,24 @@ export const Organism = types
     },
   }))
   .actions(self => ({
-    incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number) {
+    incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number, currentTime: number) {
       let organelle = self.organelles.get(organelleType) as IOrganelle;
       if (organelle) {
-        organelle.incrementSubstance(substanceType, amount);
+        organelle.incrementSubstance(substanceType, amount, currentTime);
       } else {
         let newOrganelle = Organelle.create({ type: organelleType });
-        newOrganelle.incrementSubstance(substanceType, amount);
+        newOrganelle.incrementSubstance(substanceType, amount, currentTime);
         self.organelles.set(organelleType, newOrganelle);
       }
     },
-    step(msPassed: number) {
+    step(currentTime: number) {
       Object.keys(OrganelleType).map(key => OrganelleType[key]).forEach(organelleType => {
         let organelle = self.organelles.get(organelleType) as IOrganelle;
         if (!organelle) {
           organelle = Organelle.create({type: organelleType});
           self.organelles.set(organelleType, organelle);
         }
-        organelle.step(msPassed, self);
+        organelle.step(currentTime, self);
       });
     }
   }));

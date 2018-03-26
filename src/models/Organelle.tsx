@@ -33,25 +33,18 @@ export const Organelle: any = types
     }
   }))
   .actions(self => ({
-    incrementSubstance(substanceType: SubstanceType, amount: number) {
+    incrementSubstance(substanceType: SubstanceType, amount: number, currentTime: number) {
       let substanceLevel: ISubstance = self.substanceDeltas.get(substanceType);
-      if (substanceLevel) {
-        substanceLevel.manuallyIncrement(amount, self);
-      } else {
-        self.substanceDeltas.set(substanceType, Substance.create({
-          type: substanceType,
-          amount: amount
-        }));
-      }
+      substanceLevel.manuallyIncrement(amount, self, currentTime);
     },
-    step(msPassed: number, parentOrganism: IOrganism) {
+    step(currentTime: number, parentOrganism: IOrganism) {
       Object.keys(SubstanceType).map(key => SubstanceType[key]).forEach(substanceType => {
         let substance = self.substanceDeltas.get(substanceType) as ISubstance;
         if (!substance) {
           substance = Substance.create({type: substanceType});
           self.substanceDeltas.set(substanceType, substance);
         }
-        substance.step(msPassed, parentOrganism, self);
+        substance.step(currentTime, parentOrganism, self);
       });
     }
   }));

@@ -17,11 +17,8 @@ const STEP_MS = 100;
 
 @observer
 class App extends React.Component<AppProps> {
-  currentTime: number;
-
   constructor(props: AppProps) {
     super(props);
-    this.currentTime = 0;
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.simulationTick = this.simulationTick.bind(this);
@@ -33,8 +30,7 @@ class App extends React.Component<AppProps> {
   }
 
   simulationTick(msPassed: number) {
-    this.currentTime += msPassed;
-    rootStore.step(this.currentTime);
+    rootStore.step(msPassed);
     setTimeout(this.simulationTick.bind(this, STEP_MS), STEP_MS);
   }
 
