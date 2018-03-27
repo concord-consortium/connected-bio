@@ -29,7 +29,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       OrganelleType.Nucleus,
       OrganelleType.Golgi,
       OrganelleType.Extracellular,
-      OrganelleType.Melanosome
+      OrganelleType.Melanosomes
     ];
     organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
@@ -47,7 +47,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: `#intercell, .gate-a, .gate-b, .gate-c, .gate-d`,
         opaqueSelector: '#Layer6_0_FILL'
       },
-      [OrganelleType.Melanosome]: {
+      [OrganelleType.Melanosomes]: {
         selector: '#melanosome_2, #melanosome_4'
       }
     };

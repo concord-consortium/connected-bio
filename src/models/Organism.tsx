@@ -42,7 +42,7 @@ export const Organism = types
       }
       // else return a default value based on the amount of melanin
       let eumelaninLevel = self.getTotalForOrganelleSubstance(
-        OrganelleType.Melanosome, SubstanceType.Eumelanin
+        OrganelleType.Melanosomes, SubstanceType.Eumelanin
       );
       return eumelaninLevel < 200
         ? 1
@@ -54,7 +54,7 @@ export const Organism = types
   .views(self => ({
     get modelProperties() {
       let eumelaninLevel = self.getTotalForOrganelleSubstance(
-            OrganelleType.Melanosome, SubstanceType.Eumelanin
+            OrganelleType.Melanosomes, SubstanceType.Eumelanin
           ),
           // normalize 200-370 to 0-100
           eumelaninInCell = Math.max(0, Math.min(100, (eumelaninLevel - 200) / 1.7)),
@@ -150,8 +150,8 @@ export const BeachMouse = Organism.create({
         }
       }
     },
-    [OrganelleType.Melanosome]: {
-      type: OrganelleType.Melanosome,
+    [OrganelleType.Melanosomes]: {
+      type: OrganelleType.Melanosomes,
       substanceLevels: {
         [SubstanceType.Eumelanin] : {
           type: SubstanceType.Eumelanin,
@@ -187,8 +187,8 @@ export const FieldMouse = Organism.create({
         }
       }
     },
-    [OrganelleType.Melanosome]: {
-      type: OrganelleType.Melanosome,
+    [OrganelleType.Melanosomes]: {
+      type: OrganelleType.Melanosomes,
       substanceLevels: {
         [SubstanceType.Eumelanin] : {
           type: SubstanceType.Eumelanin,

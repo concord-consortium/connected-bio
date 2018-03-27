@@ -48,9 +48,9 @@ export const Substance: any = types
       let signalProteinAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Cytoplasm, SubstanceType.SignalProtein);
       let eumelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
-        OrganelleType.Melanosome, SubstanceType.Eumelanin);
+        OrganelleType.Melanosomes, SubstanceType.Eumelanin);
       let pheomelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
-        OrganelleType.Melanosome, SubstanceType.Pheomelanin);
+        OrganelleType.Melanosomes, SubstanceType.Pheomelanin);
 
       if (self.fixedValueEndTime > currentTime) {
         // User has recently set value, and we want to stay at this value
@@ -73,7 +73,7 @@ export const Substance: any = types
           deathRate = (25 + 1.5 * signalProteinAmount) / 10;
           break;
         case SubstanceType.Eumelanin:
-          birthRate = parentOrganelle.type === OrganelleType.Melanosome
+          birthRate = parentOrganelle.type === OrganelleType.Melanosomes
             ? parentOrganism.id === 'Field Mouse'
               ? (280 + 1.5 * signalProteinAmount) / 10
               : (25 + 1.8 * signalProteinAmount) / 10
@@ -81,7 +81,7 @@ export const Substance: any = types
           deathRate = (25 + 1.5 * eumelaninAmount) / 10;
           break;
         case SubstanceType.Pheomelanin:
-          birthRate = parentOrganelle.type === OrganelleType.Melanosome
+          birthRate = parentOrganelle.type === OrganelleType.Melanosomes
             ? (500 - 1.5 * signalProteinAmount) / 10
             : 0;
           deathRate = (25 + 1.5 * pheomelaninAmount) / 10;
