@@ -144,8 +144,8 @@ export const BeachMouse = Organism.create({
     [OrganelleType.Cytoplasm]: {
       type: OrganelleType.Cytoplasm,
       substanceLevels: {
-        [SubstanceType.GProtein] : {
-          type: SubstanceType.GProtein,
+        [SubstanceType.SignalProtein] : {
+          type: SubstanceType.SignalProtein,
           amount: 0
         }
       }
@@ -181,8 +181,8 @@ export const FieldMouse = Organism.create({
     [OrganelleType.Cytoplasm]: {
       type: OrganelleType.Cytoplasm,
       substanceLevels: {
-        [SubstanceType.GProtein] : {
-          type: SubstanceType.GProtein,
+        [SubstanceType.SignalProtein] : {
+          type: SubstanceType.SignalProtein,
           amount: 170
         }
       }

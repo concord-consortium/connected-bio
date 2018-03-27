@@ -79,8 +79,8 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
-            value={SubstanceType.GProtein}
-            label="Activated G-Protein"
+            value={SubstanceType.SignalProtein}
+            label="Signal Protein"
           />
           <RadioButton
             style={{width: '200px'}}

@@ -20,7 +20,7 @@ interface AssayToolState {}
 
 const colors = {
   [SubstanceType.Hormone]: '#0adbd7',
-  [SubstanceType.GProtein]: '#d88bff',
+  [SubstanceType.SignalProtein]: '#d88bff',
   [SubstanceType.Eumelanin]: '#795423',
   [SubstanceType.Pheomelanin]: '#f4ce83'
 };

@@ -30,7 +30,7 @@ export const AssayStore = types
 export const assayStore = AssayStore.create({
   visibleSubstances: {
     [SubstanceType.Hormone]: true,
-    [SubstanceType.GProtein]: true,
+    [SubstanceType.SignalProtein]: true,
     [SubstanceType.Eumelanin]: true,
     [SubstanceType.Pheomelanin]: true
   },
