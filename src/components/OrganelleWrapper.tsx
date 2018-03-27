@@ -197,7 +197,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.click', (evt: any) => {
-      console.log(evt.target);
       let clickTarget: OrganelleType = this.clickTargets.find((t) => {
         return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
       });

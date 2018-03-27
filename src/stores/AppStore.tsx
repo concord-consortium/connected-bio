@@ -30,11 +30,11 @@ export const AppStore = types
     showSubstances: types.boolean,
     // which views we allow in the organism boxes
     // Default: ['None', 'Organism', 'Cell', 'Receptor'], set with `?availableViews=Organism,Cell`
-    availableViews: types.array(types.string)
+    _availableViews: types.array(types.string)
   })
   .views(self => ({
-    getAvailableViews() {
-      return self.availableViews.map(id => stringToEnum(id, View));
+    get availableViews() {
+      return self._availableViews.map(id => stringToEnum(id, View));
     },
 
     getBoxOrgName(boxId: string): string {
@@ -84,5 +84,5 @@ export const appStore = AppStore.create({
     }
   },
   showSubstances: showSubstances,
-  availableViews: availableViews
+  _availableViews: availableViews
 });
