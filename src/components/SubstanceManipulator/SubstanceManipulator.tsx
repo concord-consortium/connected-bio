@@ -75,24 +75,28 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Hormone}
             label="Hormone"
+            disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.SignalProtein}
             label="Signal Protein"
+            disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Eumelanin}
             label="Eumelanin"
+            disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Pheomelanin}
             label="Pheomelanin"
+            disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
         </RadioButtonGroup>
       </div>
