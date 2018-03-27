@@ -7,7 +7,7 @@ import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
 import { stringToEnum } from './utils';
 
-import OrganelleWrapper from './components/organelle-wrapper';
+import OrganelleWrapper from './components/OrganelleWrapper';
 import AssayTool from './components/Assay/AssayTool';
 import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
 
@@ -37,10 +37,12 @@ class App extends React.Component<AppProps> {
   handleViewChange(event: any) {
     let view: View = stringToEnum(event.target.value, View);
     appStore.setBoxView(event.target.name, view);
+    rootStore.checkAssays();
   }
 
   handleOrgChange(event: any) {
     appStore.setBoxOrg(event.target.name, rootStore.organisms.get(event.target.value));
+    rootStore.checkAssays();
   }
 
   handleAssayToggle() {
@@ -92,6 +94,15 @@ class App extends React.Component<AppProps> {
   }
 
   render() {
+    const substanceTools = appStore.showSubstances ? (
+      <div className="tools">
+        <AssayTool
+          onAssayToggle={this.handleAssayToggle}
+          onAssayClear={this.handleAssayClear}
+        />
+        <SubstanceManipulator />
+      </div>
+    ) : null;
     return (
       <MuiThemeProvider>
         <div className={'App' + (this.isModeDropper(rootStore.mode) ? ' dropper' : '')}>
@@ -104,10 +115,7 @@ class App extends React.Component<AppProps> {
                     <option value="Field Mouse">Field Mouse</option>
                   </select>
                   <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
-                    <option value={View.None}>None</option>
-                    <option value={View.Organism}>Organism</option>
-                    <option value={View.Cell}>Cell</option>
-                    <option value={View.Receptor}>Receptor</option>
+                    {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
                   </select>
                 </div>
                 <div
@@ -127,10 +135,7 @@ class App extends React.Component<AppProps> {
                     <option value="Field Mouse">Field Mouse</option>
                   </select>
                   <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
-                    <option value={View.None}>None</option>
-                    <option value={View.Organism}>Organism</option>
-                    <option value={View.Cell}>Cell</option>
-                    <option value={View.Receptor}>Receptor</option>
+                    {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
                   </select>
                 </div>
                 <div
@@ -144,13 +149,7 @@ class App extends React.Component<AppProps> {
                 </div>
               </div>
             </div>
-            <div className="tools">
-              <AssayTool
-                onAssayToggle={this.handleAssayToggle}
-                onAssayClear={this.handleAssayClear}
-              />
-              <SubstanceManipulator />
-            </div>
+            {substanceTools}
           </div>
         </div>
       </MuiThemeProvider>

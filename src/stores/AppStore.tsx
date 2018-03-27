@@ -1,13 +1,13 @@
 import { types } from 'mobx-state-tree';
 import { v4 as uuid } from 'uuid';
-import { Organism, IOrganism, FieldMouse } from '../models/Organism';
-import { stringToEnum } from '../utils';
+import { Organism, IOrganism, FieldMouse, BeachMouse } from '../models/Organism';
+import { stringToEnum, getUrlParamValue } from '../utils';
 
 export enum View {
-  None = 'NONE',
-  Organism = 'ORGANISM',
-  Cell = 'CELL',
-  Receptor = 'RECEPTOR'
+  None = 'None',
+  Organism = 'Organism',
+  Cell = 'Cell',
+  Receptor = 'Receptor'
 }
 
 const Box = types
@@ -24,15 +24,29 @@ const Box = types
 
 export const AppStore = types
   .model('AppStore', {
-    boxes: types.map(Box)
+    boxes: types.map(Box),
+    // whether we show graphs and add/remove buttons. In future we should explicitly say what views we want.
+    // Default: true, set with `?showSubstances=false`
+    showSubstances: types.boolean,
+    // which views we allow in the organism boxes
+    // Default: ['None', 'Organism', 'Cell', 'Receptor'], set with `?availableViews=Organism,Cell`
+    _availableViews: types.array(types.string)
   })
   .views(self => ({
+    get availableViews() {
+      return self._availableViews.map(id => stringToEnum(id, View));
+    },
+
     getBoxOrgName(boxId: string): string {
       return self.boxes.get(boxId).organism.id;
     },
 
     getBoxView(boxId: string): View {
       return self.boxes.get(boxId).viewType;
+    },
+
+    getAllViews() {
+      return self.boxes.values();
     }
   }))
   .actions(self => ({
@@ -45,17 +59,30 @@ export const AppStore = types
     }
   }));
 
+const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : true;
+const availableViews = getUrlParamValue('availableViews') ?
+  getUrlParamValue('availableViews').split(',') :
+  [View.None, View.Organism, View.Cell, View.Receptor];
+const initialOrg = getUrlParamValue('initialOrg') ?
+  (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse) :
+  FieldMouse;
+const initialViews = getUrlParamValue('initialViews') ?
+  getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
+  [View.Organism, View.Cell];
+
 export const appStore = AppStore.create({
   boxes: {
     'box-1': {
       id: 'box-1',
-      organism: FieldMouse,
-      view: View.Organism
+      organism: initialOrg,
+      view: initialViews[0]
     },
     'box-2': {
       id: 'box-2',
-      organism: FieldMouse,
-      view: View.Cell
+      organism: initialOrg,
+      view: initialViews[1]
     }
-  }
+  },
+  showSubstances: showSubstances,
+  _availableViews: availableViews
 });

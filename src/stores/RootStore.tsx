@@ -2,7 +2,7 @@ import { types, clone } from 'mobx-state-tree';
 import { isEqual } from 'lodash';
 import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse } from '../models/Organism';
 import { SubstanceType } from '../models/Substance';
-import { AppStore, appStore } from './AppStore';
+import { AppStore, appStore, View } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
 import { stringToEnum } from '../utils';
 
@@ -87,6 +87,19 @@ const RootStore = types
         self.activeSubstanceAmount, 
         self.time);
       self.setMode(Mode.Normal);
+    },
+
+    /**
+     * Finds out what organisms the user is currently viewing the cells of, and removes
+     * any assays that shouldn't be visible.
+     */
+    checkAssays() {
+      const assayableOrgs: any[] = appStore.getAllViews().filter(box => {
+        return box.view === View.Cell || box.view === View.Receptor;
+      }).map((box) => box.organism);
+      const filteredAssays = self.lockedAssays.filter(assay => assayableOrgs.indexOf(assay.organism) > -1);
+      self.setLockedAssays(filteredAssays);
+      self.activeAssay = null;
     }
   }));
 

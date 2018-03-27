@@ -44,7 +44,7 @@ export const Substance: any = types
     step(currentTime: number, parentOrganism: IOrganism, parentOrganelle: IOrganelle) {
       let birthRate, deathRate;
       let hormoneAmount = parentOrganism.getTotalForOrganelleSubstance(
-        OrganelleType.Intercell, SubstanceType.Hormone);
+        OrganelleType.Extracellular, SubstanceType.Hormone);
       let gProteinAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Cytoplasm, SubstanceType.GProtein);
       let eumelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
@@ -59,7 +59,7 @@ export const Substance: any = types
 
       switch (self.type) {
         case SubstanceType.Hormone:
-          birthRate = parentOrganelle.type === OrganelleType.Intercell
+          birthRate = parentOrganelle.type === OrganelleType.Extracellular
             ? 300 / 20
             : 0;
           deathRate = (100 + 1.6 * hormoneAmount) / 20;

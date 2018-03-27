@@ -8,6 +8,7 @@ import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
 import * as CellModels from '../cell-models/index';
 import { SubstanceType } from '../models/Substance';
+import './OrganelleWrapper.css';
 
 interface OrganelleWrapperProps {
   name: string;
@@ -27,8 +28,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       OrganelleType.Cytoplasm,
       OrganelleType.Nucleus,
       OrganelleType.Golgi,
-      OrganelleType.Gates,
-      OrganelleType.Intercell,
+      OrganelleType.Extracellular,
       OrganelleType.Melanosome
     ];
     organelleSelectorInfo: any = {
@@ -36,26 +36,24 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#nucleus'
       },
       [OrganelleType.Cytoplasm]: {
-        selector: '#cytoplasm, #intercell_zoom_bounds, #microtubules_x5F_grouped',
+        selector: `#cytoplasm, #intercell_zoom_bounds, #microtubules_x5F_grouped,
+                    #intracellular-paths, #intercellular-paths`,
         opaqueSelector: '#cellshape_0_Layer0_0_FILL, #intercell_zoom_bounds'
       },
       [OrganelleType.Golgi]: {
         selector: '#golgi_x5F_apparatus'
       },
-      [OrganelleType.Gates]: {
-        selector: '.gate-a, .gate-b, .gate-c, .gate-d'
-      },
-      [OrganelleType.Intercell]: {
-        selector: `#intercell`,
+      [OrganelleType.Extracellular]: {
+        selector: `#intercell, .gate-a, .gate-b, .gate-c, .gate-d`,
         opaqueSelector: '#Layer6_0_FILL'
       },
       [OrganelleType.Melanosome]: {
-        selector: '#melanosome_2'
+        selector: '#melanosome_2, #melanosome_4'
       }
     };
     modelDefs: any = {
-      CELL: CellModels.cell,
-      RECEPTOR: CellModels.receptor
+      Cell: CellModels.cell,
+      Receptor: CellModels.receptor
     };
 
   constructor(props: OrganelleWrapperProps) {
@@ -108,7 +106,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   completeLoad() {
-    if (this.props.currentView === 'RECEPTOR') {
+    if (this.props.currentView === View.Receptor) {
       this.model.on('view.loaded', () => {
         this.updateReceptorImage();
       });
@@ -244,18 +242,18 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   updateReceptorImage() {
     if (this.model.world.getProperty('working_receptor')) {
-      this.model.view.hide('#receptor_x5F_protein_broken', true);
+      this.model.view.hide('#receptor-broken', true);
       if (this.model.world.getProperty('hormone_bound')) {
-        this.model.view.hide('#receptor_x5F_protein', true);
-        this.model.view.show('#receptor_x5F_protein_bound', true);
+        this.model.view.hide('#receptor-working', true);
+        this.model.view.show('#receptor-bound', true);
       } else {
-        this.model.view.show('#receptor_x5F_protein', true);
-        this.model.view.hide('#receptor_x5F_protein_bound', true);
+        this.model.view.show('#receptor-working', true);
+        this.model.view.hide('#receptor-bound', true);
       }
     } else {
-      this.model.view.hide('#receptor_x5F_protein', true);
-      this.model.view.hide('#receptor_x5F_protein_bound', true);
-      this.model.view.show('#receptor_x5F_protein_broken', true);
+      this.model.view.hide('#receptor-working', true);
+      this.model.view.hide('#receptor-bound', true);
+      this.model.view.show('#receptor-broken', true);
     }
   }
 
@@ -315,19 +313,19 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   addHormone(organelleType: OrganelleType, location: {x: number, y: number}) {
     let inZoom = this.props.currentView === View.Receptor;
-    let inIntercell = organelleType === OrganelleType.Intercell;
+    let inIntercell = organelleType === OrganelleType.Extracellular;
     let species = inZoom ? 'hexagon' : 'hormoneDot';
     let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
     let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
     let count = inIntercell ? 3 : 2;
-    this.addAgentsOverTime(species, state, props, count, 7, 350);
+    this.addAgentsOverTime(species, state, props, count, 9, 400);
   }
 
   addGProtein(organelleType: OrganelleType, location: {x: number, y: number}) {
-    let inIntercell = organelleType === OrganelleType.Intercell;
+    let inIntercell = organelleType === OrganelleType.Extracellular;
     let species = 'gProteinPart';
     let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';
-    this.addAgentsOverTime(species, state, location, 1, 7, 350);
+    this.addAgentsOverTime(species, state, location, 1, 9, 400);
   }
 
   componentDidUpdate() {
@@ -335,7 +333,20 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   render() {
-    return <div id={this.props.name} className="model" />;
+    let showHoverLocation = rootStore.mode !== Mode.Normal,
+        hoverLocation = this.state.hoveredOrganelle ? this.state.hoveredOrganelle : '',
+        hoverDiv = showHoverLocation ?
+      (
+        <div className="hover-location">
+          {hoverLocation}
+        </div>
+      ) : null;
+    return (
+      <div className="model-wrapper">
+        <div id={this.props.name} className="model" />
+        {hoverDiv}
+      </div>
+    );
   }
 }
 
