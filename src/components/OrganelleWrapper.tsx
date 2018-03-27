@@ -29,7 +29,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       OrganelleType.Nucleus,
       OrganelleType.Golgi,
       OrganelleType.Extracellular,
-      OrganelleType.Melanosome
+      OrganelleType.Melanosomes
     ];
     organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
@@ -47,7 +47,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: `#intercell, .gate-a, .gate-b, .gate-c, .gate-d`,
         opaqueSelector: '#Layer6_0_FILL'
       },
-      [OrganelleType.Melanosome]: {
+      [OrganelleType.Melanosomes]: {
         selector: '#melanosome_2, #melanosome_4'
       }
     };
@@ -285,8 +285,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       let substanceType = rootStore.activeSubstance;
       if (substanceType === SubstanceType.Hormone) {
         this.addHormone(organelleType, location);
-      } else if (substanceType === SubstanceType.GProtein && this.props.currentView === View.Receptor) {
-        this.addGProtein(organelleType, location);
+      } else if (substanceType === SubstanceType.SignalProtein && this.props.currentView === View.Receptor) {
+        this.addSignalProtein(organelleType, location);
       }
     }
   }
@@ -321,7 +321,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     this.addAgentsOverTime(species, state, props, count, 9, 400);
   }
 
-  addGProtein(organelleType: OrganelleType, location: {x: number, y: number}) {
+  addSignalProtein(organelleType: OrganelleType, location: {x: number, y: number}) {
     let inIntercell = organelleType === OrganelleType.Extracellular;
     let species = 'gProteinPart';
     let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';

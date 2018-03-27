@@ -5,7 +5,7 @@ import { OrganelleType, IOrganelle } from './Organelle';
 
 export enum SubstanceType {
   Hormone = 'Hormone',
-  GProtein = 'G-Protein',
+  SignalProtein = 'Signal Protein',
   Eumelanin = 'Eumelanin',
   Pheomelanin = 'Pheomelanin'
 }
@@ -45,12 +45,12 @@ export const Substance: any = types
       let birthRate, deathRate;
       let hormoneAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Extracellular, SubstanceType.Hormone);
-      let gProteinAmount = parentOrganism.getTotalForOrganelleSubstance(
-        OrganelleType.Cytoplasm, SubstanceType.GProtein);
+      let signalProteinAmount = parentOrganism.getTotalForOrganelleSubstance(
+        OrganelleType.Cytoplasm, SubstanceType.SignalProtein);
       let eumelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
-        OrganelleType.Melanosome, SubstanceType.Eumelanin);
+        OrganelleType.Melanosomes, SubstanceType.Eumelanin);
       let pheomelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
-        OrganelleType.Melanosome, SubstanceType.Pheomelanin);
+        OrganelleType.Melanosomes, SubstanceType.Pheomelanin);
 
       if (self.fixedValueEndTime > currentTime) {
         // User has recently set value, and we want to stay at this value
@@ -64,25 +64,25 @@ export const Substance: any = types
             : 0;
           deathRate = (100 + 1.6 * hormoneAmount) / 20;
           break;
-        case SubstanceType.GProtein:
+        case SubstanceType.SignalProtein:
           birthRate = parentOrganelle.type === OrganelleType.Cytoplasm
             ? parentOrganism.id === 'Field Mouse'
               ? (180 + .8 * hormoneAmount) / 10
               : 25 / 10
             : 0;
-          deathRate = (25 + 1.5 * gProteinAmount) / 10;
+          deathRate = (25 + 1.5 * signalProteinAmount) / 10;
           break;
         case SubstanceType.Eumelanin:
-          birthRate = parentOrganelle.type === OrganelleType.Melanosome
+          birthRate = parentOrganelle.type === OrganelleType.Melanosomes
             ? parentOrganism.id === 'Field Mouse'
-              ? (280 + 1.5 * gProteinAmount) / 10
-              : (25 + 1.8 * gProteinAmount) / 10
+              ? (280 + 1.5 * signalProteinAmount) / 10
+              : (25 + 1.8 * signalProteinAmount) / 10
             : 0;
           deathRate = (25 + 1.5 * eumelaninAmount) / 10;
           break;
         case SubstanceType.Pheomelanin:
-          birthRate = parentOrganelle.type === OrganelleType.Melanosome
-            ? (500 - 1.5 * gProteinAmount) / 10
+          birthRate = parentOrganelle.type === OrganelleType.Melanosomes
+            ? (500 - 1.5 * signalProteinAmount) / 10
             : 0;
           deathRate = (25 + 1.5 * pheomelaninAmount) / 10;
           break;
