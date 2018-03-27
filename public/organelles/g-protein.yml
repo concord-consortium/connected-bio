@@ -1,6 +1,6 @@
 ---
 name: gProtein
-image: assets/g-protein.svg
+image: assets/g-protein-2.svg
 spawn:
   'on':
     selector: "#gprotein-paths-to-receptor path"
@@ -10,9 +10,8 @@ spawn:
   never: true
 dieWhenExitingWorld: false
 properties:
-  size: 0.8
+  size: 1.1
   speed: [0.5, 0.8]
-  image_selector: gbody
 initialState: towards
 rules:
   towards:
@@ -31,7 +30,20 @@ rules:
     then:
       switch_state: bind_to_receptor
     else:
+      switch_state: head_away
+  head_away:
+    if:
+      fact: world.working_receptor
+    then:
       switch_state: away
+    else:
+      switch_state: pick_path_away
+  pick_path_away:
+  - move_to:
+      selector: "#gprotein-paths-to-receptor path"
+      which: random
+      finally:
+        switch_state: away
   away:
   - follow:
       selector: "#gprotein-paths-to-receptor path"
@@ -46,8 +58,8 @@ rules:
       selector: "#path-away-from-receptor-part"
   - change:
       prop: direction
-      by: 3
-      until: 50
+      by: 5
+      until: 172
       finally:
         switch_state: bound
   bound:
