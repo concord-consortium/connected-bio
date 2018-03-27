@@ -1,19 +1,8 @@
 import { types } from 'mobx-state-tree';
+import { observable } from 'mobx';
 import { v4 as uuid } from 'uuid';
 import { Organelle, IOrganelle, OrganelleType } from './Organelle';
 import { SubstanceType } from './Substance';
-
-export const ModelProperties = types
-  .model('ModelProperties', {
-    albino: types.optional(types.boolean, false),
-    working_tyr1: types.optional(types.boolean, false),
-    working_myosin_5a: types.optional(types.boolean, true),
-    open_gates: types.optional(types.boolean, false),
-    // lightness: types.number,
-    eumelanin: types.number,
-    hormone_spawn_period: types.number,
-    working_receptor: types.boolean
-  });
 
 export const Organism = types
   .model('Organism', {
@@ -80,7 +69,7 @@ export const Organism = types
           workingReceptor = true;
           break;
       }
-      return {
+      return observable.map({
         albino: false,
         working_tyr1: false,
         working_myosin_5a: true,
@@ -88,7 +77,7 @@ export const Organism = types
         eumelanin: eumelaninInCell,
         hormone_spawn_period: 40,
         working_receptor: workingReceptor
-      };
+      });
     },
     getImageSrc() {
       // `lightness` should always be 0.0, 0.2, 0.4..., so we could just generate the image

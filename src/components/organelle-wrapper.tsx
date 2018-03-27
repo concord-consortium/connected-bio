@@ -21,7 +21,7 @@ interface OrganelleWrapperState {
 
 @observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
-    handler: IReactionDisposer;
+    disposers: IReactionDisposer[] = [];
     model: any;
     clickTargets = [
       OrganelleType.Cytoplasm,
@@ -78,30 +78,31 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       height: 312
     };
 
-    modelDef.properties = modelProperties;
+    modelDef.properties = modelProperties.toJS();
 
     createModel(modelDef).then((m: any) => {
       this.model = m;
       this.completeLoad();
     });
 
-    this.handler = autorun(() => {
+    this.disposers.push(autorun(() => {
+      const newModelProperties = this.props.organism.modelProperties;
       if (this.model) {
-        const newModelProperties = this.props.organism.modelProperties;
-        // update model properties from Organism model every step
-        Object.keys(newModelProperties).forEach((key) => {
-          this.model.world.setProperty(key, newModelProperties[key]);
+        newModelProperties.keys().forEach((key) => {
+          this.model.world.setProperty(key, newModelProperties.get(key));
         });
       }
+    }));
 
+    this.disposers.push(autorun(() => {
       if (rootStore.mode === Mode.Normal) {
         this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity());
       }
-    });
+    }));
   }
 
   componentWillUnmount() {
-    this.handler();
+    this.disposers.forEach(disposer => disposer());
     this.model.destroy();
     delete this.model;
   }
