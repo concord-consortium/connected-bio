@@ -5,5 +5,29 @@
     "organelles/dots.yml",
     "organelles/hormone-dot.yml"
   ],
+  "calculatedProperties": {
+    "lightness": {
+      "ratio": {
+        "numerator": {
+          "count": {
+            "species": "melanosome",
+            "rules": {
+              "fact": {
+                "not": "isDark"
+              }
+            }
+          }
+        },
+        "denominator": {
+          "count": {
+            "species": "melanosome",
+            "rules": {
+              "fact": "isDark"
+            }
+          }
+        }
+      }
+    }
+  },
   "hotStart": 1000
 }

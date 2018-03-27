@@ -1,29 +1,20 @@
 import { types } from 'mobx-state-tree';
+import { observable } from 'mobx';
 import { v4 as uuid } from 'uuid';
 import { Organelle, IOrganelle, OrganelleType } from './Organelle';
 import { SubstanceType } from './Substance';
-
-export enum Darkness {
-  LIGHT, DARK, DARKEST
-}
-
-export const ModelProperties = types
-  .model('ModelProperties', {
-    albino: types.optional(types.boolean, false),
-    working_tyr1: types.optional(types.boolean, false),
-    working_myosin_5a: types.optional(types.boolean, true),
-    open_gates: types.optional(types.boolean, false),
-    lightness: types.number,
-    activated_g_protein: types.number,
-    hormone_spawn_period: types.number,
-    working_receptor: types.boolean
-  });
 
 export const Organism = types
   .model('Organism', {
     id: types.optional(types.identifier(types.string), () => uuid()),
     organelles: types.map(Organelle),
+    cellLightness: types.maybe(types.number)
   })
+  .actions(self => ({
+    setCellLightness(lightness: number) {
+      self.cellLightness = lightness;
+    }
+  }))
   .views(self => ({
     getLevelForOrganelleSubstance(organelleType: string, substanceType: SubstanceType) {
       let organelle = self.organelles.get(organelleType) as IOrganelle;
@@ -44,36 +35,31 @@ export const Organism = types
     }
   }))
   .views(self => ({
-    get darkness() {
+    get lightness() {
+      // if cell model has already stepped and calculated lightness
+      if (typeof self.cellLightness === 'number') {
+        return self.cellLightness;
+      }
+      // else return a default value based on the amount of melanin
       let eumelaninLevel = self.getTotalForOrganelleSubstance(
         OrganelleType.Melanosome, SubstanceType.Eumelanin
       );
       return eumelaninLevel < 200
-        ? Darkness.LIGHT
+        ? 1
         : eumelaninLevel > 400
-          ? Darkness.DARKEST
-          : Darkness.DARK;
-    },
+          ? 0
+          : 0.2;
+    }
   }))
   .views(self => ({
     get modelProperties() {
-      let lightness,
-          percentGProtein,
+      let eumelaninLevel = self.getTotalForOrganelleSubstance(
+            OrganelleType.Melanosome, SubstanceType.Eumelanin
+          ),
+          // normalize 200-370 to 0-100
+          eumelaninInCell = Math.max(0, Math.min(100, (eumelaninLevel - 200) / 1.7)),
           workingReceptor;
-      switch (self.darkness) {
-        case Darkness.LIGHT:
-        default:
-          lightness = 10;
-          percentGProtein = 0;
-          break;
-        case Darkness.DARK:
-          lightness = -1;
-          percentGProtein = 80;
-          break;
-        case Darkness.DARKEST:
-          lightness = -2.5;
-          percentGProtein = 100;
-      }
+
       switch (self.id) {
         case 'Beach Mouse':
           workingReceptor = false;
@@ -83,31 +69,37 @@ export const Organism = types
           workingReceptor = true;
           break;
       }
-      return {
+      return observable.map({
         albino: false,
         working_tyr1: false,
         working_myosin_5a: true,
         open_gates: false,
-        lightness: lightness,
-        activated_g_protein: percentGProtein,
-        hormone_spawn_period: 35,
+        eumelanin: eumelaninInCell,
+        hormone_spawn_period: 40,
         working_receptor: workingReceptor
-      };
+      });
     },
     getImageSrc() {
-      switch (self.darkness) {
-        case Darkness.LIGHT:
-        default:
-          return 'assets/sandrat-light.png';
-        case Darkness.DARK:
-          return 'assets/sandrat-dark.png';
-        case Darkness.DARKEST:
-          return 'assets/sandrat-darkest.png';
+      // `lightness` should always be 0.0, 0.2, 0.4..., so we could just generate the image
+      // name, but just in case it isn't it's best to use ranges
+      if (self.lightness < 0.19) {
+        return 'assets/sandrat-00.png';
+      } else if (self.lightness < 0.39) {
+        return 'assets/sandrat-02.png';
+      } else if (self.lightness < 0.59) {
+        return 'assets/sandrat-04.png';
+      } else if (self.lightness < 0.79) {
+        return 'assets/sandrat-06.png';
+      } else if (self.lightness < 0.99) {
+        return 'assets/sandrat-08.png';
+      } else {
+        return 'assets/sandrat-10.png';
       }
     },
   }))
   .actions(self => ({
-    incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number, currentTime: number) {
+    incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number, 
+                                currentTime: number) {
       let organelle = self.organelles.get(organelleType) as IOrganelle;
       if (organelle) {
         organelle.incrementSubstance(substanceType, amount, currentTime);

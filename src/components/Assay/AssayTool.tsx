@@ -18,9 +18,12 @@ interface AssayToolProps {
 
 interface AssayToolState {}
 
-const defaultColors = ['#3366CC', '#DC3912', '#FF9900', '#990099', '#3B3EAC', '#0099C6',
-  '#DD4477', '#66AA00', '#B82E2E', '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC', '#E67300',
-  '#8B0707', '#329262', '#5574A6', '#3B3EAC'];
+const colors = {
+  [SubstanceType.Hormone]: '#0adbd7',
+  [SubstanceType.GProtein]: '#d88bff',
+  [SubstanceType.Eumelanin]: '#795423',
+  [SubstanceType.Pheomelanin]: '#f4ce83'
+};
 
 @observer
 class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
@@ -47,11 +50,12 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
     let {mode, time} = rootStore;
     let graph = assayStore.graphType === GraphType.Line ? (
       <AssayLineGraph
-        colors={defaultColors}
+        key={rootStore.lockedAssays.length}
+        colors={colors}
         time={time}
       />) : (
       <AssayBarChart
-        colors={defaultColors}
+        colors={colors}
       />);
 
     return (

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { autorun } from 'mobx';
+import { autorun, IReactionDisposer } from 'mobx';
 import { observer } from 'mobx-react';
 import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
@@ -21,6 +21,7 @@ interface OrganelleWrapperState {
 
 @observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
+    disposers: IReactionDisposer[] = [];
     model: any;
     clickTargets = [
       OrganelleType.Cytoplasm,
@@ -56,6 +57,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       CELL: CellModels.cell,
       RECEPTOR: CellModels.receptor
     };
+
   constructor(props: OrganelleWrapperProps) {
     super(props);
     this.state = {
@@ -76,28 +78,31 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       height: 312
     };
 
-    modelDef.properties = modelProperties;
+    modelDef.properties = modelProperties.toJS();
 
     createModel(modelDef).then((m: any) => {
       this.model = m;
       this.completeLoad();
     });
 
-    autorun(() => {
-      if (rootStore.mode === Mode.Normal) {
-        this.setState({hoveredOrganelle: null});
-      }
-    });
-
-    autorun(() => {
-      let lightness = this.props.organism.modelProperties.lightness;
+    this.disposers.push(autorun(() => {
+      const newModelProperties = this.props.organism.modelProperties;
       if (this.model) {
-        this.model.world.setProperty('lightness', lightness);
+        newModelProperties.keys().forEach((key) => {
+          this.model.world.setProperty(key, newModelProperties.get(key));
+        });
       }
-    });
+    }));
+
+    this.disposers.push(autorun(() => {
+      if (rootStore.mode === Mode.Normal) {
+        this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity());
+      }
+    }));
   }
 
   componentWillUnmount() {
+    this.disposers.forEach(disposer => disposer());
     this.model.destroy();
     delete this.model;
   }
@@ -136,24 +141,34 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
 
     this.model.on('model.step', () => {
-      let lightness = Math.min(this.model.world.getProperty('lightness'), 1);
-      let grayness = 0;
+      let lightness = this.model.world.getProperty('lightness'),    // ratio light to dark mels,   e.g. 0.5,  1,   3
+          percentLightness = lightness / (lightness + 1);           // percent light mels of total e.g. 0.33, 0.5, 0.75
 
-      if (isNaN(lightness)) {
-        lightness = 0;
+      if (isNaN(percentLightness)) {
+        // model has no dark melanosomes, calculated prop `lightness` is NaN (div-zero)
+        percentLightness = 1;
       }
 
-      let gray = [123, 116, 110],
-          orange = [200, 147, 107],
-          color = gray.map( (g, i) => Math.floor(((g * grayness) + (orange[i] * (1 - grayness))) + lightness * 30) ),
-          colorStr = `rgb(${color.join()})`;
+      // round to nearest 0.2, making 5 different colors
+      percentLightness = Math.round(percentLightness * 5) / 5;
+
+      // go from lightest to darkest in HSL space, which provides the best gradual transition
+
+      // lightest brown: rgb(244, 212, 141) : hsl(41°, 82%, 75%)
+      // darkest brown:  rgb(124, 81, 21)   : hsl(35°, 71%, 28%)
+
+      let light = [41, 82, 75],
+          dark = [35, 71, 28],
+          color = dark.map( (c, i) => Math.round(c + (light[i] - c) * percentLightness) ),
+          colorStr = `hsl(${color[0]},${color[1]}%,${color[2]}%)`;
 
       const cellFill = this.model.view.getModelSvgObjectById('cellshape_0_Layer0_0_FILL');
       if (cellFill) {
         cellFill.setColor(colorStr);
       }
 
-      this.updateCellOpacity();
+      // set lightness on model object so it can change organism image
+      this.props.organism.setCellLightness(percentLightness);
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
@@ -172,7 +187,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
           }
         },      null);
 
-      this.setState({hoveredOrganelle});
+      this.setState({hoveredOrganelle}, () => this.updateCellOpacity());
     });
 
     this.model.on('view.hover.exit', (evt: any) => {
@@ -313,14 +328,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     let species = 'gProteinPart';
     let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';
     this.addAgentsOverTime(species, state, location, 1, 7, 350);
-  }
-
-  componentWillReceiveProps(nextProps: any) {
-    if (this.model && nextProps.organism.modelProperties) {
-      Object.keys(nextProps.organism.modelProperties).forEach((key) => {
-        this.model.world.setProperty(key, nextProps.organism.modelProperties[key]);
-      });
-    }
   }
 
   componentDidUpdate() {
