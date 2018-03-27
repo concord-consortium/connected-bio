@@ -136,7 +136,9 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
       if (i === lockedAssays.length - 1) {
         height += 30;
       }
-      const yAxisFontSize = lockedAssays.length < 4 ? 12 : 9;
+      const yAxisFontSize = lockedAssays.length < 3 
+        ? 12 
+        : lockedAssays.length < 4 ? 10 : 8;
 
       const options: any = Object.assign({}, defaultOptions, {
         title,
