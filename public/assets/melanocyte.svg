@@ -304,7 +304,22 @@
             <rect x="718" y="73" width="65" height="142" style="fill:none;"/>
             <rect x="672" y="25" width="72" height="96" style="fill:none;"/>
             <rect x="638" y="3" width="70" height="50" style="fill:none;"/>
-            <rect x="595" y="202" width="146" height="31" style="fill:none;"/>
+            <rect id="svg_317" height="17.986729" width="33.475301" y="205.09867" x="596.310007" fill="none"/>
+            <rect id="svg_318" height="21.234332" width="9.992627" y="205.848117" x="593.81185" fill="none"/>
+            <rect id="svg_319" height="19.985254" width="57.957237" y="201.601251" x="628.036598" fill="none"/>
+            <rect id="svg_320" height="18.736176" width="48.214426" y="205.848117" x="684.494941" fill="none"/>
+            <rect id="svg_321" height="7.744286" width="46.965347" y="220.837058" x="694.237752" fill="none"/>
+            <rect id="svg_322" height="8.493733" width="49.71332" y="225.33374" x="705.979089" fill="none"/>
+            <rect id="svg_323" height="26.980093" width="32.725854" y="199.103094" x="723.216371" fill="none"/>
+            <rect id="svg_324" height="4.996314" width="49.963135" y="203.349961" x="679.998259" fill="none"/>
+            <rect id="svg_325" height="5.246129" width="10.99189" y="200.851804" x="716.970979" fill="none"/>
+            <rect id="svg_333" height="17.487097" width="16.73765" y="195.85549" x="753.444068" fill="none"/>
+            <rect id="svg_334" height="9.742811" width="11.741337" y="210.094984" x="749.696832" fill="none"/>
+            <rect id="svg_337" height="5.495945" width="6.245392" y="217.339638" x="752.694621" fill="none"/>
+            <rect id="svg_340" height="5.495945" width="5.246129" y="210.844431" x="759.939275" fill="none"/>
+            <rect id="svg_348" height="5.246129" width="8.243917" y="220.087611" x="601.306321" fill="none"/>
+            <rect id="svg_357" height="5.745761" width="4.996314" y="202.850329" x="624.289363" fill="none"/>
+            <rect id="svg_358" height="3.247604" width="34.724379" y="199.602725" x="638.279041" fill="none"/>
             <rect x="527" y="165" width="72" height="63" style="fill:none;"/>
             <rect x="508" y="112" width="38" height="57" style="fill:none;"/>
             <rect x="477" y="50" width="53" height="65" style="fill:none;"/>
