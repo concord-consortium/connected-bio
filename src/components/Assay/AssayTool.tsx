@@ -63,26 +63,26 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
         {graph}
         <div className="chart-buttons">
           <RaisedButton
-            label={'Add assay'}
+            label={'Measure substances'}
             disabled={!(mode === Mode.Normal || mode === Mode.Assay)}
             onClick={this.props.onAssayToggle}
-            style={{width: '120px', margin: '5px'}}
+            style={{width: '165px', margin: '5px'}}
             labelStyle={{ fontSize: '11px'}}
             primary={mode !== Mode.Assay}
             secondary={mode === Mode.Assay}
           />
           <RaisedButton
-            label={'Clear assays'}
+            label={'Clear'}
             disabled={!(mode === Mode.Normal)}
             onClick={this.props.onAssayClear}
-            style={{width: '120px', margin: '5px'}}
+            style={{width: '100px', margin: '5px'}}
             labelStyle={{ fontSize: '11px'}}
             primary={true}
           />
           <RaisedButton
             disabled={mode !== Mode.Normal}
             onClick={this.onGraphSwitch}
-            style={{width: '120px', margin: '5px'}}
+            style={{width: '100px', margin: '5px'}}
             labelStyle={{ fontSize: '11px'}}
             primary={true}
             labelPosition="before"
