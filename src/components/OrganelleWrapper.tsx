@@ -36,7 +36,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#nucleus'
       },
       [OrganelleType.Cytoplasm]: {
-        selector: `#cytoplasm, #intercell_zoom_bounds, #microtubules_x5F_grouped,
+        selector: `#cytoplasm, #intercell_zoom_bounds_bottom, #microtubules_x5F_grouped,
                     #intracellular-paths, #intercellular-paths`,
         opaqueSelector: '#cellshape_0_Layer0_0_FILL, #intercell_zoom_bounds'
       },
@@ -197,6 +197,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.click', (evt: any) => {
+      console.log(evt.target._organelle);
       let clickTarget: OrganelleType = this.clickTargets.find((t) => {
         return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
       });
