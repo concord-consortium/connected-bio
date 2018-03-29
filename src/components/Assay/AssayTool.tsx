@@ -72,17 +72,17 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             secondary={mode === Mode.Assay}
           />
           <RaisedButton
-            label={'Clear'}
+            label={'Clear Graph'}
             disabled={!(mode === Mode.Normal)}
             onClick={this.props.onAssayClear}
-            style={{width: '100px', margin: '5px'}}
+            style={{width: '125px', margin: '5px'}}
             labelStyle={{ fontSize: '11px'}}
             primary={true}
           />
           <RaisedButton
             disabled={mode !== Mode.Normal}
             onClick={this.onGraphSwitch}
-            style={{width: '100px', margin: '5px'}}
+            style={{width: '50px', margin: '5px'}}
             labelStyle={{ fontSize: '11px'}}
             primary={true}
             labelPosition="before"
