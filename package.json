@@ -2,7 +2,7 @@
   "name": "connected-bio",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://concord-consortium.github.io/connected-bio",
+  "homepage": ".",
   "dependencies": {
     "@types/lodash": "^4.14.99",
     "@types/material-ui": "^0.20.4",
