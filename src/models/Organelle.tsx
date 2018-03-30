@@ -7,7 +7,9 @@ export enum OrganelleType {
   Cytoplasm = 'Cytoplasm',
   Golgi = 'Golgi',
   Extracellular = 'Extracellular',
-  Melanosomes = 'Melanosomes'
+  Melanosomes = 'Melanosomes',
+  Receptor = 'Receptor',
+  Gate = 'Gate'
 }
 
 export const Organelle: any = types

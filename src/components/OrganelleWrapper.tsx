@@ -24,13 +24,6 @@ interface OrganelleWrapperState {
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
     disposers: IReactionDisposer[] = [];
     model: any;
-    clickTargets = [
-      OrganelleType.Cytoplasm,
-      OrganelleType.Nucleus,
-      OrganelleType.Golgi,
-      OrganelleType.Extracellular,
-      OrganelleType.Melanosomes
-    ];
     organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
         selector: '#nucleus'
@@ -43,11 +36,19 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#golgi_x5F_apparatus'
       },
       [OrganelleType.Extracellular]: {
-        selector: `#intercell, .gate-a, .gate-b, .gate-c, .gate-d`,
+        selector: `#intercell`,
         opaqueSelector: '#Layer6_0_FILL'
       },
       [OrganelleType.Melanosomes]: {
         selector: '#melanosome_2, #melanosome_4'
+      },
+      [OrganelleType.Receptor]: {
+        selector: '#receptor-broken, #receptor-working, #receptor-bound',
+        visibleModes: [Mode.Normal]
+      },
+      [OrganelleType.Gate]: {
+        selector: '.gate-a, .gate-b, .gate-c, .gate-d',
+        visibleModes: [Mode.Normal]
       }
     };
     modelDefs: any = {
@@ -170,28 +171,29 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
-      const hoveredOrganelle = Object.keys(this.organelleSelectorInfo)
-        .reduce((accumulator, organelle) => {
-          let selector = this.organelleSelectorInfo[organelle].selector;
-          let matches = evt.target._organelle.matches({selector});
-          if (matches) {
-            return organelle;
-          } else {
-            return accumulator;
-          }
-        },      null);
-
+      const hoveredOrganelle = this.getOrganelleFromMouseEvent(evt);
       this.setState({hoveredOrganelle}, () => this.updateCellOpacity());
     });
 
     this.model.on('view.click', (evt: any) => {
-      let clickTarget: OrganelleType = this.clickTargets.find((t) => {
-        return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
-      });
+      const clickTarget: OrganelleType = this.getOrganelleFromMouseEvent(evt);
       if (clickTarget) {
         let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
         this.organelleClick(clickTarget, location);
       }
+    });
+  }
+
+  getOrganelleFromMouseEvent(evt: any) {
+    let possibleTargets: OrganelleType[] = Object.keys(OrganelleType)
+      .map(key => OrganelleType[key])
+      .filter(organelle => this.organelleSelectorInfo[organelle])
+      .filter(organelle => {
+        let visibleModes = this.organelleSelectorInfo[organelle].visibleModes;
+        return !visibleModes || visibleModes.indexOf(rootStore.mode) > -1;
+      });
+    return possibleTargets.find((t) => {
+      return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
     });
   }
 
