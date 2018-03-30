@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { autorun, IReactionDisposer } from 'mobx';
+import { autorun, reaction, IReactionDisposer } from 'mobx';
 import { observer } from 'mobx-react';
 import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
@@ -84,6 +84,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       this.completeLoad();
     });
 
+    // Update model properties as they change
     this.disposers.push(autorun(() => {
       const newModelProperties = this.props.organism.modelProperties;
       if (this.model) {
@@ -93,11 +94,11 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       }
     }));
 
-    this.disposers.push(autorun(() => {
-      if (rootStore.mode === Mode.Normal) {
-        this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity());
-      }
-    }));
+    // Clear and update opacity whenever the mode changes
+    this.disposers.push(reaction(
+      () => rootStore.mode,
+      () => this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity())
+    ));
   }
 
   componentWillUnmount() {
