@@ -101,7 +101,8 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
           filter: (legendItem: any, chartData: any) => {
             // Hidden labels, like for "extra" bars, are marked with a "#"
             return legendItem.text.indexOf('#') === -1;
-          }
+          },
+          boxWidth: 50
         }
       },
       scales: {

@@ -5,7 +5,7 @@ import { OrganelleType, IOrganelle } from './Organelle';
 
 export enum SubstanceType {
   Hormone = 'Hormone',
-  SignalProtein = 'Signal Protein',
+  SignalProtein = 'Activated Signal Protein',
   Eumelanin = 'Eumelanin',
   Pheomelanin = 'Pheomelanin'
 }

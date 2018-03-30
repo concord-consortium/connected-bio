@@ -81,7 +81,7 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.SignalProtein}
-            label="Signal Protein"
+            label="Activated Signal Protein"
             disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
           <RadioButton
