@@ -36,19 +36,10 @@ export const Organism = types
   }))
   .views(self => ({
     get lightness() {
-      // if cell model has already stepped and calculated lightness
-      if (typeof self.cellLightness === 'number') {
-        return self.cellLightness;
-      }
-      // else return a default value based on the amount of melanin
       let eumelaninLevel = self.getTotalForOrganelleSubstance(
         OrganelleType.Melanosomes, SubstanceType.Eumelanin
       );
-      return eumelaninLevel < 200
-        ? 1
-        : eumelaninLevel > 400
-          ? 0
-          : 0.2;
+      return 1 - (eumelaninLevel / 500);
     }
   }))
   .views(self => ({

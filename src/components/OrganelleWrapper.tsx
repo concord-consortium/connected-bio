@@ -141,16 +141,21 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
 
     this.model.on('model.step', () => {
-      let lightness = this.model.world.getProperty('lightness'),    // ratio light to dark mels,   e.g. 0.5,  1,   3
-          percentLightness = lightness / (lightness + 1);           // percent light mels of total e.g. 0.33, 0.5, 0.75
+      let percentLightness = this.props.organism.lightness;
 
-      if (isNaN(percentLightness)) {
-        // model has no dark melanosomes, calculated prop `lightness` is NaN (div-zero)
+      if (percentLightness <= 0.19) {
+        percentLightness = 0;
+      } else if (percentLightness < 0.39) {
+        percentLightness = 0.2;
+      } else if (percentLightness < 0.59) {
+        percentLightness = 0.4;
+      } else if (percentLightness < 0.79) {
+        percentLightness = 0.6;
+      } else if (percentLightness < 0.99) {
+        percentLightness = 0.8;
+      } else {
         percentLightness = 1;
       }
-
-      // round to nearest 0.2, making 5 different colors
-      percentLightness = Math.round(percentLightness * 5) / 5;
 
       // go from lightest to darkest in HSL space, which provides the best gradual transition
 
