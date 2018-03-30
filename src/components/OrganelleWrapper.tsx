@@ -62,6 +62,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     };
     this.model = null;
     this.completeLoad = this.completeLoad.bind(this);
+    this.resetHoveredOrganelle = this.resetHoveredOrganelle.bind(this);
   }
 
   componentDidMount() {
@@ -169,10 +170,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
-      if (rootStore.mode === Mode.Normal) {
-        return;
-      }
-
       const hoveredOrganelle = Object.keys(this.organelleSelectorInfo)
         .reduce((accumulator, organelle) => {
           let selector = this.organelleSelectorInfo[organelle].selector;
@@ -187,14 +184,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       this.setState({hoveredOrganelle}, () => this.updateCellOpacity());
     });
 
-    this.model.on('view.hover.exit', (evt: any) => {
-      if (rootStore.mode !== Mode.Assay) {
-        return;
-      }
-
-      this.setState({hoveredOrganelle: null});
-    });
-
     this.model.on('view.click', (evt: any) => {
       let clickTarget: OrganelleType = this.clickTargets.find((t) => {
         return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
@@ -206,6 +195,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
   }
 
+  resetHoveredOrganelle() {
+    this.setState({hoveredOrganelle: null});
+  }
+
   getOpaqueSelector(organelleType: string) {
     return this.organelleSelectorInfo[organelleType].opaqueSelector ?
       this.organelleSelectorInfo[organelleType].opaqueSelector :
@@ -214,7 +207,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   updateCellOpacity() {
     let {mode} = rootStore;
-    if (mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract) {
+    if (mode === Mode.Assay 
+        || mode === Mode.Add
+        || mode === Mode.Subtract
+        || (mode === Mode.Normal && this.state.hoveredOrganelle)) {
       let opaqueSelectors: string[] = [];
       if (this.state.hoveredOrganelle) {
         opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
@@ -332,17 +328,15 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   render() {
-    let showHoverLocation = rootStore.mode !== Mode.Normal,
-        hoverLocation = this.state.hoveredOrganelle ? this.state.hoveredOrganelle : '',
-        hoverDiv = showHoverLocation ?
-      (
+    let hoverDiv = this.state.hoveredOrganelle
+      ? (
         <div className="hover-location">
-          {hoverLocation}
-        </div>
-      ) : null;
+          {this.state.hoveredOrganelle}
+        </div>)
+      : null;
     return (
       <div className="model-wrapper">
-        <div id={this.props.name} className="model" />
+        <div id={this.props.name} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
         {hoverDiv}
       </div>
     );
