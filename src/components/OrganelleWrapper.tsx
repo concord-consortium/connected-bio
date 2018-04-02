@@ -108,37 +108,35 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   completeLoad() {
-    if (this.props.currentView === View.Receptor) {
-      this.model.on('view.loaded', () => {
-        this.updateReceptorImage();
-      });
+    this.model.on('view.loaded', () => {
+      this.updateReceptorImage();
+    });
 
-      this.model.setTimeout(
-        () => {
-          for (var i = 0; i < 3; i++) {
-            this.model.world.createAgent(this.model.world.species.gProtein);
-          }
-        },
-        1300);
+    this.model.setTimeout(
+      () => {
+        for (var i = 0; i < 3; i++) {
+          this.model.world.createAgent(this.model.world.species.gProtein);
+        }
+      },
+      1300);
 
-      this.model.on('hexagon.notify', () => this.updateReceptorImage());
+    this.model.on('hexagon.notify', () => this.updateReceptorImage());
 
-      this.model.on('gProtein.notify.break_time', (evt: any) => {
-        let proteinToBreak = evt.agent;
-        let location = {x: proteinToBreak.getProperty('x'), y: proteinToBreak.getProperty('y')};
-        var body = this.model.world.createAgent(this.model.world.species.gProteinBody);
-        body.setProperties(location);
+    this.model.on('gProtein.notify.break_time', (evt: any) => {
+      let proteinToBreak = evt.agent;
+      let location = {x: proteinToBreak.getProperty('x'), y: proteinToBreak.getProperty('y')};
+      var body = this.model.world.createAgent(this.model.world.species.gProteinBody);
+      body.setProperties(location);
 
-        var part = this.model.world.createAgent(this.model.world.species.gProteinPart);
-        part.setProperties(location);
+      var part = this.model.world.createAgent(this.model.world.species.gProteinPart);
+      part.setProperties(location);
 
-        proteinToBreak.die();
+      proteinToBreak.die();
 
-        this.model.world.setProperty('g_protein_bound', false);
+      this.model.world.setProperty('g_protein_bound', false);
 
-        this.model.world.createAgent(this.model.world.species.gProtein);
-      });
-    }
+      this.model.world.createAgent(this.model.world.species.gProtein);
+    });
 
     this.model.on('model.step', () => {
       let percentLightness = this.props.organism.lightness;
@@ -288,7 +286,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       let substanceType = rootStore.activeSubstance;
       if (substanceType === SubstanceType.Hormone) {
         this.addHormone(organelleType, location);
-      } else if (substanceType === SubstanceType.SignalProtein && this.props.currentView === View.Receptor) {
+      } else if (substanceType === SubstanceType.SignalProtein) {
         this.addSignalProtein(organelleType, location);
       }
     }
@@ -315,9 +313,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   addHormone(organelleType: OrganelleType, location: {x: number, y: number}) {
-    let inZoom = this.props.currentView === View.Receptor;
     let inIntercell = organelleType === OrganelleType.Extracellular;
-    let species = inZoom ? 'hexagon' : 'hormoneDot';
+    let species = 'hexagon';
     let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
     let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
     let count = inIntercell ? 3 : 2;
