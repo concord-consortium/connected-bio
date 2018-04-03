@@ -8,7 +8,7 @@ spawn:
   every: 8
 dieWhenExitingWorld: false
 properties:
-  size: 0.9
+  size: 0.1
   speed: 1.6
   image_selector: melanosome_2
   eumelanin_to_turn_dark: [1, 100]
