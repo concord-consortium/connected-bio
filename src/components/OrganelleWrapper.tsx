@@ -26,14 +26,16 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     model: any;
     organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
-        selector: '#nucleus'
+        selector: '#nucleus',
+        visibleModes: [Mode.Normal, Mode.Assay]
       },
       [OrganelleType.Cytoplasm]: {
         selector: `#cytoplasm`,
         opaqueSelector: '#cellshape_0_Layer0_0_FILL, #intercell_zoom_bounds'
       },
       [OrganelleType.Golgi]: {
-        selector: '#golgi_x5F_apparatus'
+        selector: '#golgi_x5F_apparatus',
+        visibleModes: [Mode.Normal, Mode.Assay]
       },
       [OrganelleType.Extracellular]: {
         selector: `#intercell`,
