@@ -9,7 +9,8 @@ export enum OrganelleType {
   Extracellular = 'Extracellular',
   Melanosomes = 'Melanosomes',
   Receptor = 'Receptor',
-  Gate = 'Gate'
+  Gate = 'Gate',
+  NearbyCells = 'Nearby cells'
 }
 
 export const Organelle: any = types

@@ -49,6 +49,11 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       [OrganelleType.Gate]: {
         selector: '.gate-a, .gate-b, .gate-c, .gate-d',
         visibleModes: [Mode.Normal]
+      },
+      [OrganelleType.NearbyCells]: {
+        selector: '#other_cells',
+        opaqueSelector: '#backcell_x5F_color',
+        visibleModes: [Mode.Normal]
       }
     };
     modelDefs: any = {
