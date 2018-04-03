@@ -13,6 +13,8 @@ export enum Mode {
   Subtract = 'SUBTRACT'
 }
 
+let organismsHistory: any[] = [];
+
 const RootStore = types
   .model('RootStore', {
     mode: types.enumeration('Mode', Object.keys(Mode).map(key => Mode[key])),
@@ -43,8 +45,13 @@ const RootStore = types
     },
 
     step(msPassed: number) {
+      organismsHistory.push(clone(self.organisms));
+      if (organismsHistory.length > 20) {
+        organismsHistory.splice(0, 1);
+      }
+      
       self.organisms.keys().forEach(orgKey => {
-        self.organisms.get(orgKey).step(self.time);
+        self.organisms.get(orgKey).step(self.time, organismsHistory);
       });
 
       self.time += msPassed;

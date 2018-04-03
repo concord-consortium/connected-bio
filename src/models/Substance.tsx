@@ -41,7 +41,7 @@ export const Substance: any = types
 
     // Cell models can be viewed here:
     // https://docs.google.com/spreadsheets/d/19f0nk-F3UQ_-A-agq5JnuhJXGCtFYMT_JcYCQkyqnQI/edit
-    step(currentTime: number, parentOrganism: IOrganism, parentOrganelle: IOrganelle) {
+    step(currentTime: number, parentOrganism: IOrganism, parentOrganelle: IOrganelle, organismsHistory: any) {
       let birthRate, deathRate;
       let hormoneAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Extracellular, SubstanceType.Hormone);
@@ -51,6 +51,11 @@ export const Substance: any = types
         OrganelleType.Melanosomes, SubstanceType.Eumelanin);
       let pheomelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Melanosomes, SubstanceType.Pheomelanin);
+
+      let oldHormoneAmount = organismsHistory[0].get(parentOrganism.id).getTotalForOrganelleSubstance(
+        OrganelleType.Extracellular, SubstanceType.Hormone);
+      let oldSignalProteinAmount = organismsHistory[0].get(parentOrganism.id).getTotalForOrganelleSubstance(
+        OrganelleType.Cytoplasm, SubstanceType.SignalProtein);
 
       if (self.fixedValueEndTime > currentTime) {
         // User has recently set value, and we want to stay at this value
@@ -67,7 +72,7 @@ export const Substance: any = types
         case SubstanceType.SignalProtein:
           birthRate = parentOrganelle.type === OrganelleType.Cytoplasm
             ? parentOrganism.id === 'Field Mouse'
-              ? (180 + .8 * hormoneAmount) / 10
+              ? (180 + .8 * oldHormoneAmount) / 10
               : 25 / 10
             : 0;
           deathRate = (25 + 1.5 * signalProteinAmount) / 10;
@@ -75,14 +80,14 @@ export const Substance: any = types
         case SubstanceType.Eumelanin:
           birthRate = parentOrganelle.type === OrganelleType.Melanosomes
             ? parentOrganism.id === 'Field Mouse'
-              ? (280 + 1.5 * signalProteinAmount) / 10
-              : (25 + 1.8 * signalProteinAmount) / 10
+              ? (280 + 1.5 * oldSignalProteinAmount) / 10
+              : (25 + 1.8 * oldSignalProteinAmount) / 10
             : 0;
           deathRate = (25 + 1.5 * eumelaninAmount) / 10;
           break;
         case SubstanceType.Pheomelanin:
           birthRate = parentOrganelle.type === OrganelleType.Melanosomes
-            ? (500 - 1.5 * signalProteinAmount) / 10
+            ? (500 - 1.5 * oldSignalProteinAmount) / 10
             : 0;
           deathRate = (25 + 1.5 * pheomelaninAmount) / 10;
           break;
