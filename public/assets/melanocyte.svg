@@ -241,6 +241,9 @@
             <circle cx="20" cy="432" r="3" style="fill:rgb(0,30,241);"/>
             <circle cx="27" cy="476" r="3" style="fill:rgb(0,30,241);"/>
         </g>
+        <g id="signal_protein_terminals" style="visibility: hidden">
+            <circle cx="625" cy="650" r="3"/>
+        </g>
          <g id="intercellular-paths">
             <path d="M639,2C651.404,50.999 787.021,91.796 779,202C662.783,221.466 669.664,193.029 622,203C574.336,212.971 556.967,212.282 545,200C533.033,187.718 509.318,38.704 448,39C386.682,39.296 339.243,32.577 331,65C344.872,158.436 426.279,186.992 440,238C414.423,256.236 367.178,240.335 326.115,244.483C276.568,249.489 233.744,273.2 219,284C198.15,258.862 148.264,220.742 129,213C79.846,193.246 44.333,193 2,183" style="fill:none;"/>
             <path d="M1,167C-1,167 278.225,272.535 263,314C247.775,355.465 180.807,321.992 178,436C175.193,550.008 231.268,477.652 276,574C185.275,578.848 167.943,567.125 144,577C104.693,551.52 56.713,555.792 47,557C37.287,558.208 26.482,572.417 17,593C7.518,613.583 -9.693,710.488 76,710C161.693,709.512 249.791,677.394 314,720C378.209,762.606 409.682,767.667 410,768" style="fill:none;"/>
@@ -545,6 +548,65 @@
                 <path d="M649.664,219.533c0,0 -0.396,4.001 1.591,4.56c1.988,0.559 4.144,0.656 5.984,0.044c1.839,-0.612 1.6,-5.587 3.079,-5.593c1.478,-0.007 -2.606,27.016 -2.576,27.075c1.003,1.973 2.513,3.334 3.928,0.505c1.786,-3.569 -1.344,-20.645 1.356,-23.239c1.212,-1.165 2.183,-1.461 4.124,1.801c1.941,3.263 -3.174,20.558 -3.044,20.844c0.385,0.848 1.653,0.649 2.119,0.454c5.121,-2.134 1.217,-17.788 3.58,-20.775c1.337,-1.69 2.85,-2.604 3.996,-0.03c2.057,4.615 -5.932,19.148 -3.913,20.551c1.373,0.953 2.433,0.488 4.06,0.885c2.381,0.581 2.251,-21.458 3.832,-22.739c1.581,-1.282 2.731,-0.701 3.658,1.196c0.927,1.897 -5.235,20.076 -4.277,21.956c0.762,1.493 -2.245,1.064 -0.966,1.873" style="fill:none;stroke:rgb(255,93,189);stroke-width:4px;stroke-miterlimit:1.5;"/>
                 <path d="M649.44,219.867c0,0 -0.172,3.667 1.815,4.226c1.988,0.559 4.144,0.656 5.984,0.044c1.839,-0.612 1.508,-4.872 2.987,-4.879c1.479,-0.007 -2.134,26.169 -2.104,26.228c1.003,1.973 2,3.087 3.415,0.258c1.786,-3.569 -1.504,-19.395 1.196,-21.989c1.212,-1.165 2.073,-2.02 4.014,1.242c1.941,3.263 -2.753,20.313 -2.641,20.533c0.204,0.402 1.179,0.808 2.476,0.5c3.136,-0.743 0.791,-17.299 3.154,-20.285c1.337,-1.69 2.717,-2.984 3.864,-0.41c2.057,4.614 -4.657,18.231 -3.534,20.418c0.325,0.633 1.414,0.601 3.882,0.862c2.437,0.258 2.205,-21.101 3.786,-22.382c1.581,-1.282 2.731,-0.7 3.658,1.196c0.927,1.897 -5.27,19.045 -4.519,21.018c0.752,1.972 -1.65,2.06 -0.857,2.236" style="fill:none;stroke:rgb(255,0,0);stroke-width:1.44px;stroke-miterlimit:1.5;"/>
             </g>
+        </g>
+        <g id="other_cells">
+            <rect id="svg_367" height="289" width="68" y="246.5" x="10.5" fill="none"/>
+            <rect id="svg_368" height="270" width="68" y="267.5" x="68.5" fill="none"/>
+            <rect id="svg_369" height="50" width="73" y="291.5" x="126.5" fill="none"/>
+            <rect id="svg_370" height="32" width="58" y="506.5" x="123.5" fill="none"/>
+            <rect id="svg_371" height="203" width="31" y="335.5" x="124.5" fill="none"/>
+            <rect id="svg_372" height="24" width="26" y="524.5" x="178.5" fill="none"/>
+            <rect id="svg_373" height="31" width="23" y="328.5" x="148.5" fill="none"/>
+            <rect id="svg_374" height="27" width="28" y="298.5" x="195.5" fill="none"/>
+            <rect id="svg_375" height="71" width="251" y="721.5" x="2.5" fill="none"/>
+            <rect id="svg_376" height="46" width="74" y="750.5" x="241.5" fill="none"/>
+            <rect id="svg_377" height="35" width="53" y="770.5" x="305.5" fill="none"/>
+            <rect id="svg_378" height="14" width="51" y="786.5" x="344.5" fill="none"/>
+            <rect id="svg_379" height="20" width="44" y="737.5" x="239.5" fill="none"/>
+            <rect id="svg_380" height="134" width="313" y="6.5" x="3.5" fill="none"/>
+            <rect id="svg_381" height="38" width="262" y="132.5" x="70.5" fill="none"/>
+            <rect id="svg_382" height="31" width="208" y="166.5" x="148.5" fill="none"/>
+            <rect id="svg_383" height="24" width="162" y="191.5" x="212.5" fill="none"/>
+            <rect id="svg_384" height="31" width="39" y="200.5" x="234.5" fill="none"/>
+            <rect id="svg_385" height="29" width="55" y="178.5" x="182.5" fill="none"/>
+            <rect id="svg_386" height="25" width="59" y="158.5" x="115.5" fill="none"/>
+            <rect id="svg_387" height="28" width="37" y="124.5" x="47.5" fill="none"/>
+            <rect id="svg_388" height="15" width="310" y="6.5" x="313.5" fill="none"/>
+            <rect id="svg_389" height="129" width="80" y="19.5" x="546.5" fill="none"/>
+            <rect id="svg_390" height="120" width="41" y="65.5" x="620.5" fill="none"/>
+            <rect id="svg_391" height="41" width="50" y="140.5" x="574.5" fill="none"/>
+            <rect id="svg_392" height="80" width="39" y="109.5" x="660.5" fill="none"/>
+            <rect id="svg_393" height="34" width="23" y="149.5" x="691.5" fill="none"/>
+            <rect id="svg_394" height="33" width="24" y="86.5" x="655.5" fill="none"/>
+            <rect id="svg_395" height="24" width="15" y="42.5" x="624.5" fill="none"/>
+            <rect id="svg_396" height="48" width="64" y="15.5" x="514.5" fill="none"/>
+            <rect id="svg_397" height="152" width="116" y="16.5" x="798.5" fill="none"/>
+            <rect id="svg_398" height="92" width="29" y="13.5" x="786.5" fill="none"/>
+            <rect id="svg_399" height="45" width="533" y="10.5" x="742.5" fill="none"/>
+            <rect id="svg_400" height="79" width="373" y="44.5" x="904.5" fill="none"/>
+            <rect id="svg_401" height="219" width="179" y="111.5" x="1099.5" fill="none"/>
+            <rect id="svg_403" height="27" width="25" y="308.5" x="1032.5" fill="none"/>
+            <rect id="svg_404" height="37" width="30" y="262.5" x="1080.5" fill="none"/>
+            <rect id="svg_405" height="41" width="33" y="106.5" x="906.5" fill="none"/>
+            <rect id="svg_406" height="37" width="78" y="160.5" x="808.5" fill="none"/>
+            <rect id="svg_407" height="45" width="53" y="177.5" x="797.5" fill="none"/>
+            <rect id="svg_408" height="34" width="40" y="211.5" x="785.5" fill="none"/>
+            <rect id="svg_409" height="38" width="57" y="471.5" x="968.5" fill="none"/>
+            <rect id="svg_410" height="64" width="51" y="423.5" x="1002.5" fill="none"/>
+            <rect id="svg_412" height="33" width="26" y="448.5" x="982.5" fill="none"/>
+            <rect id="svg_413" height="43" width="206" y="410.5" x="1051.5" fill="none"/>
+            <rect id="svg_415" height="107" width="116" y="696.5" x="1104.5" fill="none"/>
+            <rect id="svg_416" height="351" width="67" y="447.5" x="1208.5" fill="none"/>
+            <rect id="svg_417" height="89" width="94" y="717.5" x="1024.5" fill="none"/>
+            <rect id="svg_418" height="54" width="43" y="747.5" x="994.5" fill="none"/>
+            <rect id="svg_419" height="25" width="38" y="771.5" x="963.5" fill="none"/>
+            <rect id="svg_420" height="33" width="133" y="685.5" x="1089.5" fill="none"/>
+            <rect id="svg_421" height="54" width="66" y="648.5" x="1163.5" fill="none"/>
+            <rect id="svg_422" height="54" width="76" y="665.5" x="1137.5" fill="none"/>
+            <rect id="svg_423" height="28" width="41" y="630.5" x="1188.5" fill="none"/>
+            <rect id="svg_424" height="35" width="41" y="439.5" x="1188.5" fill="none"/>
+            <rect id="svg_425" height="16" width="39" y="174.5" x="579.5" fill="none"/>
+            <rect id="svg_426" height="32" width="105" y="158.5" x="614.5" fill="none"/>
         </g>
     </g>
     <defs>

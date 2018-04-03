@@ -3,7 +3,10 @@
   "species": [
     "organelles/melanosome.yml",
     "organelles/dots.yml",
-    "organelles/hormone-dot.yml"
+    "organelles/hexagon.yml",
+    "organelles/g-protein.yml",
+    "organelles/g-protein-body.yml",
+    "organelles/g-protein-part.yml"
   ],
   "calculatedProperties": {
     "lightness": {

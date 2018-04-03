@@ -36,19 +36,10 @@ export const Organism = types
   }))
   .views(self => ({
     get lightness() {
-      // if cell model has already stepped and calculated lightness
-      if (typeof self.cellLightness === 'number') {
-        return self.cellLightness;
-      }
-      // else return a default value based on the amount of melanin
       let eumelaninLevel = self.getTotalForOrganelleSubstance(
         OrganelleType.Melanosomes, SubstanceType.Eumelanin
       );
-      return eumelaninLevel < 200
-        ? 1
-        : eumelaninLevel > 400
-          ? 0
-          : 0.2;
+      return 1 - (eumelaninLevel / 500);
     }
   }))
   .views(self => ({
@@ -109,14 +100,14 @@ export const Organism = types
         self.organelles.set(organelleType, newOrganelle);
       }
     },
-    step(currentTime: number) {
+    step(currentTime: number, organismsHistory: any) {
       Object.keys(OrganelleType).map(key => OrganelleType[key]).forEach(organelleType => {
         let organelle = self.organelles.get(organelleType) as IOrganelle;
         if (!organelle) {
           organelle = Organelle.create({type: organelleType});
           self.organelles.set(organelleType, organelle);
         }
-        organelle.step(currentTime, self);
+        organelle.step(currentTime, self, organismsHistory);
       });
     }
   }));

@@ -16,21 +16,15 @@ initialState: findPathStart
 rules:
   findPathStart:
   - move_to:
-      selector: "#path-away-from-receptor-part"
-      which: random
-      finally:
-        switch_state: away
-  away:
-  - follow:
-      selector: "#path-away-from-receptor-part"
+      selector: "#signal_protein_terminals circle"
       which: nearest
-      direction: forward
+      at: 1
       finally:
         die: true
   # *** click functions ***
   in_cell_from_click:
   - move_to:
-      selector: "#path-away-from-receptor-part"
+      selector: "#signal_protein_terminals circle"
       which: nearest
       at: 1
       finally:

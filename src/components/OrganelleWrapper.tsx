@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { autorun, IReactionDisposer } from 'mobx';
+import { autorun, reaction, IReactionDisposer } from 'mobx';
 import { observer } from 'mobx-react';
 import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
@@ -24,13 +24,6 @@ interface OrganelleWrapperState {
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
     disposers: IReactionDisposer[] = [];
     model: any;
-    clickTargets = [
-      OrganelleType.Cytoplasm,
-      OrganelleType.Nucleus,
-      OrganelleType.Golgi,
-      OrganelleType.Extracellular,
-      OrganelleType.Melanosomes
-    ];
     organelleSelectorInfo: any = {
       [OrganelleType.Nucleus]: {
         selector: '#nucleus'
@@ -43,11 +36,24 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         selector: '#golgi_x5F_apparatus'
       },
       [OrganelleType.Extracellular]: {
-        selector: `#intercell, .gate-a, .gate-b, .gate-c, .gate-d`,
+        selector: `#intercell`,
         opaqueSelector: '#Layer6_0_FILL'
       },
       [OrganelleType.Melanosomes]: {
         selector: '#melanosome_2, #melanosome_4'
+      },
+      [OrganelleType.Receptor]: {
+        selector: '#receptor-broken, #receptor-working, #receptor-bound',
+        visibleModes: [Mode.Normal]
+      },
+      [OrganelleType.Gate]: {
+        selector: '.gate-a, .gate-b, .gate-c, .gate-d',
+        visibleModes: [Mode.Normal]
+      },
+      [OrganelleType.NearbyCells]: {
+        selector: '#other_cells',
+        opaqueSelector: '#backcell_x5F_color',
+        visibleModes: [Mode.Normal]
       }
     };
     modelDefs: any = {
@@ -62,6 +68,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     };
     this.model = null;
     this.completeLoad = this.completeLoad.bind(this);
+    this.resetHoveredOrganelle = this.resetHoveredOrganelle.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +89,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       this.completeLoad();
     });
 
+    // Update model properties as they change
     this.disposers.push(autorun(() => {
       const newModelProperties = this.props.organism.modelProperties;
       if (this.model) {
@@ -91,11 +99,11 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       }
     }));
 
-    this.disposers.push(autorun(() => {
-      if (rootStore.mode === Mode.Normal) {
-        this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity());
-      }
-    }));
+    // Clear and update opacity whenever the mode changes
+    this.disposers.push(reaction(
+      () => rootStore.mode,
+      () => this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity())
+    ));
   }
 
   componentWillUnmount() {
@@ -105,49 +113,52 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   completeLoad() {
-    if (this.props.currentView === View.Receptor) {
-      this.model.on('view.loaded', () => {
-        this.updateReceptorImage();
-      });
+    this.model.on('view.loaded', () => {
+      this.updateReceptorImage();
+    });
 
-      this.model.setTimeout(
-        () => {
-          for (var i = 0; i < 3; i++) {
-            this.model.world.createAgent(this.model.world.species.gProtein);
-          }
-        },
-        1300);
+    this.model.setTimeout(
+      () => {
+        for (var i = 0; i < 3; i++) {
+          this.model.world.createAgent(this.model.world.species.gProtein);
+        }
+      },
+      1300);
 
-      this.model.on('hexagon.notify', () => this.updateReceptorImage());
+    this.model.on('hexagon.notify', () => this.updateReceptorImage());
 
-      this.model.on('gProtein.notify.break_time', (evt: any) => {
-        let proteinToBreak = evt.agent;
-        let location = {x: proteinToBreak.getProperty('x'), y: proteinToBreak.getProperty('y')};
-        var body = this.model.world.createAgent(this.model.world.species.gProteinBody);
-        body.setProperties(location);
+    this.model.on('gProtein.notify.break_time', (evt: any) => {
+      let proteinToBreak = evt.agent;
+      let location = {x: proteinToBreak.getProperty('x'), y: proteinToBreak.getProperty('y')};
+      var body = this.model.world.createAgent(this.model.world.species.gProteinBody);
+      body.setProperties(location);
 
-        var part = this.model.world.createAgent(this.model.world.species.gProteinPart);
-        part.setProperties(location);
+      var part = this.model.world.createAgent(this.model.world.species.gProteinPart);
+      part.setProperties(location);
 
-        proteinToBreak.die();
+      proteinToBreak.die();
 
-        this.model.world.setProperty('g_protein_bound', false);
+      this.model.world.setProperty('g_protein_bound', false);
 
-        this.model.world.createAgent(this.model.world.species.gProtein);
-      });
-    }
+      this.model.world.createAgent(this.model.world.species.gProtein);
+    });
 
     this.model.on('model.step', () => {
-      let lightness = this.model.world.getProperty('lightness'),    // ratio light to dark mels,   e.g. 0.5,  1,   3
-          percentLightness = lightness / (lightness + 1);           // percent light mels of total e.g. 0.33, 0.5, 0.75
+      let percentLightness = this.props.organism.lightness;
 
-      if (isNaN(percentLightness)) {
-        // model has no dark melanosomes, calculated prop `lightness` is NaN (div-zero)
+      if (percentLightness <= 0.19) {
+        percentLightness = 0;
+      } else if (percentLightness < 0.39) {
+        percentLightness = 0.2;
+      } else if (percentLightness < 0.59) {
+        percentLightness = 0.4;
+      } else if (percentLightness < 0.79) {
+        percentLightness = 0.6;
+      } else if (percentLightness < 0.99) {
+        percentLightness = 0.8;
+      } else {
         percentLightness = 1;
       }
-
-      // round to nearest 0.2, making 5 different colors
-      percentLightness = Math.round(percentLightness * 5) / 5;
 
       // go from lightest to darkest in HSL space, which provides the best gradual transition
 
@@ -169,41 +180,34 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
-      if (rootStore.mode === Mode.Normal) {
-        return;
-      }
-
-      const hoveredOrganelle = Object.keys(this.organelleSelectorInfo)
-        .reduce((accumulator, organelle) => {
-          let selector = this.organelleSelectorInfo[organelle].selector;
-          let matches = evt.target._organelle.matches({selector});
-          if (matches) {
-            return organelle;
-          } else {
-            return accumulator;
-          }
-        },      null);
-
+      const hoveredOrganelle = this.getOrganelleFromMouseEvent(evt);
       this.setState({hoveredOrganelle}, () => this.updateCellOpacity());
     });
 
-    this.model.on('view.hover.exit', (evt: any) => {
-      if (rootStore.mode !== Mode.Assay) {
-        return;
-      }
-
-      this.setState({hoveredOrganelle: null});
-    });
-
     this.model.on('view.click', (evt: any) => {
-      let clickTarget: OrganelleType = this.clickTargets.find((t) => {
-        return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
-      });
+      const clickTarget: OrganelleType = this.getOrganelleFromMouseEvent(evt);
       if (clickTarget) {
         let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
         this.organelleClick(clickTarget, location);
       }
     });
+  }
+
+  getOrganelleFromMouseEvent(evt: any) {
+    let possibleTargets: OrganelleType[] = Object.keys(OrganelleType)
+      .map(key => OrganelleType[key])
+      .filter(organelle => this.organelleSelectorInfo[organelle])
+      .filter(organelle => {
+        let visibleModes = this.organelleSelectorInfo[organelle].visibleModes;
+        return !visibleModes || visibleModes.indexOf(rootStore.mode) > -1;
+      });
+    return possibleTargets.find((t) => {
+      return evt.target._organelle.matches({selector: this.organelleSelectorInfo[t].selector});
+    });
+  }
+
+  resetHoveredOrganelle() {
+    this.setState({hoveredOrganelle: null});
   }
 
   getOpaqueSelector(organelleType: string) {
@@ -214,7 +218,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   updateCellOpacity() {
     let {mode} = rootStore;
-    if (mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract) {
+    if (mode === Mode.Assay 
+        || mode === Mode.Add
+        || mode === Mode.Subtract
+        || (mode === Mode.Normal && this.state.hoveredOrganelle)) {
       let opaqueSelectors: string[] = [];
       if (this.state.hoveredOrganelle) {
         opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
@@ -284,7 +291,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       let substanceType = rootStore.activeSubstance;
       if (substanceType === SubstanceType.Hormone) {
         this.addHormone(organelleType, location);
-      } else if (substanceType === SubstanceType.SignalProtein && this.props.currentView === View.Receptor) {
+      } else if (substanceType === SubstanceType.SignalProtein) {
         this.addSignalProtein(organelleType, location);
       }
     }
@@ -311,9 +318,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   addHormone(organelleType: OrganelleType, location: {x: number, y: number}) {
-    let inZoom = this.props.currentView === View.Receptor;
     let inIntercell = organelleType === OrganelleType.Extracellular;
-    let species = inZoom ? 'hexagon' : 'hormoneDot';
+    let species = 'hexagon';
     let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
     let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
     let count = inIntercell ? 3 : 2;
@@ -332,17 +338,15 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   render() {
-    let showHoverLocation = rootStore.mode !== Mode.Normal,
-        hoverLocation = this.state.hoveredOrganelle ? this.state.hoveredOrganelle : '',
-        hoverDiv = showHoverLocation ?
-      (
+    let hoverDiv = this.state.hoveredOrganelle
+      ? (
         <div className="hover-location">
-          {hoverLocation}
-        </div>
-      ) : null;
+          {this.state.hoveredOrganelle}
+        </div>)
+      : null;
     return (
       <div className="model-wrapper">
-        <div id={this.props.name} className="model" />
+        <div id={this.props.name} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
         {hoverDiv}
       </div>
     );

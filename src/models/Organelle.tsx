@@ -7,7 +7,10 @@ export enum OrganelleType {
   Cytoplasm = 'Cytoplasm',
   Golgi = 'Golgi',
   Extracellular = 'Extracellular',
-  Melanosomes = 'Melanosomes'
+  Melanosomes = 'Melanosomes',
+  Receptor = 'Receptor',
+  Gate = 'Gate',
+  NearbyCells = 'Nearby cells'
 }
 
 export const Organelle: any = types
@@ -36,14 +39,14 @@ export const Organelle: any = types
       let substanceLevel: ISubstance = self.substanceDeltas.get(substanceType);
       substanceLevel.manuallyIncrement(amount, self, currentTime);
     },
-    step(currentTime: number, parentOrganism: IOrganism) {
+    step(currentTime: number, parentOrganism: IOrganism, organismsHistory: any) {
       Object.keys(SubstanceType).map(key => SubstanceType[key]).forEach(substanceType => {
         let substance = self.substanceDeltas.get(substanceType) as ISubstance;
         if (!substance) {
           substance = Substance.create({type: substanceType});
           self.substanceDeltas.set(substanceType, substance);
         }
-        substance.step(currentTime, parentOrganism, self);
+        substance.step(currentTime, parentOrganism, self, organismsHistory);
       });
     }
   }));
