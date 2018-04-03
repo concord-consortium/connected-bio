@@ -55,7 +55,7 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             primary={mode !== Mode.Add}
             secondary={mode === Mode.Add}
           />
-          <RaisedButton
+          {/*<RaisedButton
             label={'Remove substance'}
             onClick={this.handleSubtractModeToggle}
             disabled={!(mode === Mode.Normal || mode === Mode.Subtract)}
@@ -63,7 +63,7 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             labelStyle={{ fontSize: '11px'}}
             primary={mode !== Mode.Subtract}
             secondary={mode === Mode.Subtract}
-          />
+          />*/}
         </div>
         <RadioButtonGroup
           name="substance-picker"
