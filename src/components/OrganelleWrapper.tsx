@@ -121,7 +121,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
     this.model.setTimeout(
       () => {
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 5; i++) {
           this.model.world.createAgent(this.model.world.species.gProtein);
         }
       },
@@ -324,8 +324,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     let species = 'hexagon';
     let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
     let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
-    let count = inIntercell ? 3 : 2;
-    this.addAgentsOverTime(species, state, props, count, 9, 400);
+    let count = inIntercell ? 3 : 1;
+    this.addAgentsOverTime(species, state, props, count, 18, 200);
   }
 
   addSignalProtein(organelleType: OrganelleType, location: {x: number, y: number}) {

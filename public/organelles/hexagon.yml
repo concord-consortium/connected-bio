@@ -49,7 +49,7 @@ rules:
       world.hormone_bound: true
   - notify: "bound"
   - wait:
-      for: 300
+      for: 150
       finally:
         switch_state: unbind
   unbind:
