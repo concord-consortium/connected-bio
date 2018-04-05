@@ -52,8 +52,8 @@ export const AppStore = types
       return self._availableOrgs;
     },
 
-    getBoxOrgName(boxId: string): string {
-      return self.boxes.get(boxId).organism.id;
+    getBoxOrganism(boxId: string): IOrganism {
+      return self.boxes.get(boxId).organism;
     },
 
     getBoxView(boxId: string): View {

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { autorun, reaction, IReactionDisposer } from 'mobx';
 import { observer } from 'mobx-react';
-import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
-import { appStore } from '../stores/AppStore';
+import { View, appStore } from '../stores/AppStore';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
 import * as CellModels from '../cell-models/index';
@@ -12,10 +11,8 @@ import { SubstanceType } from '../models/Substance';
 import './OrganelleWrapper.css';
 
 interface OrganelleWrapperProps {
-  name: string;
+  elementName: string;
   boxId: string;
-  currentView: View;
-  organism: IOrganism;
 }
 
 interface OrganelleWrapperState {
@@ -80,12 +77,14 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   componentDidMount() {
-    const {modelProperties} = this.props.organism;
-    const {currentView} = this.props;
-    let modelDef = this.modelDefs[currentView];
+    const box = appStore.boxes.get(this.props.boxId);
+    const view = box.viewType;
+    const {organism} = box;
+    const {modelProperties} = organism;
+    let modelDef = this.modelDefs[view];
 
     modelDef.container = {
-      elId: this.props.name,
+      elId: this.props.elementName,
       width: 500,
       height: 312
     };
@@ -100,7 +99,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     
     // Update model properties as they change
     this.disposers.push(autorun(() => {
-      const newModelProperties = this.props.organism.modelProperties;
+      const newModelProperties = organism.modelProperties;
       if (this.model) {
         newModelProperties.keys().forEach((key) => {
           this.model.world.setProperty(key, newModelProperties.get(key));
@@ -153,7 +152,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     });
 
     this.model.on('model.step', () => {
-      let percentLightness = this.props.organism.lightness;
+      let organism: IOrganism = appStore.getBoxOrganism(this.props.boxId);
+      let percentLightness = organism.lightness;
 
       if (percentLightness <= 0.19) {
         percentLightness = 0;
@@ -185,7 +185,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       }
 
       // set lightness on model object so it can change organism image
-      this.props.organism.setCellLightness(percentLightness);
+      organism.setCellLightness(percentLightness);
     });
 
     this.model.on('view.hover.enter', (evt: any) => {
@@ -240,6 +240,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   updateCellOpacity() {
     let {mode} = rootStore;
+    let organism: IOrganism = appStore.getBoxOrganism(this.props.boxId);
     if (mode === Mode.Assay 
         || mode === Mode.Add
         || mode === Mode.Subtract
@@ -251,12 +252,12 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
       if (mode === Mode.Assay) {
         rootStore.lockedAssays.forEach((lockedAssay) => {
-          if (lockedAssay.organism.id === this.props.organism.id) {
+          if (lockedAssay.organism.id === organism.id) {
             opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.organelleType));
           }
         });
         if (rootStore.activeAssay) {
-          if (rootStore.activeAssay.organism === this.props.organism) {
+          if (rootStore.activeAssay.organism === organism) {
             opaqueSelectors.push(this.getOpaqueSelector(rootStore.activeAssay.organelleType));
           }
         }
@@ -299,16 +300,16 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   organelleClick(organelleType: OrganelleType, location: {x: number, y: number}) {
+    let organism = appStore.getBoxOrganism(this.props.boxId);
     if (rootStore.mode === Mode.Assay) {
-      let org = rootStore.organisms.get(this.props.organism.id);
       let organelleInfo = OrganelleRef.create({
-        organism: org,
+        organism,
         organelleType
       });
       rootStore.setActiveAssay(organelleInfo);
     } else if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
       // update substance levels
-      rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
+      rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: organism, organelleType }));
       // show animation in model
       let substanceType = rootStore.activeSubstance;
       if (substanceType === SubstanceType.Hormone) {
@@ -340,7 +341,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       .map((key) => appStore.boxes.get(key))
       .filter((otherBox: any) => {
         return (
-          otherBox.organism.id === this.props.organism.id
+          otherBox.organism.id === appStore.getBoxOrganism(this.props.boxId).id &&
+          (otherBox.viewType === View.Cell || otherBox.viewType === View.Receptor)
         );
     });
 
@@ -387,7 +389,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     const dropperCursor = this.state.hoveredOrganelle && this.isModeDropper(rootStore.mode);
     return (
       <div className={'model-wrapper' + (dropperCursor ? ' dropper' : '')}>
-        <div id={this.props.name} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
+        <div id={this.props.elementName} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
         {hoverDiv}
         {droppers}
       </div>
