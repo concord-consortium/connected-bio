@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
+import { appStore } from '../stores/AppStore';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
 import * as CellModels from '../cell-models/index';
@@ -12,6 +13,7 @@ import './OrganelleWrapper.css';
 
 interface OrganelleWrapperProps {
   name: string;
+  boxId: string;
   currentView: View;
   organism: IOrganism;
 }
@@ -92,9 +94,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
     createModel(modelDef).then((m: any) => {
       this.model = m;
+      appStore.boxes.get(this.props.boxId).setModel(m);
       this.completeLoad();
     });
-
+    
     // Update model properties as they change
     this.disposers.push(autorun(() => {
       const newModelProperties = this.props.organism.modelProperties;
@@ -318,23 +321,30 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   addAgentsOverTime(species: string, state: string, props: object, countAtOnce: number, times: number) {
     let period = SUBSTANCE_ADDITION_MS / times;
-    const addAgents = () => {
+    const addAgents = (model: any) => {
       for (let i = 0; i < countAtOnce; i++) {
-        const a = this.model.world.createAgent(this.model.world.species[species]);
+        const a = model.world.createAgent(this.model.world.species[species]);
         a.state = state;
         a.setProperties(props);
       }
     };
 
-    let added = 0;
-    const addAgentsAgent = () => {
-      addAgents();
-      added++;
+    const addAgentsAgent = (model: any, added: number) => {
+      addAgents(model);
       if (added < times) {
-        this.model.setTimeout(addAgentsAgent, period);
+        model.setTimeout(addAgentsAgent.bind(this, model, added + 1), period);
       }
     };
-    addAgentsAgent();
+
+    let matchingBoxes = Object.keys(appStore.boxes.toJS())
+      .map((key) => appStore.boxes.get(key))
+      .filter((otherBox: any) => {
+        return (
+          otherBox.organism.id === this.props.organism.id
+        );
+    });
+
+    matchingBoxes.forEach((box) => addAgentsAgent(box.model, 0));
   }
 
   addHormone(organelleType: OrganelleType, location: {x: number, y: number}) {

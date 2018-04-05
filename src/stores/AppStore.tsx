@@ -16,9 +16,17 @@ const Box = types
     organism: types.reference(Organism),
     view: types.enumeration('View', Object.keys(View).map(key => View[key]))
   })
+  .volatile(self => ({
+    model: null
+  }))
   .views(self => ({
     get viewType(): View {
       return stringToEnum(self.view, View);
+    }
+  }))
+  .actions(self => ({
+    setModel(model: any) {
+      self.model = model;
     }
   }));
 

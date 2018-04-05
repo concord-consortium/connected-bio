@@ -71,6 +71,7 @@ class App extends React.Component<AppProps> {
         <OrganelleWrapper
           key={view + org.id}        // unmount and remount OrganelleWrapper when `view` changes
           name={boxId + '-model'}
+          boxId={boxId}
           currentView={view}
           organism={org}
         />
