@@ -57,6 +57,19 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
       <AssayBarChart
         colors={colors}
       />);
+    let graphTypeButton = assayStore.showLineGraphs
+        ? (
+          <RaisedButton
+            disabled={mode !== Mode.Normal}
+            onClick={this.onGraphSwitch}
+            style={{width: '50px', margin: '5px'}}
+            labelStyle={{ fontSize: '11px'}}
+            primary={true}
+            labelPosition="before"
+            icon={assayStore.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
+          />
+        )
+        : null;
 
     return (
       <div className="chart">
@@ -79,15 +92,7 @@ class AssayTool extends React.Component<AssayToolProps, AssayToolState> {
             labelStyle={{ fontSize: '11px'}}
             primary={true}
           />
-          <RaisedButton
-            disabled={mode !== Mode.Normal}
-            onClick={this.onGraphSwitch}
-            style={{width: '50px', margin: '5px'}}
-            labelStyle={{ fontSize: '11px'}}
-            primary={true}
-            labelPosition="before"
-            icon={assayStore.graphType === GraphType.Line ? <NoClockIcon /> : <ClockIcon />}
-          />
+          {graphTypeButton}
         </div>
       </div>
     );

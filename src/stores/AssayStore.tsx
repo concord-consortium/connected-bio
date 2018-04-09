@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
 import { SubstanceType } from '../models/Substance';
-import { stringToEnum } from '../utils';
+import { stringToEnum, getUrlParamValue } from '../utils';
 
 export enum GraphType {
   Bar = 'BAR',
@@ -10,7 +10,10 @@ export enum GraphType {
 export const AssayStore = types
   .model('AssayStore', {
     visibleSubstances: types.map(types.boolean),
-    graph: types.enumeration('GraphType', Object.keys(GraphType).map(key => GraphType[key]))
+    graph: types.enumeration('GraphType', Object.keys(GraphType).map(key => GraphType[key])),
+    // Whether we show line graphs
+    // Default: false, set with `?showLineGraphs=true`
+    showLineGraphs: types.boolean,
   })
   .views(self => ({
     get graphType(): GraphType {
@@ -27,6 +30,8 @@ export const AssayStore = types
     }
   }));
 
+const showLineGraphs = getUrlParamValue('showLineGraphs') === 'true' ? true : false;
+
 export const assayStore = AssayStore.create({
   visibleSubstances: {
     [SubstanceType.Hormone]: true,
@@ -34,5 +39,6 @@ export const assayStore = AssayStore.create({
     [SubstanceType.Eumelanin]: true,
     [SubstanceType.Pheomelanin]: true
   },
-  graph: GraphType.Bar
+  graph: GraphType.Bar,
+  showLineGraphs: showLineGraphs
 });
