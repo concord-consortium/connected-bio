@@ -18,7 +18,10 @@ interface OrganelleWrapperProps {
 
 interface OrganelleWrapperState {
   hoveredOrganelle: any;
+  dropperCoords: any;
 }
+
+const SUBSTANCE_ADDITION_MS = 3500;
 
 @observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
@@ -66,7 +69,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   constructor(props: OrganelleWrapperProps) {
     super(props);
     this.state = {
-      hoveredOrganelle: null
+      hoveredOrganelle: null,
+      dropperCoords: null
     };
     this.model = null;
     this.completeLoad = this.completeLoad.bind(this);
@@ -190,6 +194,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       const clickTarget: OrganelleType = this.getOrganelleFromMouseEvent(evt);
       if (clickTarget) {
         let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
+        this.setState({dropperCoords: {x: evt.e.layerX, y: evt.e.layerY}});
+        setTimeout(() => {
+          this.setState({dropperCoords: null});
+        },         SUBSTANCE_ADDITION_MS);
         this.organelleClick(clickTarget, location);
       }
     });
@@ -299,7 +307,8 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
   }
 
-  addAgentsOverTime(species: string, state: string, props: object, countAtOnce: number, times: number, period: number) {
+  addAgentsOverTime(species: string, state: string, props: object, countAtOnce: number, times: number) {
+    let period = SUBSTANCE_ADDITION_MS / times;
     const addAgents = () => {
       for (let i = 0; i < countAtOnce; i++) {
         const a = this.model.world.createAgent(this.model.world.species[species]);
@@ -325,14 +334,14 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
     let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
     let count = inIntercell ? 3 : 2;
-    this.addAgentsOverTime(species, state, props, count, 9, 400);
+    this.addAgentsOverTime(species, state, props, count, 9);
   }
 
   addSignalProtein(organelleType: OrganelleType, location: {x: number, y: number}) {
     let inIntercell = organelleType === OrganelleType.Extracellular;
     let species = 'gProteinPart';
     let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';
-    this.addAgentsOverTime(species, state, location, 1, 9, 400);
+    this.addAgentsOverTime(species, state, location, 1, 9);
   }
 
   componentDidUpdate() {
@@ -346,10 +355,20 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
           {this.state.hoveredOrganelle}
         </div>)
       : null;
+
+    let dropperCoords = this.state.dropperCoords;
+    const dropper = dropperCoords
+      ? (
+        <div className="temp-dropper" style={{left: dropperCoords.x - 6, top: dropperCoords.y - 28}}>
+          <img src="assets/dropper.png" width="32px"/>
+        </div>
+      )
+      : null;
     return (
       <div className="model-wrapper">
         <div id={this.props.name} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
         {hoverDiv}
+        {dropper}
       </div>
     );
   }
