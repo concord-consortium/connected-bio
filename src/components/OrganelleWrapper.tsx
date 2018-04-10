@@ -193,17 +193,21 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     this.model.on('view.click', (evt: any) => {
       const clickTarget: OrganelleType = this.getOrganelleFromMouseEvent(evt);
       if (clickTarget) {
+        // Keep the dropper displayed for substance additions
+        if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
+          const newCoords = this.state.dropperCoords.slice(0);
+          newCoords.push({x: evt.e.layerX, y: evt.e.layerY});
+          this.setState({dropperCoords: newCoords});
+          setTimeout(() => {
+            const splicedCoords = this.state.dropperCoords.slice(0);
+            splicedCoords.splice(0, 1);
+            this.setState({dropperCoords: splicedCoords});
+          },         SUBSTANCE_ADDITION_MS);
+        }
+
+        // Handle the click in the Organelle model
         let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
         this.organelleClick(clickTarget, location);
-        
-        const newCoords = this.state.dropperCoords.slice(0);
-        newCoords.push({x: evt.e.layerX, y: evt.e.layerY});
-        this.setState({dropperCoords: newCoords});
-        setTimeout(() => {
-          const splicedCoords = this.state.dropperCoords.slice(0);
-          splicedCoords.splice(0, 1);
-          this.setState({dropperCoords: splicedCoords});
-        },         SUBSTANCE_ADDITION_MS);
       }
     });
   }
