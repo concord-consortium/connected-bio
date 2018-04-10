@@ -70,7 +70,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     super(props);
     this.state = {
       hoveredOrganelle: null,
-      dropperCoords: null
+      dropperCoords: []
     };
     this.model = null;
     this.completeLoad = this.completeLoad.bind(this);
@@ -194,11 +194,16 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       const clickTarget: OrganelleType = this.getOrganelleFromMouseEvent(evt);
       if (clickTarget) {
         let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
-        this.setState({dropperCoords: {x: evt.e.layerX, y: evt.e.layerY}});
-        setTimeout(() => {
-          this.setState({dropperCoords: null});
-        },         SUBSTANCE_ADDITION_MS);
         this.organelleClick(clickTarget, location);
+        
+        const newCoords = this.state.dropperCoords.slice(0);
+        newCoords.push({x: evt.e.layerX, y: evt.e.layerY});
+        this.setState({dropperCoords: newCoords});
+        setTimeout(() => {
+          const splicedCoords = this.state.dropperCoords.slice(0);
+          splicedCoords.splice(0, 1);
+          this.setState({dropperCoords: splicedCoords});
+        },         SUBSTANCE_ADDITION_MS);
       }
     });
   }
@@ -356,19 +361,16 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         </div>)
       : null;
 
-    let dropperCoords = this.state.dropperCoords;
-    const dropper = dropperCoords
-      ? (
-        <div className="temp-dropper" style={{left: dropperCoords.x - 6, top: dropperCoords.y - 28}}>
-          <img src="assets/dropper.png" width="32px"/>
-        </div>
-      )
-      : null;
+    const droppers: any = this.state.dropperCoords.map((dropperCoord: any, i: number) => (
+      <div className="temp-dropper" key={i} style={{left: dropperCoord.x - 6, top: dropperCoord.y - 28}}>
+        <img src="assets/dropper.png" width="32px"/>
+      </div>
+    ));
     return (
       <div className="model-wrapper">
         <div id={this.props.name} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
         {hoverDiv}
-        {dropper}
+        {droppers}
       </div>
     );
   }
