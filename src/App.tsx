@@ -79,18 +79,10 @@ class App extends React.Component<AppProps> {
   }
 
   forceDropper(e: any) {
-    // Force the cell view cursor from default to dropper
+    // Hack to force Fabric canvases to inherit cursor styles, should configure in Organelle instead
     if (e.target.className.indexOf('upper-canvas') > -1) {
-      if (this.isModeDropper(rootStore.mode)) {
-        e.target.style.cursor = 'url(assets/dropper.png) 6 28, auto';
-      } else {
-        e.target.style.cursor = 'default';
-      }
+      e.target.style.cursor = 'inherit';
     }
-  }
-
-  isModeDropper(mode: string) {
-    return mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract;
   }
 
   render() {
@@ -105,7 +97,7 @@ class App extends React.Component<AppProps> {
     ) : null;
     return (
       <MuiThemeProvider>
-        <div className={'App' + (this.isModeDropper(rootStore.mode) ? ' dropper' : '')}>
+        <div className="App">
           <div className="four-up">
             <div>
               <div className="view-box" id="top-left">

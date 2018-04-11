@@ -353,12 +353,16 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     this.addAgentsOverTime(species, state, location, 1, 9);
   }
 
+  isModeDropper(mode: string) {
+    return mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract;
+  }
+
   componentDidUpdate() {
     this.updateCellOpacity();
   }
 
   render() {
-    let hoverDiv = this.state.hoveredOrganelle
+    const hoverDiv = this.state.hoveredOrganelle
       ? (
         <div className="hover-location">
           {this.state.hoveredOrganelle}
@@ -370,8 +374,9 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         <img src="assets/dropper.png" width="32px"/>
       </div>
     ));
+    const dropperCursor = this.state.hoveredOrganelle && this.isModeDropper(rootStore.mode);
     return (
-      <div className="model-wrapper">
+      <div className={'model-wrapper' + (dropperCursor ? ' dropper' : '')}>
         <div id={this.props.name} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
         {hoverDiv}
         {droppers}
