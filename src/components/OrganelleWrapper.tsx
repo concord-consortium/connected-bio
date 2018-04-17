@@ -115,6 +115,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   componentWillUnmount() {
     this.disposers.forEach(disposer => disposer());
     this.getModel().destroy();
+    appStore.boxes.get(this.props.boxId).setModel(null);
   }
 
   getModel() {
