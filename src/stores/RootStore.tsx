@@ -102,7 +102,7 @@ const RootStore = types
      */
     checkAssays() {
       const assayableOrgs: any[] = appStore.getAllViews().filter(box => {
-        return box.view === View.Cell || box.view === View.Receptor;
+        return box.view === View.Cell || box.view === View.Protein;
       }).map((box) => box.organism);
       const filteredAssays = self.lockedAssays.filter(assay => assayableOrgs.indexOf(assay.organism) > -1);
       self.setLockedAssays(filteredAssays);

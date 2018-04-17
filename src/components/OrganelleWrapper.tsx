@@ -62,7 +62,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     };
     modelDefs: any = {
       Cell: CellModels.cell,
-      Receptor: CellModels.receptor
+      Protein: CellModels.receptor
     };
 
   constructor(props: OrganelleWrapperProps) {
