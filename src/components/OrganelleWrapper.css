@@ -13,3 +13,7 @@
     padding: 2px;
     text-align: center;
 }
+
+.temp-dropper {
+  position: absolute;
+}
