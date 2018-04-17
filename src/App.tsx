@@ -103,8 +103,7 @@ class App extends React.Component<AppProps> {
               <div className="view-box" id="top-left">
                 <div className="view-selection-container">
                   <select name="box-1" value={appStore.getBoxOrgName('box-1')} onChange={this.handleOrgChange}>
-                    <option value="Beach Mouse">Beach Mouse</option>
-                    <option value="Field Mouse">Field Mouse</option>
+                    {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
                   </select>
                   <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
                     {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
@@ -123,8 +122,7 @@ class App extends React.Component<AppProps> {
               <div className="view-box" id="bottom-left">
                 <div className="view-selection-container">
                   <select name="box-2" value={appStore.getBoxOrgName('box-2')} onChange={this.handleOrgChange}>
-                    <option value="Beach Mouse">Beach Mouse</option>
-                    <option value="Field Mouse">Field Mouse</option>
+                    {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
                   </select>
                   <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
                     {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}

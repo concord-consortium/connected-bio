@@ -30,11 +30,18 @@ export const AppStore = types
     showSubstances: types.boolean,
     // which views we allow in the organism boxes
     // Default: ['None', 'Organism', 'Cell', 'Receptor'], set with `?availableViews=Organism,Cell`
-    _availableViews: types.array(types.string)
+    _availableViews: types.array(types.string),
+    // which organisms we allow in the organism boxes
+    // Default: [BeachMouse, FieldMouse], set with `?availableOrgs=BeachMouse,FieldMouse`
+    _availableOrgs: types.array(types.reference(Organism)),
   })
   .views(self => ({
     get availableViews() {
       return self._availableViews.map(id => stringToEnum(id, View));
+    },
+
+    get availableOrgs() {
+      return self._availableOrgs;
     },
 
     getBoxOrgName(boxId: string): string {
@@ -63,9 +70,12 @@ const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : 
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
   [View.None, View.Organism, View.Cell, View.Receptor];
-const initialOrg = getUrlParamValue('initialOrg') ?
-  (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse) :
-  FieldMouse;
+const availableOrgs = getUrlParamValue('availableOrgs') 
+  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
+  : [BeachMouse, FieldMouse];
+const initialOrgs = getUrlParamValue('initialOrgs')
+  ? getUrlParamValue('initialOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
+  : [FieldMouse, FieldMouse];
 const initialViews = getUrlParamValue('initialViews') ?
   getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
   [View.Organism, View.Cell];
@@ -74,15 +84,16 @@ export const appStore = AppStore.create({
   boxes: {
     'box-1': {
       id: 'box-1',
-      organism: initialOrg,
+      organism: initialOrgs[0],
       view: initialViews[0]
     },
     'box-2': {
       id: 'box-2',
-      organism: initialOrg,
+      organism: initialOrgs[1],
       view: initialViews[1]
     }
   },
   showSubstances: showSubstances,
-  _availableViews: availableViews
+  _availableViews: availableViews,
+  _availableOrgs: availableOrgs
 });
