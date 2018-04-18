@@ -296,7 +296,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       .filter((otherBox: any) => {
         return (
           otherBox.organism.id === appStore.getBoxOrganism(this.props.boxId).id &&
-          (otherBox.viewType === View.Cell || otherBox.viewType === View.Receptor)
+          (otherBox.viewType === View.Cell || otherBox.viewType === View.Protein)
         );
     });
 
