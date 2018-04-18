@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { autorun, reaction, IReactionDisposer } from 'mobx';
+import { autorun, IReactionDisposer } from 'mobx';
 import { observer } from 'mobx-react';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
@@ -104,12 +104,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
         });
       }
     }));
-
-    // Clear and update opacity whenever the mode changes
-    this.disposers.push(reaction(
-      () => rootStore.mode,
-      () => this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity())
-    ));
   }
 
   componentWillUnmount() {
@@ -193,7 +187,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
     model.on('view.hover.enter', (evt: any) => {
       const hoveredOrganelle = this.getOrganelleFromMouseEvent(evt);
-      this.setState({hoveredOrganelle}, () => this.updateCellOpacity());
+      this.setState({hoveredOrganelle});
     });
 
     model.on('view.click', (evt: any) => {
@@ -241,37 +235,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       this.organelleSelectorInfo[organelleType].selector;
   }
 
-  updateCellOpacity() {
-    let {mode} = rootStore;
-    let organism: IOrganism = appStore.getBoxOrganism(this.props.boxId);
-    if (mode === Mode.Assay 
-        || mode === Mode.Add
-        || mode === Mode.Subtract
-        || (mode === Mode.Normal && this.state.hoveredOrganelle)) {
-      let opaqueSelectors: string[] = [];
-      if (this.state.hoveredOrganelle) {
-        opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
-      }
-
-      if (mode === Mode.Assay) {
-        rootStore.lockedAssays.forEach((lockedAssay) => {
-          if (lockedAssay.organism.id === organism.id) {
-            opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.organelleType));
-          }
-        });
-        if (rootStore.activeAssay) {
-          if (rootStore.activeAssay.organism === organism) {
-            opaqueSelectors.push(this.getOpaqueSelector(rootStore.activeAssay.organelleType));
-          }
-        }
-      }
-
-      this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
-    } else {
-      this.makeEverythingOpaque();
-    }
-  }
-
   updateReceptorImage() {
     const model = this.getModel();
     if (model.world.getProperty('working_receptor')) {
@@ -287,19 +250,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       model.view.hide('#receptor-working', true);
       model.view.hide('#receptor-bound', true);
       model.view.show('#receptor-broken', true);
-    }
-  }
-
-  makeEverythingTransparentExcept(skip: any) {
-    if (this.getModel()) {
-      this.makeEverythingOpaque();
-      this.getModel().view.setPropertiesOnAllObjects({opacity: '*0.7'}, true, skip, true);
-    }
-  }
-
-  makeEverythingOpaque() {
-    if (this.getModel()) {
-      this.getModel().view.resetPropertiesOnAllObjects();
     }
   }
 
@@ -371,10 +321,6 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
 
   isModeDropper(mode: string) {
     return mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract;
-  }
-
-  componentDidUpdate() {
-    this.updateCellOpacity();
   }
 
   render() {
