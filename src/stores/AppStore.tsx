@@ -7,7 +7,7 @@ export enum View {
   None = 'None',
   Organism = 'Organism',
   Cell = 'Cell',
-  Receptor = 'Receptor'
+  Protein = 'Protein'
 }
 
 const Box = types
@@ -37,7 +37,7 @@ export const AppStore = types
     // Default: true, set with `?showSubstances=false`
     showSubstances: types.boolean,
     // which views we allow in the organism boxes
-    // Default: ['None', 'Organism', 'Cell', 'Receptor'], set with `?availableViews=Organism,Cell`
+    // Default: ['None', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
     _availableViews: types.array(types.string),
     // which organisms we allow in the organism boxes
     // Default: [BeachMouse, FieldMouse], set with `?availableOrgs=BeachMouse,FieldMouse`
@@ -77,7 +77,7 @@ export const AppStore = types
 const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : true;
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
-  [View.None, View.Organism, View.Cell, View.Receptor];
+  [View.None, View.Organism, View.Cell, View.Protein];
 const availableOrgs = getUrlParamValue('availableOrgs') 
   ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
   : [BeachMouse, FieldMouse];
