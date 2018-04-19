@@ -81,12 +81,18 @@ const availableViews = getUrlParamValue('availableViews') ?
 const availableOrgs = getUrlParamValue('availableOrgs') 
   ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
   : [BeachMouse, FieldMouse];
-const initialOrgs = getUrlParamValue('initialOrgs')
-  ? getUrlParamValue('initialOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
-  : [FieldMouse, FieldMouse];
 const initialViews = getUrlParamValue('initialViews') ?
   getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
   [View.Organism, View.Cell];
+
+let initialOrgs = [FieldMouse, FieldMouse];
+if (getUrlParamValue('initialOrgs')) {
+  initialOrgs = getUrlParamValue('initialOrgs').split(',').map((name: any) => 
+    name === 'BeachMouse' ? BeachMouse : FieldMouse);
+} else if (getUrlParamValue('initialOrg')) {
+  const org = (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse);
+  initialOrgs = [org, org];
+}
 
 export const appStore = AppStore.create({
   boxes: {
