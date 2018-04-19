@@ -4,7 +4,8 @@ import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse } from '.
 import { SubstanceType } from '../models/Substance';
 import { AppStore, appStore, View } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
-import { stringToEnum } from '../utils';
+import { stringToEnum, Timer } from '../utils';
+import { v4 as uuid } from 'uuid';
 
 export enum Mode {
   Normal = 'NORMAL',
@@ -14,6 +15,7 @@ export enum Mode {
 }
 
 let organismsHistory: any[] = [];
+let timers: any = {};
 
 const RootStore = types
   .model('RootStore', {
@@ -30,6 +32,18 @@ const RootStore = types
   .actions(self => ({
     setMode(newMode: string) {
       self.mode = newMode;
+
+      self.appStore.boxes.forEach(box => {
+        if (box.model) {
+          if (newMode === Mode.Normal) {
+            box.model.run();
+            Object.keys(timers).map(key => timers[key]).forEach(timer => timer.resume());
+          } else {
+            box.model.stop();
+            Object.keys(timers).map(key => timers[key]).forEach(timer => timer.pause());
+          }
+        }
+      });
     },
 
     setLockedAssays(assayOrganelles: any) {
@@ -42,6 +56,19 @@ const RootStore = types
 
     setActiveSubstanceAmount(amount: number) {
       self.activeSubstanceAmount = amount;
+    },
+
+    startTimer(callback: Function, delay: number, loop: boolean = false) {
+      let timerKey = uuid();
+      timers[timerKey] =  new Timer(
+        () => {
+          callback();
+          if (!loop) {
+            delete timers[timerKey];
+          }
+        },
+        delay, 
+        loop);
     },
 
     step(msPassed: number) {

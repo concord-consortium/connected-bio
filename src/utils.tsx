@@ -15,3 +15,49 @@ export function getUrlParamValue(key: string) {
   var params = JSON.parse(`{"${decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`);
   return params[key];
 }
+
+/**
+ * A pausable timer class.
+ * 
+ * @param callback: the function to invoke after the specified time
+ * @param delay: the delay in milliseconds before the callback is invoked
+ * @param loop: if true, restarts the timer when it expires
+ */
+export class Timer {
+  callback: Function;
+  delay: number;
+  timerId: number;
+  start: number;
+  remaining: number;
+  loop: boolean;
+
+  constructor(callback: Function, delay: number, loop: boolean = false) {
+    this.callback = callback;
+    this.delay = delay;
+    this.remaining = delay;
+    this.loop = loop;
+
+    this.executeCallback = this.executeCallback.bind(this);
+
+    this.resume();
+  }
+
+  executeCallback() {
+    this.callback();
+    if (this.loop) {
+      this.remaining = this.delay;
+      this.resume();
+    }
+  }
+
+  pause() {
+    window.clearTimeout(this.timerId);
+    this.remaining -= Date.now() - this.start;
+  }
+
+  resume() {
+    this.start = Date.now();
+    window.clearTimeout(this.timerId);
+    this.timerId = window.setTimeout(this.executeCallback, this.remaining);
+  }
+}
