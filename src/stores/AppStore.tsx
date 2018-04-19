@@ -7,7 +7,7 @@ export enum View {
   None = 'None',
   Organism = 'Organism',
   Cell = 'Cell',
-  Receptor = 'Receptor'
+  Protein = 'Protein'
 }
 
 const Box = types
@@ -16,9 +16,17 @@ const Box = types
     organism: types.reference(Organism),
     view: types.enumeration('View', Object.keys(View).map(key => View[key]))
   })
+  .volatile(self => ({
+    model: null
+  }))
   .views(self => ({
     get viewType(): View {
       return stringToEnum(self.view, View);
+    }
+  }))
+  .actions(self => ({
+    setModel(model: any) {
+      self.model = model;
     }
   }));
 
@@ -29,16 +37,23 @@ export const AppStore = types
     // Default: true, set with `?showSubstances=false`
     showSubstances: types.boolean,
     // which views we allow in the organism boxes
-    // Default: ['None', 'Organism', 'Cell', 'Receptor'], set with `?availableViews=Organism,Cell`
-    _availableViews: types.array(types.string)
+    // Default: ['None', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
+    _availableViews: types.array(types.string),
+    // which organisms we allow in the organism boxes
+    // Default: [BeachMouse, FieldMouse], set with `?availableOrgs=BeachMouse,FieldMouse`
+    _availableOrgs: types.array(types.reference(Organism)),
   })
   .views(self => ({
     get availableViews() {
       return self._availableViews.map(id => stringToEnum(id, View));
     },
 
-    getBoxOrgName(boxId: string): string {
-      return self.boxes.get(boxId).organism.id;
+    get availableOrgs() {
+      return self._availableOrgs;
+    },
+
+    getBoxOrganism(boxId: string): IOrganism {
+      return self.boxes.get(boxId).organism;
     },
 
     getBoxView(boxId: string): View {
@@ -62,27 +77,37 @@ export const AppStore = types
 const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : true;
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
-  [View.None, View.Organism, View.Cell, View.Receptor];
-const initialOrg = getUrlParamValue('initialOrg') ?
-  (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse) :
-  FieldMouse;
+  [View.None, View.Organism, View.Cell, View.Protein];
+const availableOrgs = getUrlParamValue('availableOrgs') 
+  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
+  : [BeachMouse, FieldMouse];
 const initialViews = getUrlParamValue('initialViews') ?
   getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
   [View.Organism, View.Cell];
+
+let initialOrgs = [FieldMouse, FieldMouse];
+if (getUrlParamValue('initialOrgs')) {
+  initialOrgs = getUrlParamValue('initialOrgs').split(',').map((name: any) => 
+    name === 'BeachMouse' ? BeachMouse : FieldMouse);
+} else if (getUrlParamValue('initialOrg')) {
+  const org = (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse);
+  initialOrgs = [org, org];
+}
 
 export const appStore = AppStore.create({
   boxes: {
     'box-1': {
       id: 'box-1',
-      organism: initialOrg,
+      organism: initialOrgs[0],
       view: initialViews[0]
     },
     'box-2': {
       id: 'box-2',
-      organism: initialOrg,
+      organism: initialOrgs[1],
       view: initialViews[1]
     }
   },
   showSubstances: showSubstances,
-  _availableViews: availableViews
+  _availableViews: availableViews,
+  _availableOrgs: availableOrgs
 });

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { autorun, reaction, IReactionDisposer } from 'mobx';
+import { autorun, IReactionDisposer } from 'mobx';
 import { observer } from 'mobx-react';
-import { View } from '../stores/AppStore';
 import { IOrganism, OrganelleRef } from '../models/Organism';
 import { OrganelleType } from '../models/Organelle';
+import { View, appStore } from '../stores/AppStore';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
 import * as CellModels from '../cell-models/index';
@@ -11,14 +11,16 @@ import { SubstanceType } from '../models/Substance';
 import './OrganelleWrapper.css';
 
 interface OrganelleWrapperProps {
-  name: string;
-  currentView: View;
-  organism: IOrganism;
+  elementName: string;
+  boxId: string;
 }
 
 interface OrganelleWrapperState {
   hoveredOrganelle: any;
+  dropperCoords: any;
 }
+
+const SUBSTANCE_ADDITION_MS = 3500;
 
 @observer
 class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleWrapperState> {
@@ -60,26 +62,28 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     };
     modelDefs: any = {
       Cell: CellModels.cell,
-      Receptor: CellModels.receptor
+      Protein: CellModels.receptor
     };
 
   constructor(props: OrganelleWrapperProps) {
     super(props);
     this.state = {
-      hoveredOrganelle: null
+      hoveredOrganelle: null,
+      dropperCoords: []
     };
-    this.model = null;
     this.completeLoad = this.completeLoad.bind(this);
     this.resetHoveredOrganelle = this.resetHoveredOrganelle.bind(this);
   }
 
   componentDidMount() {
-    const {modelProperties} = this.props.organism;
-    const {currentView} = this.props;
-    let modelDef = this.modelDefs[currentView];
+    const box = appStore.boxes.get(this.props.boxId);
+    const view = box.viewType;
+    const {organism} = box;
+    const {modelProperties} = organism;
+    let modelDef = this.modelDefs[view];
 
     modelDef.container = {
-      elId: this.props.name,
+      elId: this.props.elementName,
       width: 500,
       height: 312
     };
@@ -87,66 +91,66 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     modelDef.properties = modelProperties.toJS();
 
     createModel(modelDef).then((m: any) => {
-      this.model = m;
+      appStore.boxes.get(this.props.boxId).setModel(m);
       this.completeLoad();
     });
-
+    
     // Update model properties as they change
     this.disposers.push(autorun(() => {
-      const newModelProperties = this.props.organism.modelProperties;
-      if (this.model) {
+      const newModelProperties = organism.modelProperties;
+      if (this.getModel()) {
         newModelProperties.keys().forEach((key) => {
-          this.model.world.setProperty(key, newModelProperties.get(key));
+          this.getModel().world.setProperty(key, newModelProperties.get(key));
         });
       }
     }));
-
-    // Clear and update opacity whenever the mode changes
-    this.disposers.push(reaction(
-      () => rootStore.mode,
-      () => this.setState({hoveredOrganelle: null}, () => this.updateCellOpacity())
-    ));
   }
 
   componentWillUnmount() {
     this.disposers.forEach(disposer => disposer());
-    this.model.destroy();
-    delete this.model;
+    this.getModel().destroy();
+    appStore.boxes.get(this.props.boxId).setModel(null);
+  }
+
+  getModel() {
+    return appStore.boxes.get(this.props.boxId).model;
   }
 
   completeLoad() {
-    this.model.on('view.loaded', () => {
+    const model = this.getModel();
+    model.on('view.loaded', () => {
       this.updateReceptorImage();
     });
 
-    this.model.setTimeout(
+    model.setTimeout(
       () => {
         for (var i = 0; i < 3; i++) {
-          this.model.world.createAgent(this.model.world.species.gProtein);
+          model.world.createAgent(model.world.species.gProtein);
         }
       },
       1300);
 
-    this.model.on('hexagon.notify', () => this.updateReceptorImage());
+    model.on('hexagon.notify', () => this.updateReceptorImage());
 
-    this.model.on('gProtein.notify.break_time', (evt: any) => {
+    model.on('gProtein.notify.break_time', (evt: any) => {
       let proteinToBreak = evt.agent;
       let location = {x: proteinToBreak.getProperty('x'), y: proteinToBreak.getProperty('y')};
-      var body = this.model.world.createAgent(this.model.world.species.gProteinBody);
+      var body = model.world.createAgent(model.world.species.gProteinBody);
       body.setProperties(location);
 
-      var part = this.model.world.createAgent(this.model.world.species.gProteinPart);
+      var part = model.world.createAgent(model.world.species.gProteinPart);
       part.setProperties(location);
 
       proteinToBreak.die();
 
-      this.model.world.setProperty('g_protein_bound', false);
+      model.world.setProperty('g_protein_bound', false);
 
-      this.model.world.createAgent(this.model.world.species.gProtein);
+      model.world.createAgent(model.world.species.gProtein);
     });
 
-    this.model.on('model.step', () => {
-      let percentLightness = this.props.organism.lightness;
+    model.on('model.step', () => {
+      let organism: IOrganism = appStore.getBoxOrganism(this.props.boxId);
+      let percentLightness = organism.lightness;
 
       if (percentLightness <= 0.19) {
         percentLightness = 0;
@@ -172,24 +176,37 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
           color = dark.map( (c, i) => Math.round(c + (light[i] - c) * percentLightness) ),
           colorStr = `hsl(${color[0]},${color[1]}%,${color[2]}%)`;
 
-      const cellFill = this.model.view.getModelSvgObjectById('cellshape_0_Layer0_0_FILL');
+      const cellFill = model.view.getModelSvgObjectById('cellshape_0_Layer0_0_FILL');
       if (cellFill) {
         cellFill.setColor(colorStr);
       }
 
       // set lightness on model object so it can change organism image
-      this.props.organism.setCellLightness(percentLightness);
+      organism.setCellLightness(percentLightness);
     });
 
-    this.model.on('view.hover.enter', (evt: any) => {
+    model.on('view.hover.enter', (evt: any) => {
       const hoveredOrganelle = this.getOrganelleFromMouseEvent(evt);
-      this.setState({hoveredOrganelle}, () => this.updateCellOpacity());
+      this.setState({hoveredOrganelle});
     });
 
-    this.model.on('view.click', (evt: any) => {
+    model.on('view.click', (evt: any) => {
       const clickTarget: OrganelleType = this.getOrganelleFromMouseEvent(evt);
       if (clickTarget) {
-        let location = this.model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
+        // Keep the dropper displayed for substance additions
+        if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
+          const newCoords = this.state.dropperCoords.slice(0);
+          newCoords.push({x: evt.e.layerX, y: evt.e.layerY});
+          this.setState({dropperCoords: newCoords});
+          setTimeout(() => {
+            const splicedCoords = this.state.dropperCoords.slice(0);
+            splicedCoords.splice(0, 1);
+            this.setState({dropperCoords: splicedCoords});
+          },         SUBSTANCE_ADDITION_MS);
+        }
+
+        // Handle the click in the Organelle model
+        let location = model.view.transformToWorldCoordinates({x: evt.e.offsetX, y: evt.e.offsetY});
         this.organelleClick(clickTarget, location);
       }
     });
@@ -218,77 +235,35 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       this.organelleSelectorInfo[organelleType].selector;
   }
 
-  updateCellOpacity() {
-    let {mode} = rootStore;
-    if (mode === Mode.Assay 
-        || mode === Mode.Add
-        || mode === Mode.Subtract
-        || (mode === Mode.Normal && this.state.hoveredOrganelle)) {
-      let opaqueSelectors: string[] = [];
-      if (this.state.hoveredOrganelle) {
-        opaqueSelectors.push(this.getOpaqueSelector(this.state.hoveredOrganelle));
-      }
-
-      if (mode === Mode.Assay) {
-        rootStore.lockedAssays.forEach((lockedAssay) => {
-          if (lockedAssay.organism.id === this.props.organism.id) {
-            opaqueSelectors.push(this.getOpaqueSelector(lockedAssay.organelleType));
-          }
-        });
-        if (rootStore.activeAssay) {
-          if (rootStore.activeAssay.organism === this.props.organism) {
-            opaqueSelectors.push(this.getOpaqueSelector(rootStore.activeAssay.organelleType));
-          }
-        }
-      }
-
-      this.makeEverythingTransparentExcept({selector: opaqueSelectors.join(',')});
-    } else {
-      this.makeEverythingOpaque();
-    }
-  }
-
   updateReceptorImage() {
-    if (this.model.world.getProperty('working_receptor')) {
-      this.model.view.hide('#receptor-broken', true);
-      if (this.model.world.getProperty('hormone_bound')) {
-        this.model.view.hide('#receptor-working', true);
-        this.model.view.show('#receptor-bound', true);
+    const model = this.getModel();
+    if (model.world.getProperty('working_receptor')) {
+      model.view.hide('#receptor-broken', true);
+      if (model.world.getProperty('hormone_bound')) {
+        model.view.hide('#receptor-working', true);
+        model.view.show('#receptor-bound', true);
       } else {
-        this.model.view.show('#receptor-working', true);
-        this.model.view.hide('#receptor-bound', true);
+        model.view.show('#receptor-working', true);
+        model.view.hide('#receptor-bound', true);
       }
     } else {
-      this.model.view.hide('#receptor-working', true);
-      this.model.view.hide('#receptor-bound', true);
-      this.model.view.show('#receptor-broken', true);
-    }
-  }
-
-  makeEverythingTransparentExcept(skip: any) {
-    if (this.model) {
-      this.makeEverythingOpaque();
-      this.model.view.setPropertiesOnAllObjects({opacity: '*0.7'}, true, skip, true);
-    }
-  }
-
-  makeEverythingOpaque() {
-    if (this.model) {
-      this.model.view.resetPropertiesOnAllObjects();
+      model.view.hide('#receptor-working', true);
+      model.view.hide('#receptor-bound', true);
+      model.view.show('#receptor-broken', true);
     }
   }
 
   organelleClick(organelleType: OrganelleType, location: {x: number, y: number}) {
+    let organism = appStore.getBoxOrganism(this.props.boxId);
     if (rootStore.mode === Mode.Assay) {
-      let org = rootStore.organisms.get(this.props.organism.id);
       let organelleInfo = OrganelleRef.create({
-        organism: org,
+        organism,
         organelleType
       });
       rootStore.setActiveAssay(organelleInfo);
     } else if (rootStore.mode === Mode.Add || rootStore.mode === Mode.Subtract) {
       // update substance levels
-      rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: this.props.organism, organelleType }));
+      rootStore.changeSubstanceLevel(OrganelleRef.create({ organism: organism, organelleType }));
       // show animation in model
       let substanceType = rootStore.activeSubstance;
       if (substanceType === SubstanceType.Hormone) {
@@ -299,24 +274,33 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     }
   }
 
-  addAgentsOverTime(species: string, state: string, props: object, countAtOnce: number, times: number, period: number) {
-    const addAgents = () => {
+  addAgentsOverTime(species: string, state: string, props: object, countAtOnce: number, times: number) {
+    let period = SUBSTANCE_ADDITION_MS / times;
+    const addAgents = (model: any) => {
       for (let i = 0; i < countAtOnce; i++) {
-        const a = this.model.world.createAgent(this.model.world.species[species]);
+        const a = model.world.createAgent(this.getModel().world.species[species]);
         a.state = state;
         a.setProperties(props);
       }
     };
 
-    let added = 0;
-    const addAgentsAgent = () => {
-      addAgents();
-      added++;
+    const addAgentsAgent = (model: any, added: number) => {
+      addAgents(model);
       if (added < times) {
-        this.model.setTimeout(addAgentsAgent, period);
+        model.setTimeout(addAgentsAgent.bind(this, model, added + 1), period);
       }
     };
-    addAgentsAgent();
+
+    let matchingBoxes = Object.keys(appStore.boxes.toJS())
+      .map((key) => appStore.boxes.get(key))
+      .filter((otherBox: any) => {
+        return (
+          otherBox.organism.id === appStore.getBoxOrganism(this.props.boxId).id &&
+          (otherBox.viewType === View.Cell || otherBox.viewType === View.Protein)
+        );
+    });
+
+    matchingBoxes.forEach((box) => addAgentsAgent(box.model, 0));
   }
 
   addHormone(organelleType: OrganelleType, location: {x: number, y: number}) {
@@ -325,31 +309,39 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     let state = inIntercell ? 'find_path_from_anywhere' : 'diffuse';
     let props = inIntercell ? location : {speed: 0.4, x: location.x, y: location.y};
     let count = inIntercell ? 3 : 2;
-    this.addAgentsOverTime(species, state, props, count, 9, 400);
+    this.addAgentsOverTime(species, state, props, count, 9);
   }
 
   addSignalProtein(organelleType: OrganelleType, location: {x: number, y: number}) {
     let inIntercell = organelleType === OrganelleType.Extracellular;
     let species = 'gProteinPart';
     let state = inIntercell ? 'find_flowing_path' : 'in_cell_from_click';
-    this.addAgentsOverTime(species, state, location, 1, 9, 400);
+    this.addAgentsOverTime(species, state, location, 1, 9);
   }
 
-  componentDidUpdate() {
-    this.updateCellOpacity();
+  isModeDropper(mode: string) {
+    return mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract;
   }
 
   render() {
-    let hoverDiv = this.state.hoveredOrganelle
+    const hoverDiv = this.state.hoveredOrganelle
       ? (
         <div className="hover-location">
           {this.state.hoveredOrganelle}
         </div>)
       : null;
+
+    const droppers: any = this.state.dropperCoords.map((dropperCoord: any, i: number) => (
+      <div className="temp-dropper" key={i} style={{left: dropperCoord.x - 6, top: dropperCoord.y - 28}}>
+        <img src="assets/dropper.png" width="32px"/>
+      </div>
+    ));
+    const dropperCursor = this.state.hoveredOrganelle && this.isModeDropper(rootStore.mode);
     return (
-      <div className="model-wrapper">
-        <div id={this.props.name} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
+      <div className={'model-wrapper' + (dropperCursor ? ' dropper' : '')}>
+        <div id={this.props.elementName} className="model" onMouseLeave={this.resetHoveredOrganelle}/>
         {hoverDiv}
+        {droppers}
       </div>
     );
   }

@@ -11,10 +11,6 @@
   cursor: default;
 }
 
-.App.dropper {
-  cursor: url("assets/dropper.png") 6 28, auto;
-}
-
 .four-up {
   display: flex;
 }

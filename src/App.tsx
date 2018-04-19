@@ -58,7 +58,7 @@ class App extends React.Component<AppProps> {
   }
 
   getBoxView(boxId: string) {
-    const org: IOrganism = rootStore.organisms.get(appStore.getBoxOrgName(boxId));
+    const org: IOrganism = appStore.getBoxOrganism(boxId);
     const view: View = appStore.getBoxView(boxId);
 
     if (view === View.None) {
@@ -70,27 +70,18 @@ class App extends React.Component<AppProps> {
       return (
         <OrganelleWrapper
           key={view + org.id}        // unmount and remount OrganelleWrapper when `view` changes
-          name={boxId + '-model'}
-          currentView={view}
-          organism={org}
+          elementName={boxId + '-model'}
+          boxId={boxId}
         />
       );
     }
   }
 
   forceDropper(e: any) {
-    // Force the cell view cursor from default to dropper
+    // Hack to force Fabric canvases to inherit cursor styles, should configure in Organelle instead
     if (e.target.className.indexOf('upper-canvas') > -1) {
-      if (this.isModeDropper(rootStore.mode)) {
-        e.target.style.cursor = 'url(assets/dropper.png) 6 28, auto';
-      } else {
-        e.target.style.cursor = 'default';
-      }
+      e.target.style.cursor = 'inherit';
     }
-  }
-
-  isModeDropper(mode: string) {
-    return mode === Mode.Assay || mode === Mode.Add || mode === Mode.Subtract;
   }
 
   render() {
@@ -105,14 +96,13 @@ class App extends React.Component<AppProps> {
     ) : null;
     return (
       <MuiThemeProvider>
-        <div className={'App' + (this.isModeDropper(rootStore.mode) ? ' dropper' : '')}>
+        <div className="App">
           <div className="four-up">
             <div>
               <div className="view-box" id="top-left">
                 <div className="view-selection-container">
-                  <select name="box-1" value={appStore.getBoxOrgName('box-1')} onChange={this.handleOrgChange}>
-                    <option value="Beach Mouse">Beach Mouse</option>
-                    <option value="Field Mouse">Field Mouse</option>
+                  <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
+                    {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
                   </select>
                   <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
                     {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
@@ -130,9 +120,8 @@ class App extends React.Component<AppProps> {
               </div>
               <div className="view-box" id="bottom-left">
                 <div className="view-selection-container">
-                  <select name="box-2" value={appStore.getBoxOrgName('box-2')} onChange={this.handleOrgChange}>
-                    <option value="Beach Mouse">Beach Mouse</option>
-                    <option value="Field Mouse">Field Mouse</option>
+                  <select name="box-2" value={appStore.getBoxOrganism('box-2').id} onChange={this.handleOrgChange}>
+                    {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
                   </select>
                   <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
                     {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
