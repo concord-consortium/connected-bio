@@ -21,17 +21,11 @@ class App extends React.Component<AppProps> {
     super(props);
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
-    this.simulationTick = this.simulationTick.bind(this);
     this.forceDropper = this.forceDropper.bind(this);
   }
 
   componentDidMount() {
-    this.simulationTick(0);
-  }
-
-  simulationTick(msPassed: number) {
-    rootStore.step(msPassed);
-    setTimeout(this.simulationTick.bind(this, STEP_MS), STEP_MS);
+    rootStore.startTimer(rootStore.step.bind(this, STEP_MS), STEP_MS, true);
   }
 
   handleViewChange(event: any) {

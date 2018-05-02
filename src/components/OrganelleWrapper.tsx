@@ -198,11 +198,11 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
           const newCoords = this.state.dropperCoords.slice(0);
           newCoords.push({x: evt.e.layerX, y: evt.e.layerY});
           this.setState({dropperCoords: newCoords});
-          setTimeout(() => {
+          rootStore.startTimer(() => {
             const splicedCoords = this.state.dropperCoords.slice(0);
             splicedCoords.splice(0, 1);
             this.setState({dropperCoords: splicedCoords});
-          },         SUBSTANCE_ADDITION_MS);
+          },                   SUBSTANCE_ADDITION_MS);
         }
 
         // Handle the click in the Organelle model
