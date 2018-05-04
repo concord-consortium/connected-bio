@@ -1,0 +1,748 @@
+.tabs-menu {
+  display: table;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tabs-menu-item {
+  float: left;
+  margin-right: 20px;
+}
+
+.tabs-menu-item a {
+  cursor: pointer;
+  display: block;
+  color: #A9A9A9;
+}
+
+.tabs-menu-item:not(.is-active) a:hover,
+.tabs-menu-item.is-active a {
+  color: #3498DB;
+}
+
+.tab-panel {
+  padding: 10px 50px;
+}
+
+.react-selectize {
+  color: #000;
+}
+.react-selectize.root-node {
+  position: relative;
+  width: 300px;
+}
+.react-selectize.root-node.disabled {
+  pointer-events: none;
+}
+.react-selectize.root-node .react-selectize-control {
+  cursor: pointer;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -o-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  position: relative;
+  padding: 2px;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-placeholder {
+  display: block;
+  line-height: 30px;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: absolute;
+  max-width: calc(100% - 56px);
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-search-field-and-selected-values {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  min-height: 30px;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-search-field-and-selected-values .resizable-input {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  margin: 2px;
+  padding: 4px 0px;
+  vertical-align: middle;
+  width: 0px;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-search-field-and-selected-values .value-wrapper {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-reset-button-container,
+.react-selectize.root-node .react-selectize-control .react-selectize-toggle-button-container {
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -o-box-flex: 0;
+  -ms-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex-grow: 0;
+  flex-grow: 0;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  height: 30px;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-reset-button-container {
+  width: 16px;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-toggle-button-container {
+  width: 32px;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-reset-button-container:hover .react-selectize-reset-button path {
+  stroke: #c0392b;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-reset-button path {
+  -webkit-transition: stroke 0.5s 0s ease;
+  -moz-transition: stroke 0.5s 0s ease;
+  -o-transition: stroke 0.5s 0s ease;
+  -ms-transition: stroke 0.5s 0s ease;
+  transition: stroke 0.5s 0s ease;
+  stroke: #999;
+  stroke-linecap: square;
+  stroke-linejoin: mitter;
+}
+.react-selectize.root-node .react-selectize-control .react-selectize-toggle-button path {
+  fill: #999;
+}
+.react-selectize.dropdown-menu-wrapper {
+  position: absolute;
+}
+.react-selectize.dropdown-menu-wrapper.tethered {
+  min-width: 300px;
+}
+.react-selectize.dropdown-menu-wrapper:not(.tethered) {
+  width: 100%;
+}
+.react-selectize.dropdown-menu {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: auto;
+  position: absolute;
+  max-height: 200px;
+  z-index: 10;
+}
+.react-selectize.dropdown-menu.tethered {
+  min-width: 300px;
+}
+.react-selectize.dropdown-menu:not(.tethered) {
+  width: 100%;
+}
+.react-selectize.dropdown-menu .groups.as-columns {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+}
+.react-selectize.dropdown-menu .groups.as-columns > div {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.react-selectize.dropdown-menu .option-wrapper {
+  cursor: pointer;
+  outline: none;
+}
+.multi-select.react-selectize.root-node .simple-value {
+  display: inline-block;
+  margin: 2px;
+  vertical-align: middle;
+}
+.multi-select.react-selectize.root-node .simple-value span {
+  display: inline-block;
+  padding: 2px 5px 4px;
+  vertical-align: center;
+}
+.simple-select.react-selectize.root-node .simple-value {
+  margin: 2px;
+}
+.simple-select.react-selectize.root-node .simple-value span {
+  display: inline-block;
+  vertical-align: center;
+}
+.react-selectize.default {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+.react-selectize.default.root-node .react-selectize-control {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #d9d9d9 #ccc #b3b3b3;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.react-selectize.default.root-node .react-selectize-control .react-selectize-placeholder {
+  color: #aaa;
+  text-indent: 8px;
+}
+.react-selectize.default.root-node .react-selectize-control .react-selectize-search-field-and-selected-values {
+  padding-left: 5px;
+}
+.react-selectize.default.root-node.open.flipped .react-selectize-control {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+.react-selectize.default.root-node.open:not(.flipped) .react-selectize-control {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.react-selectize.dropdown-menu-wrapper.default {
+  overflow: hidden;
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu.custom-enter-active,
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu.custom-leave-active {
+  -webkit-transition: -webkit-transform 0.2s 0s ease;
+  -moz-transition: -moz-transform 0.2s 0s ease;
+  -o-transition: -o-transform 0.2s 0s ease;
+  -ms-transition: -ms-transform 0.2s 0s ease;
+  transition: transform 0.2s 0s ease;
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu.flipped.custom-enter {
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -o-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu.flipped.custom-enter-active {
+  -webkit-transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -o-transform: translateY(0%);
+  -ms-transform: translateY(0%);
+  transform: translateY(0%);
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu.flipped.custom-leave {
+  -webkit-transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -o-transform: translateY(0%);
+  -ms-transform: translateY(0%);
+  transform: translateY(0%);
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu.flipped.custom-leave-active {
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -o-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu:not(.flipped).custom-enter {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu:not(.flipped).custom-enter-active {
+  -webkit-transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -o-transform: translateY(0%);
+  -ms-transform: translateY(0%);
+  transform: translateY(0%);
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu:not(.flipped).custom-leave {
+  -webkit-transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -o-transform: translateY(0%);
+  -ms-transform: translateY(0%);
+  transform: translateY(0%);
+}
+.react-selectize.dropdown-menu-wrapper.default .dropdown-menu:not(.flipped).custom-leave-active {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.react-selectize.dropdown-menu.default {
+  background: #fff;
+  border: 1px solid #ccc;
+  margin-top: -1px;
+}
+.react-selectize.dropdown-menu.default.flipped {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.react-selectize.dropdown-menu.default:not(.flipped) {
+  border-color: #b3b3b3 #ccc #d9d9d9;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.react-selectize.dropdown-menu.default .no-results-found {
+  color: #aaa !important;
+  font-style: oblique;
+  padding: 8px 10px;
+}
+.react-selectize.dropdown-menu.default .simple-group-title {
+  background-color: #fafafa;
+  padding: 8px 8px;
+}
+.react-selectize.dropdown-menu.default .option-wrapper.highlight {
+  background: #f2f9fc;
+  color: #333;
+}
+.react-selectize.dropdown-menu.default .option-wrapper .simple-option {
+  color: #666;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+.react-selectize.dropdown-menu.default .option-wrapper .simple-option.not-selectable {
+  background-color: #f8f8f8;
+  color: #999;
+  cursor: default;
+  font-style: oblique;
+  text-shadow: 0px 1px 0px #fff;
+}
+.multi-select.react-selectize.default.root-node .simple-value {
+  background: #f2f9fc;
+  border: 1px solid #c9e6f2;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  color: #08c;
+}
+.simple-select.react-selectize.default.root-node.open .react-selectize-control {
+  background-color: #fff;
+}
+.simple-select.react-selectize.default.root-node:not(.open) .react-selectize-control {
+  background-color: #f9f9f9;
+  background-image: -webkit-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: -moz-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: -o-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: -ms-linear-gradient(top, #fefefe, #f2f2f2);
+  background-image: linear-gradient(to bottom, #fefefe, #f2f2f2);
+}
+.react-selectize.bootstrap3 {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+.react-selectize.bootstrap3.root-node.open .react-selectize-control {
+  background-color: #fff;
+  border: 1px solid #66afe9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+}
+.react-selectize.bootstrap3.root-node .react-selectize-control {
+  border: 1px solid;
+  border-color: #d9d9d9 #ccc #b3b3b3;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.react-selectize.bootstrap3.root-node .react-selectize-control .react-selectize-placeholder {
+  color: #aaa;
+  text-indent: 8px;
+}
+.react-selectize.bootstrap3.root-node .react-selectize-control .react-selectize-search-field-and-selected-values {
+  padding-left: 5px;
+}
+.react-selectize.bootstrap3.dropdown-menu-wrapper.flipped {
+  margin-bottom: 5px;
+}
+.react-selectize.bootstrap3.dropdown-menu-wrapper:not(.flipped) {
+  margin-top: 5px;
+}
+.react-selectize.bootstrap3.dropdown-menu-wrapper .dropdown-menu.custom-enter-active,
+.react-selectize.bootstrap3.dropdown-menu-wrapper .dropdown-menu.custom-leave-active {
+  -webkit-transition: opacity 0.2s 0s ease;
+  -moz-transition: opacity 0.2s 0s ease;
+  -o-transition: opacity 0.2s 0s ease;
+  -ms-transition: opacity 0.2s 0s ease;
+  transition: opacity 0.2s 0s ease;
+}
+.react-selectize.bootstrap3.dropdown-menu-wrapper .dropdown-menu.custom-enter {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.react-selectize.bootstrap3.dropdown-menu-wrapper .dropdown-menu.custom-enter-active {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.react-selectize.bootstrap3.dropdown-menu-wrapper .dropdown-menu.custom-leave {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.react-selectize.bootstrap3.dropdown-menu-wrapper .dropdown-menu.custom-leave-active {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.react-selectize.bootstrap3.dropdown-menu {
+  background: #fff;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+}
+.react-selectize.bootstrap3.dropdown-menu.flipped {
+  margin-bottom: 5px;
+}
+.react-selectize.bootstrap3.dropdown-menu:not(.flipped) {
+  margin-top: 5px;
+}
+.react-selectize.bootstrap3.dropdown-menu .no-results-found {
+  color: #aaa !important;
+  font-style: oblique;
+  padding: 8px 10px;
+}
+.react-selectize.bootstrap3.dropdown-menu .groups:not(.as-columns) > div:not(:first-child) {
+  border-top: 1px solid #e5e5e5;
+  margin: 12px 0px 0px 0px;
+}
+.react-selectize.bootstrap3.dropdown-menu .simple-group-title {
+  background-color: #fff;
+  color: #999;
+  padding: 8px 8px;
+  text-shadow: 0px 1px 0px rgba(0,0,0,0.05);
+}
+.react-selectize.bootstrap3.dropdown-menu .option-wrapper.highlight {
+  background: #428bca;
+}
+.react-selectize.bootstrap3.dropdown-menu .option-wrapper.highlight .simple-option {
+  color: #fff;
+}
+.react-selectize.bootstrap3.dropdown-menu .option-wrapper .simple-option {
+  color: #333;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+.react-selectize.bootstrap3.dropdown-menu .option-wrapper .simple-option.not-selectable {
+  background-color: #f8f8f8;
+  color: #999;
+  cursor: default;
+  font-style: oblique;
+  text-shadow: 0px 1px 0px #fff;
+}
+.multi-select.react-selectize.bootstrap3.root-node .simple-value {
+  background: #efefef;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  color: #333;
+}
+.react-selectize.material {
+  font-family: Roboto, sans-serif;
+}
+.react-selectize.material.root-node.open .react-selectize-control:after {
+  -webkit-transform: scaleX(1);
+  -moz-transform: scaleX(1);
+  -o-transform: scaleX(1);
+  -ms-transform: scaleX(1);
+  transform: scaleX(1);
+}
+.react-selectize.material.root-node .react-selectize-control {
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.react-selectize.material.root-node .react-selectize-control:after {
+  background-color: #00bcd4;
+  content: "";
+  -webkit-transform: scaleX(0);
+  -moz-transform: scaleX(0);
+  -o-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: -webkit-transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -moz-transition: -moz-transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -o-transition: -o-transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -ms-transition: -ms-transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  transition: transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  position: absolute;
+  left: 0px;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+}
+.react-selectize.material.root-node .react-selectize-control .react-selectize-placeholder {
+  color: rgba(0,0,0,0.3);
+  text-indent: 4px;
+}
+.react-selectize.material.dropdown-menu-wrapper.flipped {
+  margin-bottom: 8px;
+}
+.react-selectize.material.dropdown-menu-wrapper.flipped .dropdown-menu {
+  -webkit-transform-origin: 100% 100%;
+  -moz-transform-origin: 100% 100%;
+  -o-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+}
+.react-selectize.material.dropdown-menu-wrapper:not(.flipped) {
+  margin-top: 8px;
+}
+.react-selectize.material.dropdown-menu-wrapper:not(.flipped) .dropdown-menu {
+  -webkit-transform-origin: 0% 0%;
+  -moz-transform-origin: 0% 0%;
+  -o-transform-origin: 0% 0%;
+  -ms-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+}
+.react-selectize.material.dropdown-menu-wrapper .dropdown-menu.custom-enter-active,
+.react-selectize.material.dropdown-menu-wrapper .dropdown-menu.custom-leave-active {
+  -webkit-transition: -webkit-transform 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -moz-transition: -moz-transform 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -o-transition: -o-transform 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -ms-transition: -ms-transform 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+}
+.react-selectize.material.dropdown-menu-wrapper .dropdown-menu.custom-enter {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transform: scale(0, 0);
+  -moz-transform: scale(0, 0);
+  -o-transform: scale(0, 0);
+  -ms-transform: scale(0, 0);
+  transform: scale(0, 0);
+}
+.react-selectize.material.dropdown-menu-wrapper .dropdown-menu.custom-enter-active {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transform: scale(1, 1);
+  -moz-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+.react-selectize.material.dropdown-menu-wrapper .dropdown-menu.custom-leave {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transform: scale(1, 1);
+  -moz-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+.react-selectize.material.dropdown-menu-wrapper .dropdown-menu.custom-leave-active {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.react-selectize.material.dropdown-menu {
+  background-color: #fff;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: rgba(0,0,0,0.118) 0px 1px 6px, rgba(0,0,0,0.118) 0px 1px 4px;
+  box-shadow: rgba(0,0,0,0.118) 0px 1px 6px, rgba(0,0,0,0.118) 0px 1px 4px;
+  max-height: 250px;
+  padding: 8px 0px;
+}
+.react-selectize.material.dropdown-menu.flipped {
+  margin-bottom: 8px;
+}
+.react-selectize.material.dropdown-menu:not(.flipped) {
+  margin-top: 8px;
+}
+.react-selectize.material.dropdown-menu .no-results-found {
+  font-style: oblique;
+  font-size: 16px;
+  height: 32px;
+  padding: 0px 16px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.react-selectize.material.dropdown-menu .groups:not(.as-columns) > div:not(:last-child) {
+  border-bottom: 1px solid #e5e5e5;
+}
+.react-selectize.material.dropdown-menu .simple-group-title {
+  color: #8f8f8f;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  font-size: 14px;
+  height: 48px;
+  padding: 0px 10px;
+}
+.react-selectize.material.dropdown-menu .option-wrapper.highlight {
+  background-color: rgba(0,0,0,0.098);
+}
+.react-selectize.material.dropdown-menu .option-wrapper .simple-option {
+  color: rgba(0,0,0,0.875);
+  cursor: pointer;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -o-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-size: 16px;
+  height: 48px;
+  padding: 0px 16px;
+}
+.react-selectize.material.dropdown-menu .option-wrapper .simple-option.not-selectable {
+  background-color: #f8f8f8;
+  color: #999;
+  cursor: default;
+  font-style: oblique;
+  text-shadow: 0px 1px 0px #fff;
+}
+.multi-select.react-selectize.material.root-node .simple-value span {
+  padding: 0px;
+}
+.multi-select.react-selectize.material.root-node .simple-value span:after {
+  content: ",";
+}
+.simple-select.react-selectize.material.root-node .simple-value {
+  margin: 4px 3px 3px 2px;
+}
+
+@font-face{font-family:'Yanone Kaffeesatz';src:url("../resources/fonts/YanoneKaffeesatz-Regular.woff") format('woff'),url("../resources/fonts/YanoneKaffeesatz-Regular.ttf") format('truetype');}.unselectable{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.loading-images{color:#fff;font-family:sans-serif;font-size:2rem;width:100%;height:100vh;display:flex;justify-content:center;align-items:center;background:url("../resources/images/geniventure-logo.jpg") center no-repeat}
+#upload-button-backdrop{position:absolute;width:100%;height:100%}#upload-button-container{display:flex;flex-direction:column;align-items:center;}#upload-button-container .upload-button-wrapper{margin-top:200px;width:400px;height:100px;display:flex;flex-direction:column;align-items:center;background-color:#0ff;border:3px solid #808080;border-radius:10px;}#upload-button-container .upload-button-wrapper #upload-button-label{margin-top:12px;width:350px;height:80px;cursor:pointer}#upload-button-container .upload-button-wrapper .upload-button-text{margin-top:12px;font-size:2em;text-align:center}#upload-button-container #upload-message-wrapper{margin-top:30px;background-color:#fbb}
+.no-focus-highlight{outline:none}
+html{font-size:18px}@media (min-width:1024px) and (min-height:700px){body{overflow:hidden}}body{margin:0;background-color:#000}.challenge-container{background-color:#000}#challenges #playground-wrapper{display:flex;flex-direction:row;flex-wrap:nowrap}#challenges #challenges-wrapper{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-around}#challenges .column{display:flex;align-items:center;flex-direction:column;float:left;margin-top:25px}#challenges.fv-layout-c .column{margin-top:40px}#challenges .column-label{margin-top:125px;margin-bottom:25px;color:#fff;font-size:14pt;font-weight:bold}#challenges #mission-wrapper .column-label{margin-top:25px;margin-bottom:25px;color:#fff;font-size:14pt;font-weight:bold}#challenges #center-column{width:300px}#challenges #playground-wrapper #change-sex-buttons{margin:160px 0 30px -100px}#challenges #genome-playground{display:flex;}#challenges #genome-playground #change-sex-buttons{margin:60px 0 30px -100px}#challenges #genome-challenge #change-sex-buttons{margin:60px 0 0 0}#challenges #change-sex-buttons{width:100px;height:43px}#challenges #change-sex-buttons.no-label{margin-left:0}#challenges #playground-wrapper #drake-image{margin:200px 25px 0}#challenges #mission-wrapper #drake-image{margin:100px 25px 0}#challenges #genome-challenge .instructions-banner{margin-left:25px}#challenges .geniblocks.question-glow.question-mark{background:url("./resources/images/question_mark.png")}#challenges #playground-wrapper #advance-button{background-color:#fff;margin:180px 0 10px 0;padding:2px 19px 3px 19px}#challenges #mission-wrapper #advance-button{background-color:#fff;margin:80px 0 10px 0;padding:2px 19px 3px 19px}#challenges #test-drake-button{background-color:#fff;margin:30px 0 10px 0;padding:2px 19px 3px 19px}#challenges .geniblocks.feedback-view{margin-top:30px;width:200px}#challenges .geniblocks.feedback.text-line{margin-top:3px}#challenges .geniblocks.glow{position:absolute}#challenges .geniblocks.organism{top:0}#challenges #overlay{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.3)}#challenges #alert-wrapper{display:none;z-index:2;position:relative;width:200px;background-color:#ddd;padding:15px;box-shadow:0 0 15px #c2c793}#challenges #alert-try-button{margin-top:30px;float:left;width:90px}#challenges #alert-ok-button{margin-top:30px;float:right;width:90px}.mission-backdrop{background:url("../resources/images/lab_background.jpg") top center no-repeat;display:flex;justify-content:center;}.mission-backdrop .button-label{font-family:'Yanone Kaffeesatz'}.mission-backdrop.fv-layout{display:block;position:relative;width:1920px;height:1080px;transform:scale(.75);transform-origin:0 0;min-width:1024px;min-height:700px}.mission-backdrop{overflow:hidden}.mission-backdrop.fv-layout-c.create-unique{background-image:url("../resources/fablevision/layout-c/screen_top_lines.png"),url("../resources/fablevision/layout-c/screen_center_box.png"),url("../resources/fablevision/layout-c/background.png");background-position:50% 7.25%,50% 48%,50% 50%}.mission-backdrop.fv-layout-c.match-target{background-image:url("../resources/fablevision/layout-c/screen_bottom_lines.png"),url("../resources/fablevision/layout-c/screen_top_lines.png"),url("../resources/fablevision/layout-c/screen_center_box.png"),url("../resources/fablevision/layout-c/background.png");background-position:50% 91%,50% 7.25%,50% 48%,50% 50%}.mission-backdrop.fv-layout-d{background-size:cover;background-image:url("../resources/fablevision/layout-d/background.png");background-position:50% 50%}.mission-backdrop.test-cross{background-image:url("../resources/fablevision/layout-a/screen_border.png"),url("../resources/fablevision/layout-i/screen.jpg")}.fv-hud{left:0;right:0;width:100%;display:flex;align-items:center;justify-content:center;color:#eee;background-repeat:no-repeat;min-width:1024px}#fv-top-hud{top:0;height:152px;margin-bottom:-60px;background-image:url("../resources/fablevision/huds/HUD_top.png");background-position:50% 0}#fv-bottom-hud{bottom:0;height:145px;margin-top:-30px;background-image:url("../resources/fablevision/huds/HUD_bottom.png");background-position:50% 100%}#mission-wrapper{width:1400px;margin:90px auto;height:890px;display:flex;justify-content:center}.fv-layout-c #mission-wrapper{position:absolute;top:85px;margin:auto}.challenge-award{display:block;position:relative}.alert-button{border-radius:4px;font-size:.9em;background-color:rgba(250,250,190,0.3);border:2px solid #a84}.hiddenDrake:before{content:"?";height:200px}.hiddenDrake{position:relative;text-align:center;font-family:cursive;font-size:12em;line-height:1em;margin-bottom:-30px;color:#0d0d8c;text-shadow:-2px 1px #a6ab58,0 2px #565408,3px 0 #a8ab07,0 -2px #656205}.hiddenDrake div{display:none}.columns{display:flex;}.columns.centered{flex-direction:row;justify-content:center}.fv-layout-c .columns.centered{justify-content:space-around}.fade-in-on-render{opacity:0;}.fade-in-on-render.show{opacity:1}.instructions-banner{position:absolute;display:flex;align-items:center;justify-content:center;width:800px;height:80px;margin-left:135px;margin-top:-80px;color:#eee;background-color:rgba(255,255,255,0.4);}.instructions-banner .instructions-text{font-size:2em;text-align:center}#egg-game .geniblocks.genome{position:relative;top:-33px;}#egg-game .geniblocks.genome.matching.child{top:-60px}#egg-game .geniblocks.genome.matching.select-chromosomes.parent{top:50px}#egg-game .geniblocks.organism{height:202px;}#egg-game .geniblocks.organism.target{height:102px}#egg-game .gamete-pen-wrapper{margin-left:-15px;margin-top:-15px;width:80%}.fv-layout-c #egg-game{display:flex;flex-direction:column;}.fv-layout-c #egg-game .geniblocks.genome{top:50px}.fv-layout-c #egg-game .mother + .genome{margin-top:-34px;margin-left:-109px;width:485px;height:437px;padding-top:20px;background-image:url("../resources/fablevision/layout-c/screen_left_chromosome_box.png");background-repeat:no-repeat;display:flex;flex-direction:column;align-items:flex-end}.fv-layout-c #egg-game .father + .genome{margin-top:-34px;margin-right:-109px;width:485px;height:437px;padding-top:20px;background-image:url("../resources/fablevision/layout-c/screen_right_chromosome_box.png");background-repeat:no-repeat}.fv-layout-c #egg-game .interactive-gamete.egg{width:111px;height:111px;background-image:url("../resources/fablevision/layout-c/egg_chrom_inactive.png");cursor:pointer;margin-top:-18px;z-index:2;}.fv-layout-c #egg-game .interactive-gamete.egg.selected{background-image:url("../resources/fablevision/layout-c/egg_chrom_active.png");cursor:default}.fv-layout-c #egg-game .interactive-gamete.sperm{width:105px;height:105px;background-image:url("../resources/fablevision/layout-c/sperm_chrom_inactive.png");margin-top:-12px;cursor:pointer;z-index:2;}.fv-layout-c #egg-game .interactive-gamete.sperm.selected{background-image:url("../resources/fablevision/layout-c/sperm_chrom_active.png");cursor:default}.fv-layout-c #egg-game .gamete-pen{border:none;background-color:transparent}.fv-layout-c #egg-game #mother-gamete-pen{left:525px;bottom:434px}.fv-layout-c #egg-game #father-gamete-pen{right:250px;bottom:440px}.egg{position:relative;display:flex;width:420px;}.egg .target-section{display:flex;flex-direction:row;justify-content:center;margin-left:-40px}.egg .target-drake{margin-top:-20px}.egg .target-counters{display:flex;flex-direction:column;justify-content:center;margin-top:10px;margin-left:30px}.egg .fertilization{display:flex;align-items:flex-start;height:218px;}.egg .fertilization .organism{padding-left:25px;padding-right:10px;height:170px;}.egg .fertilization .organism.matching{margin-top:10px;padding-left:10px;padding-right:20px;height:140px}.egg .fertilization .offspring-buttons{display:flex;flex-direction:column;justify-content:center;height:100%;}.egg .fertilization .offspring-buttons button{margin:3px;padding:4px;width:76px}.egg .gametes{display:flex;justify-content:space-between;}.egg .gametes >div{width:170px;padding:0 0 0 0;transition:padding 2s;}.egg .gametes >div.half-genome-left .chromosome-pair{justify-content:flex-end}.egg .gametes.unfertilized >div.half-genome-left{padding:0 65px 0 0;transition:padding .2s}.egg .gametes.unfertilized >div.half-genome-right{padding:0 0 0 65px;transition:padding .2s}.egg .gametes .half-genome{position:relative}.egg .gametes .ovum{position:absolute;transition:left 2s;top:-135px;left:110px;}.egg .gametes .ovum.matching{top:-160px}.egg .gametes .sperm{position:absolute;transition:left 2s;top:-117px;left:-12px;}.egg .gametes .sperm.matching{top:-142px}.egg .gametes.unfertilized .ovum{left:75px}.egg .gametes.unfertilized .sperm{left:65px}.egg .fertilize-button{margin-top:45px;}.egg .fertilize-button.matching{margin-top:25px}.egg .fertilize-button.disabled{color:#808080}.egg .egg-image{width:103px;padding:34px}.egg .organism{padding-top:40px;}.egg .organism.target{padding-top:10px}.egg .organism.matching{padding-top:10px}#egg-game .bottom{justify-content:center;margin-top:-28px}.fv-layout-c #mission-wrapper{width:100%}.fv-layout-c #egg-game{width:100%}.fv-layout-c #egg-game .bottom{margin-top:35px}.fv-layout-c #egg-game .column{margin-top:40px;}.fv-layout-c #egg-game .column .egg .gametes{margin-top:20px}.fv-layout-c .egg .fertilization{flex-direction:row}.fv-layout-c .egg .gametes{margin-top:50px;}.fv-layout-c .egg .gametes.unfertilized .ovum{left:-90px}.fv-layout-c .egg .gametes.unfertilized .sperm{left:140px}.fv-layout-c .egg .gametes .ovum{left:64px;top:-195px}.fv-layout-c .egg .gametes .sperm{left:-50px;top:-195px}.fv-layout-c .egg-image{padding:0;margin-top:75px;margin-left:-10px;transform:scale(.7)}.fv-layout-c .gamete-create-button{width:396px;height:173px;margin-top:100px;font-family:'Yanone Kaffeesatz';font-size:3.5rem;color:#fff;cursor:pointer;display:flex;justify-content:center;align-items:center;background-image:url("../resources/fablevision/layout-c/generate_button.png")}.fv-layout-c .offspring-buttons{z-index:2;margin-top:-40px;display:flex;}.fv-layout-c .offspring-buttons .gb-img-button{display:flex;justify-content:center;align-items:center;width:120px;height:50px;margin:0 10px;background-image:url("../resources/fablevision/layout-c/Reset_Unclicked.png");background-size:100% 100%;color:#add8e6;cursor:pointer;}.fv-layout-c .offspring-buttons .gb-img-button:active{background-image:url("../resources/fablevision/layout-c/Reset_Clicked.png")}.fv-layout-c .offspring-buttons .gb-img-button div{margin-left:-2px;margin-top:-2px;font-family:'Yanone Kaffeesatz';font-size:1.5rem;cursor:pointer;user-select:none}.fv-layout-c .offspring-buttons.hidden{visibility:hidden}.fv-layout-c #egg-game .geniblocks.child.creation{top:0}.fv-layout-c #egg-game .geniblocks.child.matching{top:-5px}#egg-sort-game{position:relative;width:1000px;height:600px;}#egg-sort-game #baskets{position:absolute;top:35px;width:660px;height:300px;left:0}#egg-sort-game .geniblocks.basket-set{display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;}#egg-sort-game .geniblocks.basket-set .basket{margin-top:100px;}#egg-sort-game .geniblocks.basket-set .basket .basket-image{background-image:url("../resources/images/garden-basket.png");background-size:contain;background-repeat:no-repeat;width:150px;height:100px}#egg-sort-game .geniblocks.basket-set .basket .basket-label{width:150px;color:#fff;font:1.4em bold}#egg-sort-game .geniblocks.basket-set .basket.selected .basket-image{background-image:url("../resources/images/garden-basket-glow.png")}#egg-sort-game #eggs{position:absolute;left:0;top:333px;width:660px}#egg-sort-game .geniblocks.egg-clutch{display:flex;flex-wrap:wrap;justify-content:space-around;}#egg-sort-game .geniblocks.egg-clutch .clutch-egg{background-image:url("../resources/images/egg_yellow.png");background-size:contain;background-repeat:no-repeat;cursor:url("../resources/images/magnify.cur"),zoom-in;opacity:.4;width:75px;height:109px}#egg-sort-game .geniblocks.egg-clutch .clutch-egg.selected{cursor:default;opacity:1}#egg-sort-game .geniblocks.egg-clutch .clutch-egg.hidden{visibility:hidden}#egg-sort-game #right-section{position:absolute;top:80px;left:680px;width:320px;height:480px;}#egg-sort-game #right-section .section-title{font-size:1.5em;text-align:center;color:#fff;margin-top:10px}#egg-sort-game #right-section .section-title.instructions{font-size:2em;color:lightGray}#egg-sort-game #right-section #container{position:relative;width:100%;height:100%;border:3px #888 solid;border-radius:10px;}#egg-sort-game #right-section #container #background{position:absolute;width:314px;height:474px;border:3px #fff solid;border-radius:7px;background:#fff;opacity:.2}#egg-sort-game #right-section #container .instr-heading{padding-top:1.8em;padding-bottom:.5em;font-size:2em;text-align:center;color:lightGray}#egg-sort-game #right-section #container .instr-item{font-size:1.5em;color:lightGray}#egg-sort-game #right-section #container .geniblocks.genome{position:absolute;margin-top:20px;margin-left:-20px}#egg-sort-game .clutch-egg{background-image:url("../resources/images/egg_yellow.png");background-size:contain;background-repeat:no-repeat;width:75px;height:109px}.egg-alleles{position:relative;width:160px;height:129px;background-color:#fff;border:1px solid #000}.animated-component-container{position:fixed;}.animated-component-container .stripe{margin-top:-19px}
+.geniblocks.change-sex-buttons{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABWCAYAAAA5UDPyAAAAAXNSR0IB2cksfwAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAA5V0lEQVR4Ae19B3yb13XvH3uDIAnuvSRS1N6St+UZx3bsxHbixLGdZrRN2rw0O01ep9ukSVy/X/z6kiZxaqdeiWfTxPHSsGxZe1MUKXGT4CZBECA28P7nAqBIipRkR85r+3olEB8+fN/97r3nnnHPPecPTTKZxH+X/zgjoJemrF2zZlaLolGgpgp433WAHEPDl9At/S401GiTiMejRYl4fLPfH97kcNprLFYDr0uk6pJrVdFAw+N4XINIeCxSVqo/sqhav7egwLgnp+zwZOaqC3kPj6baaco9cCGX/6e8RhHkQlueGeNoNFobi0fuN5pNt5dX1tXb7C5otTrodKxOoyUBNEiSMMlEPPWejCPBVzQaQSIevfNQU2/Menp076LahkeqK81PGQy6QCx2cTg1Q7Rz9SkWA/RsqkwsmShTUzF7nyd8bU9/8v1DQ4mVkZhWa7HYVNvP1HOmfRpoEZgKsi9aXyKu2QlN4hWj0bJLp9XE4vEE9h0CfD4NaqsBLQftzd2AP8Bj7ZnaMkf7D8yeXBdMEBnkWCyWGw6Hv5RXUPjpsopFOW53GWz2XHbOCq3OwAca+W4kI2lJgBgbHBYCsNPh9CuEeCyEULBePzY+uPnE6d71p9q771nWkHygoty6NUGqJdIMlmnwe/Wu1wsh4gUnWvx3nO7Q3h0KZ68pLK4xNixzsx/69Ev6JMcGzjM9J5pWTTLpWzJBqiKOkZHuy3u7T/35VMC7j/PtYb3e/EQyqZEv31W5IIIIMYJTwS0arfYH9Y0rGyoqF0NvsHDg9UIkzqQQj2TWGWAw8KxOx++SiMX1iEYS5AwNCZLgtVH14oyCy5UFu8Oq93rzL9u598RPevrGf7h+jfPHBoN2JB4/MxvfVa/OcZOIT7ZR09U1dfvb+8Pf0ugra4vLqq2urByN3mCFjn3Q6y3kdjN0WhM/G9VLJpsQJEGuj8eF0+UVRparCOUVjZjw9q/rbG96tLen8xMGg/kryaRxr9LPGbFyjjbN/Oq8BJEOTAWCn7M77d9vWLLC6Mxys0FxiqaIElEWoxEWixnhUBDtbV3o6+vH0LAfHk8UZnMCRYU65OQ4UVGRj2yXA0mjCQE/CRNNkFuisFlNWnaotKe36wsT2/rqrrjU8hd2m6HnYomwTGcfc96tDu/3P5Gz/9DE1440Gz9dVLLamZeXr9Fx9gtrasjNInq1lDMGM0UvVWJCl0REF4OOA2Emp+g5V3QRHcJBEXcxTjpKgUSSk8uNJY2bkJObf4XecPS1jo6pb1R/5xMPy0Mr+PrR+ifV88/357wE8funvppXkP/tRfVLSAAjBzLKGaTlLDPAwka3d7Tgty8dxOvbTqC1dRi+BdR0WakRK1cW49prGrB54yJYbWbKWc4y0TXJuLaoqDBvZNT4oZe3thuvu9LyDYfd2B0jp4gMVsbE+XpyAd9/3Pd4+bZdvj/r8eR+tLKqKstisSqO1bA/ep0GFqtJPa9nqAetfaPweH2YDMYwGdWTW4AsUwJO3lNd5EZ9STEKc3MRiVoo+oTzYyRQFO68Eqxea3FkZ5/4gefvflo9PmH9UvV3PnLBgnhegoiyE6ExNRX6E3e++9vVtTWcBZxBFDU6NtxqM2FgsA+PPbodzz5/HOPe849GT28EPb2d+NW/d6JxyZu4955VuPqqJRxsir0odQxFQZbT7hgbr7jmle2d/Tddq33IbNb3CadkDLfMUzhxFyyirOcWoem9k4+Xbd3p/YxnqOCakrJSl/RDnmkgd5jMBvY3gm1HjuFg9wTGRQMYSBwSSqPR8VhGA5igAZCcDOLQaAcMR1tQaDXissWlWFVTSUIaMcV+xEgUiizULlpKvXPiC/7mYWnRn6oKLuCPRuRcxuwVQlACsRFAgTt6+U3vM79eXVtHlUDlRu4wUm84HRa8vvUwvv+P29DZFbmARyx8yY3XF+Jzn72E+sQJ/6Sfs4wck4jHRse87XlZnsdXrXD+w5e+qQ35/RQTHJdMee7F2ZZJ5ry8dzenTOOZ50gkbetp3xdPd7luLiouXkuxZNFTNxhNFjjsVhzrHsL2UxPwwQi9MfUg6ksOKE12eQlFWWR8NHzJ5FSFX8SCYRSZkrhlVSXK8wow4fMhGgsqbkkkIuhqP41nnvN/obtX/9B8k+WcVpY8WEzCWCxRUFqq/2FZeZFeCCYN0bKBJhPw88dfxne/d5gzIdUm+Wug8jNTIdaWLcfKFZuR6y7kBDMhNBVAv6cbR47tQu/QaYSiU4gmwtM3vvTyADo6f4P/+c1LUFJcAL9fRFhcn+W0VQ+Ouu7/wY8C3sPHrD/SajThzKBM37zAwRe+kf6CbTZxchmMGhQVTG2qrTHfmVeQV09TnNaIThkeekMCz+09jRYfB99oAQ0vcgXNd+EMcpCWcipFEBJFqhVicDASNFBSryT0ZiOG+dUjezpwWdkwrmiswsQk5ZtcR91SVlGCFcv7HujqCR4mObdLNecqZzF4LBZ3u1zuXy5f5m7Q66MUF2wFW2oxa/DEE1vxvQePK3GWqVRHkVOcXYWrr/gg1l52KcpqqtkhWlmcWdLoSDiCDa1XY8/27di5+9/QP9Gh9Ebm/pMtQfz5t3bggb++FPn5OYgFovK93pWdVW4yu/8u2xXZFJjyfkqn1ZJPzl9aT5+5RgYxGktU0lD4Pzlu52IOJ0mkJbfRfKVl+ou9HvTF7NDSMpTBF+7QGajUSRD1EoKwEumLLklxRZ1m4VrLFtfBMJWAdiyMJEWqP1+Hbj5re18IE1PHcMPKOvhjshYTCmqwYmWRdf/B8X/yDIxeadDrhs608OyjWQQhK7qys3OfWrmi9jJ3nk84hQ0FrBYDXn31MB76wWxiWAwO1BYtw403340tt70f0VAMx/cdREdrs5LPVrMNVYsb0LB2OeqWNqKgqBhbX3sBrZ6DCMdDbA0bzNLRGcXff2cP/uavLlPGgihzElNbXqa3LW0s/nBLS6d+wuf9GLn0DHupO8/+I1yRKayntrzQ/ezK5fplcqvMbj1NV4MxiRePDMKTcJLzKQ6NeuhN5Bq+6wxCjBSXaMklYuqKEV8cpOYaCCLQOQZv+yhGhyYxOuzjOsyENR9bC50zJeoOeUnco6ewpbESkYjoqSTFoharV1U2jG4NPhyLBj/Kfoj/Y94yTRASQ5PlzPrHqsrqLdWVNFlNXIlyVpjZSDFlH3xof8qNkq5GS7Yvya7Gh+/5LNZddSlajx3Hm799Gceb92LQ26PkrJGKMd9VhmVvb8QNd3wQN9/7Ebiy8/DUEw+jZWC2HjjWNIV/ffwoPv2pNQiH2RE+22adQnlJGOFIzYfa2lq6/X7/F0V0XkhhfyoL8wtf2LwxuzEnZ4STK0nOBcwWHba1jKMnalefhRgGMwlC7tCbhCBCjDNcIhyiDSYw/MtTaDnRjViYMl24RrEOEAxGEJoIwlFgwiRS8+XgWAI5nf1oLM7F5CQnHheSSxuTNISq7zh2vLWZiv8vtCT0fEURRJSU0Wi8vby8/D6nQ4/cnHEOaEqR6nUJPProQa4txPQ4U3LtRbhk0w1Yv+UydJ1sx5M//iGOnn4Tk5HxMxfxaMDbjS7PSUyMj+LDn/lDbLj2cgx7PPC/No6+kbZZ1774q35ccokHdbUFHMCUEy0n2wf7ENcx5RX/o6W15Tc0L1+fddM8H9gfm9ud/+jiRUWNZcWDHBBRwhoaJXp0jPjRPEEjhZwgg684g4QQYmREliKKiK60HtFp43BUulCLGIpvqkWgaQzHXj2J8TG/EmmB4UnkNDoRpNWmdC4XkTs6/KjI4QKTIiYcjcFp92NxnYOmftXXO7vadrONLymizml/hkwF+Xl5X7da7VzkxckdUjEVIjtw6pQHL7/mmXMb0Fi1Abfecx8mxybx4uOP4lT3EQSivrOuE5+WPzqB/Ue249+feIqzT4tLr70el6+89axr2W688EI7x04WnqJARXfRjNSH4XA4tW63++u8qeCsG2eckMlls9m+VFZafnludpB9EUOBlbFoObl2d0WpwGnScrB1whUirvhuoMgykCgGmsDCMWIKZ4712WaEbipC5R+vgq42C5EAzXRaNdWrS1FQl4eJ7nG4uFDMNZlVffKsGMX1G60jXBzLEIs+AfLcARQU5BiKCoseJOFc0ta5RRGEHfgAO7tGrThtXK2y4UhS1nJZ+vKrHQiJuJ9THFkuuPKd8FGOHml+GyOBXnZ8huk14/oYzb+xqX709XQgwBlqybJi+er1M644c/j2Xi+6u8b5bMpkdkKnT5AoqUHNc7uvkLaeufrsI8660uKi4j81c0CznLQD0uaZkYPePhKCN2FRg6P0RpoYQhgdJ9+0LhHRZSaBSBghip46VFdoxVQ+3SiHRtC8ux0VK4qx7ANLULQ4Dx7qlGiHD9l0IKXqYtv53LZJHcYCQUV8GXuHXTwTURovhfU2q/U+tj57bg8UQQoLCq42ctbQwIXVGpLJyUpA+TeF3XsG5t6jPufnFyMWiaGzpUVZUyn1PO+l6qQQa9JP2d3RBYNFj8KyinkvjnBpc/DQELmTs4pXaGn422y0ZtgjM1eK0tZ5b0yftNvtd7lcrhzRm2Zyl8xMoaysAZoHubg1cnBpPQmniiWV0RmizBWnkEgO+rOyolpkTySQ5ecrpoWDC8jcgSgOPH0EUxMhVG6pRqwhi7qDVlqelXokxFUMuU50EF/KyuQ6p6lvEiZ+lqKjG8ZsCrNvRuTl5d1ntVjer76Y8UfpkJycHJNSXmy4QZ+a5XrO0LaOCSr0+Q0bq82h2NY3MY6J0DA7fj6SgG4GztCxMTabaxrbDHNoRoPk8HiTF++/KSbdUwNq0IsiFTeKln6xHK6GFi7s6PXij9KAoiklqZQ7ZCoUxQhdIBozq8oQI/POATORQ4QrKVWg65qAt2McU6NT6lqj0ww7B711Xx+GBiax6n0NMDXkwMeW5KwqwCXUFZp8C8a5QNSReHGplyKR0wmd3gQ2VIoI5tznKS33kURUZWVlLeMFN/D185m9UQSh5ZKaR/I3Pa7iWujpGacdP/PyM8eTPooVkwHu/CJ2WGbAuQkSJ4eIEy+/QFQAPcHhBS0/ulim6LYJs/E2RQjVE6ledSjV1jMtmX2Uk51tF05XeiPTF66jBia5JtKYlFdaZq96kVPEajPy3Uoi5o4kMLitCydeP4UgCWgkt4iXOsxjIVaUeoOLVJSsLKT8oUueus5XSsdqngFBrreiQU4CrjukblnXJLjKnkwaMMn7NXy2WuVTn8nkNZnM1IkG++zWc8k390RmWGV2jY7NozzSNwwN9PEhGpTV1aI0txahgcCstcXMemVmm3RWWm8FKK2rQCQUQduJ5pmXzDoOBOKyV0HLRHYc3lnR6XSy3ODAJc9wCOfLGL0AGq2DRJXBIu8JMfguK3IrJ0r2eAItjx7GyYO9yClwYs2WOuRVuMguWsToPBztnUD7gR5MjgbQ/XYP6qqyoS2ms9XIgaf3W0vOoNtY1SnEUOY5n0U/MSZoGovCF8NR2iVFxlfaOrd3swgiF8lLigz2IGXuQmVkdAD97X1wFeTQF3YFgrsC6B0/jciMBZ+qh9ParLej0t2AxpXrlEI/feg0DuzbuVDV8FFu+/1J0MWlitIm6XYteNOcL4QoKSlKMUJpMcVFuuIK1Uf5k+qjnhxio97qepLe6iMe1K6kq+PO5dCsdiOaRX1DxW4k0bK9MVTsq8SuH+3BoVdbFQfU3LMcsWwSLMNxqs7U6p7SKlXohJuMJkGJpp6ZatOcxs74mLlNnUp1grWmPk0TJ31i1tvgSA9+/Yun1Yy47d77sLR+PXKtRbAa7YqY8nQhqs2YhVxbETZtup6Lww9hpH8EO17+Fdq7T8yqb+YH1QL+yXBrSvxk2jXzynMdn7lexHcgRv3BgVNF3tTsA5xJHWI7B3DiQBcKK7Kx4jNrEdzoxpSd52myKg6gxRUqMiN5TSk2f2o9Sqrd2P9SMwLNI2Kbp+pSVbLiTN2pJ5FrdFwOyK4jv1IdSrch/f3ct9kcoipNDQO3IVFYILph/tLv68ChIzuxZNsqrLv2Utz1mT9G/c7V2PP2q+joa0YoMgWHNQe15Uux6bJrsOLyDaqig9t3KWdjx/Cx+SvmWaeDVo2dvrA0g6bYPEOeBW+b9YVmWmRxADjTDLRwxO+kRmxGVTTE0Ns0yB3RCBrvWoZokQV0Qyn/nWxGyb3Kn8dzUXpPDJcXYnlLHRe34+g/NICS5bkIzLRPZtQtDZJ1mIGSScZTPT0tsuS7+cosgsysSwYjJ5cmyQJFRFPXcDPdIP+E/r4e3HLfR/C+ez+IhjUr0NvWSadiGFanDWXVlahYUoOhrgE8/ZMf4cChN9A+fJyeX5ozCxSbTU/zW59aYPMaaoMFrlz4tHCVEg8cAOpl2DQh1mdVN6jVNGe2DLRhLIKRQR/9bC5YaEn56OcSYuqVR5cuHFJHw7oSYh3xXJTmuHNTMfJ35MJzuB9V11RDV2FEhA+TdZz6J1yTHkyGPcBJJ63almY3MovUhVquCBIKh7Vm8a1LSVckFVSU59DdIOZq6qu5f4MxuiE8e+B7aQytp46irmEpVq29BKuv3KiUmqxThvuH8fQPH8HxA7txsvMQhibp51pgAZmpv7zcSoLIVm/6jGqTECUJaWvmunO9y6AqOgphOEAOih1MpWe71CfU4v8EdwTDNDKKCl00ifVqUGUQE6LwFavwMt4vEk4NuDg+OWHs2RZ4aALHaCzEE9zg4nmpU3HTjHee4LMN6l55nmrXORquCDIwMNBdVlqWsgzS3RVnXGmJE2VlZrS1z29tiSfUxIiTYMRPp+JutLc3YZw64vb77oM9x4HOpjbs2voKjjS9De/kMB2GMRj1dEOcgzukrcuWpsKKMpNDiR+2S7ZJpa3n6A8doFGtbD6pwgGQURevdaGDvqkRam9Y1ExPpDzK/FaCMqgrOOuS3OcXLhCZpdGm5KUMsOyrqyJcwO+T3Hqe8gbpXhHdQEql78vUKdcotwipaElG4aJLKkRDJVVkYqWIG4vTNJtTFEHGxsaezXa57s3KynHEYqI3OEN4f5bTis2bikiQjjm3pT7K4C4t34iq6gblIR0dHYLRYuIaQ+6PY2xsmNsBcSxevIJeVhsijGU61XGcO3RvcTJlGji7asZL0FWdr7yzsrBSA8r9BxqSGPf5BqWts++Y/Wl4ZGSopLiE9+vI2eweny+Dky2zmqv3AAkis1kGLU5CJS0SpGGkK507lpzt0Qgdj6kxYxvp6+JwMDgp9RASREuLKdbGbd7+SeSVZiHqMqj1STzKaBThLFU365e6ScwCC3UI3QT0nStxFQ4LEbU06/3hsfFxej5nF0WQSCTy5uDQ0FN2u+tTk5NGNoQ2O6+T8J3rr63Gcy90IhBIz5IZ95vobmlsXIebP34PHNl2Nia1alCzjNet33KpesktsojsO92LZx/7KY737BLunrdcsjkHpaXZFFcymyUOSsMgMwuijPAYHBz8F2nrvDemT46OjDxPR+mtOh1F3pQJ7pyUp0G2ZCuzkjianqlaukbExRGzaJFfkoXjHi/GqKSz8yswmvYwCeHiOq4x0hQyUnQ7xqLo2NPDLecgGutq4KdIj5IYCYmiEaKkX4owXCwuqWTbSUQ1nhESJkTHJufZ+Pj4npGRkRfm9kURhBSLeb3eb3Ny3epw5OWHwiHYbUlWFENlVSFuuqEUv3i2Z+69KRHS34uTe4/CxKnt903AlZuDikXVMDKqZGzAi8Gubip4+nlIvMF+D7zjNBUXoIaosQ/cyoAKBhNIEbkdDHGlG7BhaGig3Tc5+aC09ayGzDgxFQy+ODo62lFQWFoVCIp/LqVKwuEElpUYcbIpiJjOpmawDN6wPoKStcXobB1C0yunsIZ+tuz1hQjmGJVVxUWIMpetYeqhMerE7d04ua+brg8LchblYoyBH7FInGMhxDhDFGl7jjaEKrebPrywqiMYkoAOLZ21QYyMjv4wHIlsndF0dagIIusFWh7tvX09XzYYjY/WVNloeko8jxBFg3vuWYO33h5En0dm7Zkipu2upl/jaPebig1teieWlG/AFuMHUNFQjb3bXsNru39B/THKweWqlSFEgSmfPOtMJTOO7ri9FIsWFaY2dXhePDojY1l87viUx9P3h6xjSOo5V+H33v6Bgb92OF0/m2LIToQxVBYDoygpthxGKxpy/Dji48CxK7Ky9mojXJlbUL+5AodeacXbzxxD42AAJetLEOLekI/iW2KyrKN0pNKqatrRrkTd6usWIVrCECBOWtFtQpQ4jZg43zPcsbnaRoUvfjVZoWsYnUMiUzd7PJ6tjAB9hufOMpcUQaSDasBiscc6OjrW5GTX/2lBgZXBX7Qi+MC8/Dx85Usb8LVv7OSMPTMcYi35psbUK1OHWWPDLfaPw0wOERna03+aM9x75qYFjtatdeDDdy0nN6WIJcQYH7fjaFMk3NXV/WkO6KvnI0amDezso11dHZfqdXV/MDbhQKlDGq3hzIxhfbUT3Yf98GnsavdP6DtOpitakY9GukhadnfhwCst6DrUh0IuAHWcPGIUtPZ54emjBMi2onFDObKXF6CbG1dBIQI5TXYSo3wJYUQC1FgjWFRUiokJmvfkolCEEmLIgv6Bvv7hkeHPUYRyqp9dZml5UTYMiP76ocPtr3R0SPBY6mtZNF166VISZZVyY59dTeqMzHxfZAzDXR60HWplQ2O0wsRncO7SUG/GV764kQ43C+31lB6Sthw87A82NXffRwPh8QshRuYpvDfp8/k+39be/mJ7p8hwcQTKGoDEpmFzXb0VenK3DJwM5HAwiAF6lHM3FGMVZ35JVQ6VbhSnDveima9Txz0Qb3F1Qz7WXL8Iri3lmKRnN0kCR3leYgkUMWjMSHHFJnHTylJOADEGxHWjJSEcaG4ZGPd4ej7Kk83zEUPuneYQ+SCFTjeK4cAf7z/Ysb1xSXapiWEuUoLcV77ttstVEMIDf793FqeoC9J/IgymPnLwbVjtdgz095BFZ4u5mdfK8aqVdnzzG5fR8UhFHpDZJP48DdnaO3WyNfr5I0eOPiXXLVmyRrG+HF9IIVEC3onxjx07Hv5pdQXurKxKTQzRi3l2G26sS+A3bYyf4oSRAR1kfLJWb4KrPhs1peSewSnER0MIU/7HaaFlkTMMlU5osozo5o5qjCIwzrjlaSXOYxl8e9SPu9aXQps0cnJNKVEli8Gmpp7Jzq7hO+nl33auyXUWQaSzjAxva2v3/cnJlugzq1dXKCEoZmoolMQHb9+CkpIi/MP3XkPzybNX230j7Xj81e+fd8xkxn7o9goGNWxSscEBxuuLsBJX/oSfdpXR9/TttzgeyVT0kQ/yaKFplbmI74y3my6RiNbPmKx7i/Ins8bGcq5357kVp4Q4q6t4fKtxAr8+QS81Y8piPNfPCMUBuur12TSR6Z3Ny6bMpzhKWDkEbFd7LlfstEATnJzTpjO/F9EszJebDODuS6ph0lK3BGW3ktxBKdPZMYi2tonPWsym1xhLoq6dbuScg3kJIoPF9dULhw55H8jP0/zPsspFrJwmKIkSYNzU5s1r8C8/q8FTT72Bp58+zBXrOQ2fOY8ENqzLwb0fX4ONG+vIaXGmJ6Q5g+7o8YnJCcQ9TTffaPtHqyW9OmMNX7rAYMxP3XvmcbL7uKxRG3r/DY4vv/Dr8Qafz+rIzckSH7IuyNV5RW4ePr4hC78+MoAeWnPK+UipI9ZSlJtMEySAhgHWMhGGZLrQja4GXxaLNIkzI5ukFbmUVtnNa1cpf9lUiMEPfIie64+RoWHqHu9jU0Hzz8V6Fj46V5kVSjrzQolgrKyAdu2KwMOV1fl/VF23hDqF4fmMqNBxQSgLPZuV7gPPIF5//TBe23ocTScGMDpCv82cpzIuGzXVdqxhUMCWLUu48KvizNHTmpqkSGM8LF/JeCw8MjLWEw62nbxhi+Xb7hzTWxLTZMg+oJoVHT8TIpo5N7O908fhM9epUaEdE2V8VDAYXf/Sa4HPJrXVl+fkZJVruGmhZ5iSxWzly4gjXYPY1TbGXUUuQhnclfEMi3gR3SjvMlEzRdwomkgYpQwrunZ5FepKizHpm6JVF0j1h9aZ7Bl1nG77bTxh/tCzL2oCIS6JZobESl3nDCXNPEy9y8PVRLB9trtzxBcOH/zqovoVNIe5i8ciYTr+gOwAluGTn6zHffdHuVYY5+JtAMPDAbo4olTSCRTkc28624EixijZaXmJiRjwT9K7OqU6KgqY4iDk6e89bdT1vvW+a61PZLuMb4l5OLOI5+BCSniGyDpzfRJP5t2z966rHwu+uqMzOT5edRO3enNljGUXUEPLbnVNNdZxs63VM6KI0+sNwc+ZFSMxGJJNYlD80PUjgXa5XKtU52Vjbd1SVBYVUpTTnPf7lHdCBdZx1Ps9fTjd0vaS3Wb6sO6zHw3g356YRdAzbZt9NK/Imr6ERKEITPYNWL/W4/EfGx/b9d0ljY1FZRUNZEduSXIlTd8R5XaQn80oKCxHaRmTeehv0DBUU4gWpddXgo/DYW7LBqd4jl5XdlJLDqErj6atP9LT1dRUnD/2q8s2u560WnWnLnZuSKY/Txd8/NjdV//r376xqy3e1xe6rqSsupDRKCp+OURxZGB8b0NFFVYvbkSU4tlP68sfoeUYosXJPuXYDHDQNeS0ULmLBOP3AXpA42nDRc8+MTIRLc3HMDjQ/xOrxfp5EoPm3IWXcxOE9QibCnv2D1gfZwjLHp3uyF+OjPR/pLS8TpvrroDdnsdsKhFl9HgydEhsdsnbk/zCONO+ErKCldnNmaVnFD15izZ5mISgeOAmVyzcNbxhNR5eXJvzDIXARcs1nDsE9/meVKe4A3j6miudXzpyzPOhlnbfF3PyGmrd7gImTpEL+E9ikeP0nckEc5rzkeswqSgRif5PJKR/EZWcJESQdD0xz7WSMsD1yCCtyqamg32RUPBbNqvtZ/LA5A+foCSZ25qFP5+XIHKrEEWxrE5/2maxf8zn9f7TkZE3P2kw7L2huKSqyMqkT5GxKtiBAy8do7QjUfjiTGNCjnox04AeXzodR/u40zx6uq5G9+KiGutPXC7DyQjNRsU5s1ZGCzf83X4jeoltHV+7OuvH5WWhfcebD/5lZ5v7VrOlhBzOCeaQYB6xmjiRZBOcnCBbEVp6fFMpbZLCJ7ky4kmgn80nC8ZTGB7spsdm6DFOuoesNlu39EXufaflgghyptLUEwxG0y5mU+2iQl7X09V1VSxxYh1T0/RGiXRmY6eLtFoVvvPWQGCCYTyGycXVup2lxbadrizjSUfRfnXFwlth6Sou4puMlTj83Lnmw1demrzN0z9+1am2/rt6u05eGYnaKhIJvYlRIaknsg/yT1FAzqQHOcToQVpao4GA98RUIPCCwWB5zmS0dEqXFTHeZXsVQeZq+ndQ1z5eK6/3vPwuuennuTdZ7sJWo3F5W48nsrX1lH+Dd1xfZbFmMWVB3CCkBf8IETOF6h1erz9Kjj9osxrfZgr1HjFMZl6Tufadviuz953e9N/Xv3cj8B5L7Peu4f9Va1YiK5NjmOkkLVnUVP03tEZmPH6f7+9IqVNfqXIRoTWeILTGE4TWGL9Ya493Ca1RQGiNLYTW2PL/O7TGBkJrfIDQGn9BaI09XO/8vqE1Kgit8QVCa9xFaI1CQmvgPzS0RvLTd0/75/3ff+S80Bpa+pYTRtroDAyIcqUue+sEfGA0B1/0kM4DraEjtMZmQms8QGiNBwmt8cZjrrsnMiIis5jLfL4Y72KWpqE1biC0xlcIrbGZ0BpGQmtwgfufAFpDBmHye4+cF1rDzw2fNk8PBiaYFMkNLabdcbXL+FzCazjNZpQSXiPPZoMpfha0hpXQGhsJrfFlQmvkf/jSn7/0VN49nosx+HPrkIUcTdh8QmvcTGiNDxFaYyWhNRj8fja0hskkCUsSPM2FrqzGea+40sX+jdAByW1xLhjpHjoHtIbRYH34nYri8+qQiX/4yYLQGmZGbJwcbMe+dg96vH76fWTjRoKNM9omtZ4S+9zKHTYX8bRq3HasKslFFvNDZkBrmAmtsYnQGnZCaxTfdeVjj9Hv1CUDynGQhcDvXGRAuQ1c8cYu3x2E1riisqpqLaE1soRr50JreDxdaG7u4x6Ghw5TP3o9zMFkxGJ5GZNYC3KxdGkl6hdVMOnmPNAavWMKWoONn7FaPndX5iWIDKCsg4IPPbIgtEa3bwiv72FCJ72iMW7kS6FLmzOKs1BmYnoQpS5uj3MrIaH2n/snJnCE+9NLuGe/ieE+BhWJoaA1CBhgX05oDSehNRwfu/Zf/1Fv1vfLDJu5+JfniEdsocItiLOKNCUWTxRt2+n9KqE11hJaYxHzX5yE1tBkoDWQDGMbtxCef/E49u3vo6/t3GNYSuyWKy6vwx0f2ojly+o4cc4FrWG7wN2cOVu4MnjiJ5MXA40ut9ptD5ZXlsvM4mincrwt5IpXmk9iLzFBggxGk520TF73haIfTAaT2NM5RWIGcUWlA/kMtfRPCqpOXEfojurRsaKP7HjTEyG0xt/OD61x1phPn+ibR9iRSITWmPxs70Du+4uK8wv5HEMK9YeJOuTaY8Qt+dE/78Wu3QxRusDSS+yWx59owjPPNOHm99fgj/+IO6nFxYTWkHx4cagmUF5ZLf68Pzna5GcIk/4hSr7zllnzSWa1bEzRYzsvtIaRaA7PHW7GUZU3QrlKGSt5eVb6sKz0lmaHdEgwHTjKfLsEOULHzRtjLtO9yu2YYHYvXbkMI+UGVjqGaYDpXr9p9eHycgPKuUmUhtZgvrytmNAa9xBao5/QGv8s4TIZjjtfjxaA1lhHaI27Ca1RQi80ZapEJDKpk+l7P//5DvzzT5sY1HC+muf/ns5hYpkwZPbtbvz516/ClVes+P1Aa5gtGvzbkdM4PpLSEZmMVTOJUaizwNDqR+e+Lgx1jqbCKEVUUXQJwQpq81DJ0BlHjQ393LOW0KIYIwIlhmmSmVLbCWJzZVmcIC7cT0hBa2gJrcEAC/cDhNZYR2iNz/0O0BolhNb4DqE1Ssj2nKOMWBTlzBzEh//3Djz5dN/8Iz3rLBU6xbECaKNoclpykesqJITfUlpsJkL6vY6O/hP4sy+/gm98dRS33LL5vYfW2HHSgyZytMzUDPpBltmEwoQJYzv7cJyxTESDQ/UaxixVMxaT/JlgHuHY6TG0MZSm70Q/lr9/CarXFsBDsRfQSd5dStEEgnHs7I3jOsZTWMh1M6A1sgitcS+hNWy/A7TGU4TWWEloDZXrpqA1CDrz00d2XyAxqLO4j7OoZDXqapZjcf1K1NU3wuHOQla+C0FfEJEfhNExdIKbcMDf/t0BbnFrcMP1a987aI3u8XHs7eMGvyCqMR5W0A+MjNXN05ox+Nt2nHyrDUUNBVh8TR2M1VnMPhKpQMXOzarazaUoYhTg4eebsPeXR7BqYjEKr6tEF62uDEHEXT3JiJa3+6K4toR66T2G1vj1b07g8acuhDNSbGKzZ+GPPvtXKKuvAIE/lemb2u9g8iYxs3Lc+SoLIBwj2hFF/rf/YT+TnVwMXWL81juE1lBqRpT2bGiNABVsihsEWmNbs5ch+YKZRdalCBL0AzdzrZOnvWh+k8SgSFp5z0poNuRjrNiACMNoIi49wm4jxsqIS3VlMTZ+Yi1cxQ40bT+N2NER5NAgUEn26fqk6/1+HVomUtmvqaHQQEFrMC5KoDUYxbFFGRipLxf8y2tmQGtwnanMtBS0RmfnEH76s9YF753vC9lY6+voRE9zF77/za9h23O/QZhZwkbqPRO3dEtKy5FrL5y+VfC9HnzobUIjTipRJzumKWgNE/tR9XWKvxsX2jPJ6P0FoTVaByYwxBB6scBmoh/k+JI49sxxOInKsPSOpYiVMnmesWgZ9IMULAU5ijkUESuV/3IGBdy5gtZHEp1vdsFNTEY9V/aiYzLoBxJQ1jLG9QJtfll7yOeLDa3x1NMt8E6wM++g+BmP/Mgv/xYPPfgVNLfuh4WBdloaBcf3HMLppmaU19ShpmQZssx507WeaA7gNy8dv/jQGge7aX7QghJFOBP9IELlOzYeYJ66E7q6LPiZF6iVjFWBouB7ijApaAqm4SLoZPBZRRbZ20YgmimMnBhiOkAqJWAm+oGX+Rm9zCl/L6A12tpGsPPN0elBu9ADyXUZHO1B92gLtlxyJ5ZtXIOTh47h5Wd+ibbmFhTXlHEtshmFrvJZVT77fDuJP6kki0ic3xlawxcIYSiYWuTNRT+I0bQVMEx3HfO1maudGVQtZ7yAuKRAXVIcIEg7Woo5nYsr3cpcBsdFMdEzkbqH0RwZQotITHJPvosz+L2A1ti500Oop1ljdtYH2TcXHLACZzlqCpehIq8BeY5S2I0urKi8DDfedSdzYZx46/XfYvfRVzA2NISh0V5OQhokJvus+rq6wzjIvPeLB60xwhAeYqXKYkWtvmUFTk6RSIsELSPhGmMWU9QYaimEUOKHA5xBY5PWiayUKD+mTzIAjcmcOVae46qdqAdiUU2v7Fl3Bv1gnCnMUW6f8mlKVF4UaA3K/AOHFuYOPQ0WeV55bj2WLd6EiupauNx5yiHq93vhHR7D8jUbkF3iwq7fbMUJiq4gU/MOHXgLPd2n0T/YDc9YxyyCyIfdezy4lOGlHEAlhiWqX/Tgu4LWGBgJ0M9DE5bmqVLoQgyxnvgyEFpC4l5DI1PMcCWB1HcpTkkRRPQAB1SiPCQilGJbjNxJ+oZkFhopxpTjLl2nHAuh5R7SClNco4jtrwKg5E4R+3yTwDrp6EJlIWiNfiJN9C6A26JnNKZFb0ND2Tpcfd1t2LDlSqbmGZhaEFNtNDLlLcpjA7lcJlfLsWNcP42zSQkc79yFeAfXVQk2ep5yonmCC94gu2VTXRG9KJP0XUFrBCTZJO2XUiYqB0TeZcFnZAqxVDxETKhyH4FinIzL4qAKsUR8CeFkcBVBOIRazoo4/V69p4ao6IwoqM9DaLpuWWyyN2kTI8GV9FSCEed016QC/Ofp6QKnFoLWGGYOoawT5itmJq7WlqzE/Z/5MmrWLMb4wAgOvPEmRnoHmEpHTrbakFdciLrljXDmUHSt30hgHobOdu1GmEGA5yqjo2G6U6aQ42JEPWn2O0FrTNK60phkpFjkTUYt/dFAUK+iihwMMcfbd3AQ2fYyBLk2EfesEFG4RIgngcuM3odxKILuA/2MYwqhfkUpclcVQlYCGUKnKCIPolubAXdBiq3sNDQhyTr93NQV5/8rVqG8hLU4T2iAzB8QLrFkuY5i3P8HX0bVylqcOnQSrzz3DPYef5VbCCO0ChlTxn95jhKsa7waH7jn4wRKuESJsuDjU2jx7GMS7sKKKcj11QRN+bwcNoVjl2rTwu1Pz8nUBalOpEdcmsFZPW0vq86dqSjpNGLp7Y3Kibb3ZwcQOjEKmz8OvSSpUEypKHGyt5G6xsQGje7owr4nDjOp0oGq62qgKUnFCKsa59YtJgn1TOa0sDm1/ZmHX9DRmetFfI8t4L11mHJw202fRC05Y4gB1//64/+FV/Y+QcC1AaarEUWROR6ReBB93tP47Z7H8cLPfw4Pk1c3v+8qLGlYowLQz9Uc8Q36uERQ0lh16Ey75rtvFkHk0kxiu0BB2BX6QWpYhDCZUHwh3Ah3Bi0NuVh2FTEImdSy6we70f8vx2A4Ng7LQAiWYbJ6J3M+dg+g7eED2PlIKiBu2ZZaWBrdGHdKeoMoOJl/qbozFNCRGFaNeH9TTf7doTUIfknH6Hwl25aH2mWNsDiseP6JR9Dee4wB1tF5RVEoFsDr+36Bw2/sZt55iGA6a+Amd52riFCRZNaLAq3hpPUEspwQQg2WYiGZvEmEOWijNh3KPrgYdq7A33qM+O+P7iNiTjcKiUMo65AgE+wHTg2ju2WQqccuXPaZS2Bb5sYocUxCnDoLoR9waUjvMQVVOp9RbLR3WlLKk3eJHiJh89ypPZu59VSVLUFOYQ7hl0YIsTGIsSD1xgIKWu6djHixe++raNy0GvXLl6O2dDn6iIK0EDqF5N1nu3QqHFW6obh9biNmfFbu94WgNYpdZhxoD9O+tqr9cbEwZJ9czDZ5D9Lv308Io/xrKnB9XS7GW0fRv7cXx19nA3mNWCW5RU5c+emNKFxfjESpDcPMUorQ6ShB2KquTJ3pekWXGJkia6ODbjo1fprV3z20RrZr/lxHm9VBi88E35AvlSGcmnkzhmjuYZJZxSOY9E4gtyCf8IOOuRfM+myl28fpMCtJIFVnJNCsi2Z8UCJL4CoEOU3YK2PpyE5daR7htyMpK2I6hYsOQ0EpkNw6SZbXMNGR6TbQ1jpReEMVln5gCfPxqB9YV9WyIqz68HKU3UidIXl78gxiiwiCwnROtyKMEJovnhfuczNDX+HaKkKkOiF64EKhNab7p+5PZdGWFNvn5RIRmzH2RXAQxb1+IcVhc8HuzEJcsm7J6ToaBgsVSVTKcnFCZ+RvmttFVEeYpjb3PnVC4Cr8/slJ2f1LQWuQtcjmdgLVFxMaQg2g2lQiETLE4GdqPOQOccNp/yACb3kQOuVFkDt/Rq7cZUfOTICWMK/z0W/ve6MXiQPDcAwwjJ/3ZQiaSZpUn0mUONOManO4Z6ISdlKiKpaG1mBm7QVBa4hZfgZaQ/oiPyDD3I/6NCLajFEY944gQkB9h9vB3UP+vomI5XMUwbmvqVhGznfDOzqG/qFOheGy0C1rVkm6BpcE/CfiKgOtEQxOhYlMMTj3PiWyzgWtsWmxE08e9cPqdk4TQ9YYspCLc/dvqnUKB548wi1YZrGKfckiAyLl6Gv0qsqLRRaRxVW5WHLnUkSZDrcQ+oEzEUApCRkgYYVdLya0xqWXFOKNN2cDPY+MejDuGUVBeSHWrb8S3Z5WwskeU22e+8dqcHIlvwjL12+APcuOfVu5Vpns40CnrY85N1itGuZRlqlIexmR6MWA1qgqy0NJ0ymMxu3c4aP4kMWfDDjlmwAty3qkfl25GmA9cyumxoI0C4c5oCEFeZRbma1g8gTlwJ5HSFUaCpLxKlAUc9EPYuSO1YVU6eklg4jQiwmtsXaN7PK14zT1YqZ4vO3Ytf1Vtdex+cZrmCIdwSvbf4HeEQJh0jUSZZiPlGxrPjN3G3H1Nbdh8dqlCNBB2t58gllW02FkmSqn36++soB5mnkXH1rj5k0l+NHWAVhL3NPoB7KgE+3Sx70PXJmvCGSmHK6ciCulPXVyCJVXVCLQ4FRQeaIjJnjPOC8XN4SIqLnoB0VJH+oKs987aA2atnfeUY2/+07z9KD5aTUdaXoTddsasfnmq3HNXbcoZb3vrTeIYd+NQHxC7RjWF63F4tUrsPaqS5QnYufzr+LwiTfp4pmcrmvmgY3ccdedy2jh0dvBLy4qtEY+AVSuXzyJl9qJw053uwKk50NE3vqJwKbjDqK4S0YZGGdJyr64pH2Jb4fmMU3jmJiworQpy0UHiY9IlLq8C5STFB0D7K5b5XrPoTUuv7yaDr9BbN0+pp4rf4Z8PXhj269htJqx4rL12HjTFVjCFOde/qaWns5VA1HcsovdcFfkYmJoAid2HcW+3TuUOz7DQdOVpQ8+cX896ureObSG0iGZysS5l4bWqK+pqr1u1SpZvFFsMBLxkjV1NPeOYveoH7Zcu0I/kO/EKpLZL4pf3OgTRPBwl2Vxb0T8WbyfEBVRul/kGsGdSllYaaWeRj9IElz51mU2/iiMidEfqfAPaUsKWsP7Cb0u/pRysWQaep53cUCmoTXcVmvprQUFBi7OaJCwwfxpEvzRH66ho/ENouClxNHY1CCae/dD8xJzDLngq1u1FFkFRHRYuZiSWeY3UwiZMdV5rB2t+4/jtR3PEmpjUoGxzcchN16fT9yWDe89tMYtW9ZCv+MwdvR44Sx2KV1AE0OJH9n9i1PZT5EghdwjMZUQndRFLEKKpohwB4kxbTrznBBSCKoZHcEdq11wO50zoTWShNYIEVrjz94ttMbBQ4cCK1euEmiNHxFa4+6Z0BoC4/GtP9+Mb/3lm+jkb5dIGZ7sReegHZFtIRw7vhe1tY1ErKiieeviMjWOnrbTOHp8DwFkenC4Ywd1CxXqPOXKy3Pwta9eT0KauBj8PUBr3HbtZhQRWOZ5rsi1BXkpBU+pIyJIHIpjVPjjREDgpjubS+3MdqvBT3OSogK/CTL4tzDhxwcvK4eVC7MZ0BoJQmsME1rjOUJr/DjT53cDrTExoaA17ie0ho7QGreloTUMzCvXVFaU4jt/fzUeeOAtDnQqub1r5CTkhRagrnsFaoob4Q2OEl3VxSzkTjR37VfOxkyb5r7fenMJvvqVG2ns2H7P0BprV2BJXQWee/0QjjIC0ejOJmAZgx445UUjCJvLsbynOV61XRZDQUYrWoOTuL4+FxuXr5gLrQFCa9DF6nmV0BrfJ7RGSsHw7ncDrfGpexW0RoTQGl8htIaL0BoFhNZoYHUmgdYoKy3Fg9+/BT/7l914+pfttPxUM9Uf+fkNeV1IycnWUAxuoMFwuRLN/8+hNbbtbVboB14RQ0b+hgZ3Bg3c1BFuCFP/JKi8LQRtKWLi/ToClK1eUsbdxrOgNZKE1vATWmMfoTW+lV/FXxKbUd4xtIbpALmTMBuUSGlojXpCa9xPaI07CK1RMRda4+ixTjz51AFs39HHSTLjwec4dOfqGEbagI/efRmqqsvee2iNG5/9SGLgr548L7TGJ+6qp1skioHhcQwQCHOUXDBC1DYDA9LcjiT3Smwozs+GY35oDXKRLkloDS+hNfYSWuObzxffu/9TcwZi2vMw5/zcjxloDfGwhqctUvnJC8PJ66+2/jQNrXE/oTXyhXsz0BqrVjUSMn0ZAT/7GRbaiv37u9HBKMwJitYx/oQR5w8hpHSMsnFg+dJCbNiwCJdsXkrkiqLzQmsEwxpuvaqVwdzmnvV5YfAZCgvGWWPtSsZLDdJKSkx9tKZKMw2tYTByS5K77fKjvQI4KcgH8ruAzNfmMW3veaA1IswhiXGHLUEUhDg9qvKbsgSDjBJaY4zQGs8RWuO7jqJDHWe1kidmpqqdK805c51ckznO1Jf6QeJY+Ru7/H8z5iu5jdAadv4mCde5DMZgHwRawyK/MkRAGgmWDvLHWAJMNPLxZ/BkEZxNuCZil/CHNelQpEEi0BohIv/IDy7HBfOeztYQra+TzYdT0Bpm6+cZrDE1SSSHXxLuUnYsZV9kZpmbkj7L7J15YeZYZpHI/vcIWoMYQF0thNb4LqE1fkmtc+790Eyj3uW7+McsZn03oTU+T2iNdkJrfJ3QGiZCayh/kwQ5zITWsNjy4WSkTHl56lewM9AaAmJ5wdAa77Ct5yWI1CdEeY+gNZ4jtMYPCa3RkYHWeIftv+DLZ3IVO+2l2+qvysuW7iG0xlcIrXHVf0NrEFqjrP4obcxU+X1Ca2SeSWiN3xJa4+X/SNAa/+WQHDJ6YyZHZAiw0HtweC0jQyIVPZ7oxtZTkQ3j7xBaQ6s1TENrKDOfEkUV6hkBLBM0oAvVIf/lCLLQoP9nOf9/AajzR+pUawFFAAAAAElFTkSuQmCC");width:100px;height:43px;background-repeat:no-repeat;}.geniblocks.change-sex-buttons.male-selected{background-position:0 0}.geniblocks.change-sex-buttons.female-selected{background-position:0 -43px}
+.geniblocks.chromosome-container{display:flex;}.geniblocks.chromosome-container .items{display:flex;}.geniblocks.chromosome-container .items .labels{display:flex;flex-direction:column;justify-content:space-around;width:110px;padding-left:10px;padding-right:10px;align-items:flex-start;}.geniblocks.chromosome-container .items .labels div{order:0;align-self:auto;}.geniblocks.chromosome-container .items .labels div.editable{flex:0 1 32px}.geniblocks.chromosome-container .items .labels select{height:20px}.geniblocks.chromosome-container .items .chromosome-allele-container{position:relative;}.geniblocks.chromosome-container .items .chromosome-allele-container .alleles{display:flex;flex-direction:column;justify-content:space-around;position:absolute;top:-5px;left:2px;height:100%}.geniblocks.chromosome-container .items.rtl{flex-direction:row-reverse;}.geniblocks.chromosome-container .items.rtl .labels{align-items:flex-end}
+.geniblocks.clutch-view .clutch-drakes .organism .clickable-area{position:absolute;left:10px;top:30px;width:90%;height:70%;cursor:pointer}.geniblocks.clutch-view .clutch-slider{margin-top:50px;cursor:pointer;}.geniblocks.clutch-view .clutch-slider.right{background-image:url("../resources/fablevision/layout-b/Clutch_Slider_Arrow_R.png");width:16px;height:29px}.geniblocks.clutch-view .clutch-slider.left{background-image:url("../resources/fablevision/layout-b/Clutch_Slider_Arrow_L.png");width:16px;height:29px}.geniblocks.clutch-view .drake-pages{display:flex;flex-direction:row;justify-content:space-between;width:100%;}.geniblocks.clutch-view .drake-pages .clutch-drakes{margin-right:0;flex-wrap:wrap}.geniblocks.clutch-view .clutch-page-count{margin-left:140px}.layout-b #egg-game .geniblocks.genome.parent{background-image:none}
+.coin{position:absolute;height:256px;width:256px;}.coin.background{background-image:url("../resources/images/coin-background.png")}.coin.piece{z-index:2;}.coin.piece.pieces1{background-image:url("../resources/images/coin-pieces-2.png");}.coin.piece.pieces1.bronze{background-position:0 0}.coin.piece.pieces1.silver{background-position:0 -256px}.coin.piece.pieces1.gold{background-position:0 -512px}.coin.piece.pieces2{background-image:url("../resources/images/coin-pieces-2.png");}.coin.piece.pieces2.piece1.single.bronze{background-position:-512px 0}.coin.piece.pieces2.piece1.single.silver{background-position:-512px -256px}.coin.piece.pieces2.piece1.single.gold{background-position:-512px -512px}.coin.piece.pieces2.piece1.whole.bronze{background-position:-1024px 0}.coin.piece.pieces2.piece1.whole.silver{background-position:-1024px -256px}.coin.piece.pieces2.piece1.whole.gold{background-position:-1024px -512px}.coin.piece.pieces2.piece2.single.bronze{background-position:-256px 0}.coin.piece.pieces2.piece2.single.silver{background-position:-256px -256px}.coin.piece.pieces2.piece2.single.gold{background-position:-256px -512px}.coin.piece.pieces2.piece2.whole.bronze{background-position:-768px 0}.coin.piece.pieces2.piece2.whole.silver{background-position:-768px -256px}.coin.piece.pieces2.piece2.whole.gold{background-position:-768px -512px}.coin.piece.pieces3{background-image:url("../resources/images/coin-pieces-3.png");}.coin.piece.pieces3.piece1.single.bronze{background-position:-768px 0}.coin.piece.pieces3.piece1.single.silver{background-position:-768px -256px}.coin.piece.pieces3.piece1.single.gold{background-position:-768px -512px}.coin.piece.pieces3.piece1.whole.bronze{background-position:-1536px 0}.coin.piece.pieces3.piece1.whole.silver{background-position:-1536px -256px}.coin.piece.pieces3.piece1.whole.gold{background-position:-1536px -512px}.coin.piece.pieces3.piece2.single.bronze{background-position:-512px 0}.coin.piece.pieces3.piece2.single.silver{background-position:-512px -256px}.coin.piece.pieces3.piece2.single.gold{background-position:-512px -512px}.coin.piece.pieces3.piece2.whole.bronze{background-position:-1280px 0}.coin.piece.pieces3.piece2.whole.silver{background-position:-1280px -256px}.coin.piece.pieces3.piece2.whole.gold{background-position:-1280px -512px}.coin.piece.pieces3.piece3.single.bronze{background-position:-256px 0}.coin.piece.pieces3.piece3.single.silver{background-position:-256px -256px}.coin.piece.pieces3.piece3.single.gold{background-position:-256px -512px}.coin.piece.pieces3.piece3.whole.bronze{background-position:-1024px 0}.coin.piece.pieces3.piece3.whole.silver{background-position:-1024px -256px}.coin.piece.pieces3.piece3.whole.gold{background-position:-1024px -512px}.coin.piece.pieces4{background-image:url("../resources/images/coin-pieces-4.png");}.coin.piece.pieces4.piece1.single.bronze{background-position:-1024px 0}.coin.piece.pieces4.piece1.single.silver{background-position:-1024px -256px}.coin.piece.pieces4.piece1.single.gold{background-position:-1024px -512px}.coin.piece.pieces4.piece1.whole.bronze{background-position:-2048px 0}.coin.piece.pieces4.piece1.whole.silver{background-position:-2048px -256px}.coin.piece.pieces4.piece1.whole.gold{background-position:-2048px -512px}.coin.piece.pieces4.piece2.single.bronze{background-position:-768px 0}.coin.piece.pieces4.piece2.single.silver{background-position:-768px -256px}.coin.piece.pieces4.piece2.single.gold{background-position:-768px -512px}.coin.piece.pieces4.piece2.whole.bronze{background-position:-1792px 0}.coin.piece.pieces4.piece2.whole.silver{background-position:-1792px -256px}.coin.piece.pieces4.piece2.whole.gold{background-position:-1792px -512px}.coin.piece.pieces4.piece3.single.bronze{background-position:-512px 0}.coin.piece.pieces4.piece3.single.silver{background-position:-512px -256px}.coin.piece.pieces4.piece3.single.gold{background-position:-512px -512px}.coin.piece.pieces4.piece3.whole.bronze{background-position:-1536px 0}.coin.piece.pieces4.piece3.whole.silver{background-position:-1536px -256px}.coin.piece.pieces4.piece3.whole.gold{background-position:-1536px -512px}.coin.piece.pieces4.piece4.single.bronze{background-position:-256px 0}.coin.piece.pieces4.piece4.single.silver{background-position:-256px -256px}.coin.piece.pieces4.piece4.single.gold{background-position:-256px -512px}.coin.piece.pieces4.piece4.whole.bronze{background-position:-1280px 0}.coin.piece.pieces4.piece4.whole.silver{background-position:-1280px -256px}.coin.piece.pieces4.piece4.whole.gold{background-position:-1280px -512px}.coin.piece.pieces5{background-image:url("../resources/images/coin-pieces-5.png");}.coin.piece.pieces5.piece1.single.bronze{background-position:-1280px 0}.coin.piece.pieces5.piece1.single.silver{background-position:-1280px -256px}.coin.piece.pieces5.piece1.single.gold{background-position:-1280px -512px}.coin.piece.pieces5.piece1.whole.bronze{background-position:-2560px 0}.coin.piece.pieces5.piece1.whole.silver{background-position:-2560px -256px}.coin.piece.pieces5.piece1.whole.gold{background-position:-2560px -512px}.coin.piece.pieces5.piece2.single.bronze{background-position:-1024px 0}.coin.piece.pieces5.piece2.single.silver{background-position:-1024px -256px}.coin.piece.pieces5.piece2.single.gold{background-position:-1024px -512px}.coin.piece.pieces5.piece2.whole.bronze{background-position:-2304px 0}.coin.piece.pieces5.piece2.whole.silver{background-position:-2304px -256px}.coin.piece.pieces5.piece2.whole.gold{background-position:-2304px -512px}.coin.piece.pieces5.piece3.single.bronze{background-position:-768px 0}.coin.piece.pieces5.piece3.single.silver{background-position:-768px -256px}.coin.piece.pieces5.piece3.single.gold{background-position:-768px -512px}.coin.piece.pieces5.piece3.whole.bronze{background-position:-2048px 0}.coin.piece.pieces5.piece3.whole.silver{background-position:-2048px -256px}.coin.piece.pieces5.piece3.whole.gold{background-position:-2048px -512px}.coin.piece.pieces5.piece4.single.bronze{background-position:-512px 0}.coin.piece.pieces5.piece4.single.silver{background-position:-512px -256px}.coin.piece.pieces5.piece4.single.gold{background-position:-512px -512px}.coin.piece.pieces5.piece4.whole.bronze{background-position:-1792px 0}.coin.piece.pieces5.piece4.whole.silver{background-position:-1792px -256px}.coin.piece.pieces5.piece4.whole.gold{background-position:-1792px -512px}.coin.piece.pieces5.piece5.single.bronze{background-position:-256px 0}.coin.piece.pieces5.piece5.single.silver{background-position:-256px -256px}.coin.piece.pieces5.piece5.single.gold{background-position:-256px -512px}.coin.piece.pieces5.piece5.whole.bronze{background-position:-1536px 0}.coin.piece.pieces5.piece5.whole.silver{background-position:-1536px -256px}.coin.piece.pieces5.piece5.whole.gold{background-position:-1536px -512px}
+.geniblocks.feedback-view{width:100%;background-color:#877871;color:#fff;opacity:.8;border:1px solid #000;text-align:center;font-size:11pt;font-weight:bold}
+.geniblocks.gamete-pen{width:100%;height:100%;border:1px solid #000;margin:3px;padding:2px;background-color:rgba(255,255,255,0.4)}
+.geniblocks.gamete-pool{position:relative;background-color:rgba(255,255,255,0.4);border:1px solid #000;margin:3px;padding:2px}
+.geniblocks.gamete{position:absolute;border:1px;margin:5px}.geniblocks.gamete.selected{background-color:rgba(255,255,255,0.4)}.geniblocks.gamete.disabled{background-color:rgba(0,0,0,0.2)}
+.geniblocks.gene-label.noneditable span{font-size:.9em;font-family:Palatino;border:1px solid #222;padding:3px;background:#eee}
+.geniblocks.genome-test .items{display:flex}.geniblocks.genome-test .genome-test-options{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;margin-left:10px;}.geniblocks.genome-test .genome-test-options .select-wrapper{flex:0 1 40px}.geniblocks.genome-test .genome-test-options select{order:0;height:20px}
+.geniblocks.genome div{display:flex;}.geniblocks.genome div .geniblocks.chromosome-container{padding:5px}.geniblocks.genome #mountNode div{display:block;font-family:'Yanone Kaffeesatz';font-size:1.5rem;margin-top:-1px}
+#navigation{display:flex;flex-direction:column;flex-wrap:wrap;width:100%;max-height:600px;margin:90px 0 0 30px;justify-content:center;overflow:scroll}.navigate-button{width:315px;height:120px;display:flex;justify-content:center;align-items:center;background-image:url("../resources/fablevision/layout-a/Hatch_ON.png");cursor:pointer;color:#fff;}.navigate-button:active{cursor:default;background-image:url("../resources/fablevision/layout-a/Hatch_OFF.png");background-position:17px 17px;background-size:auto;background-repeat:no-repeat}.navigate-button .navigate-button-label{font-size:2rem}.navigation-layout{background-image:url("../resources/fablevision/layout-a/screen_border.png"),url("../resources/fablevision/layout-a/screen.png");background-position:50% 50%,50% 50%;height:1080px}
+.geniblocks.notification-container{position:fixed;bottom:0;left:0;display:flex;flex-direction:row;align-items:flex-end;z-index:14;pointer-events:none;}.geniblocks.notification-container .notification{display:flex;flex-direction:row;align-items:center;justify-content:space-between;width:1405px;height:189px;margin:0 -67px;padding:12px;color:#2d1c06;pointer-events:all;background-image:url("../resources/fablevision/huds/scroll.png");background-repeat:no-repeat;}.geniblocks.notification-container .notification.raised{margin-bottom:82px;text-align:center}.geniblocks.notification-container .notification .message-text{margin-left:140px;margin-top:23px;font-family:'Yanone Kaffeesatz';font-size:2rem;color:#000;width:1030px;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.geniblocks.notification-container .notification .message-buttons{padding-right:112px;height:100%;position:relative;}.geniblocks.notification-container .notification .message-buttons .close-button{position:absolute;top:-6px;right:111px;background-image:url("../resources/fablevision/huds/scroll_close.png");width:47px;height:45px;background-repeat:no-repeat;background-size:contain;margin-top:50px;cursor:pointer}.geniblocks.notification-container .notification .message-buttons .next-arrow{position:absolute;bottom:53px;right:157px;background-image:url("../resources/fablevision/huds/arrow_right.png");height:42px;width:46px;background-repeat:no-repeat;background-size:contain;cursor:pointer}.geniblocks.notification-container .notification.its-hint{background-image:none;background-color:#ddd;border-radius:40px;border:6px solid #3bd018;box-shadow:#fff 0 0 70px;padding:0;height:160px;width:1260px;margin:0 -8px;}.geniblocks.notification-container .notification.its-hint .message-text{color:#4b4b4b;font-family:sans-serif;width:1060px;margin-left:80px;margin-top:0}.geniblocks.notification-container .notification.its-hint .close-button{right:40px;top:-25px}.geniblocks.notification-container .notification.its-hint .next-arrow{right:60px}.geniblocks.notification-container .fv-character{background-image:url("../resources/fablevision/huds/characters/Rajput_active.png");width:325px;height:359px;background-repeat:no-repeat;background-size:contain;}.geniblocks.notification-container .fv-character.ELLIS{background-image:url("../resources/fablevision/huds/characters/Ellis_active.png")}.geniblocks.notification-container .fv-character.HATCH{background-image:url("../resources/fablevision/huds/characters/Hatch_active.png")}.geniblocks.notification-container .fv-character.HERRERA{background-image:url("../resources/fablevision/huds/characters/Herrera_active.png")}.geniblocks.notification-container .fv-character.RAJPUT{background-image:url("../resources/fablevision/huds/characters/Rajput_active.png")}.geniblocks.notification-container .fv-character.TAKURUA{background-image:url("../resources/fablevision/huds/characters/Takurua_active.png")}.geniblocks.notification-container .fv-character.WEAVER{background-image:url("../resources/fablevision/huds/characters/Weaver_active.png")}.geniblocks.notification-container .fv-character.WINNEMUCCA{background-image:url("../resources/fablevision/huds/characters/Winnemucca_active.png")}.geniblocks.notification-container .fv-character.YEUNG{background-image:url("../resources/fablevision/huds/characters/Yeung_active.png")}.geniblocks.notification-container .fv-character.NETANYA{background-image:url("../resources/fablevision/huds/characters/Takurua_active.png")}.geniblocks.notification-container .hint-arrow::before{content:url("../resources/images/hint-arrow.svg");position:absolute;left:-152px;top:6px}.fv-layout-a .hint-arrow{position:absolute;left:263px;top:1000px;width:435px;height:51px;border:3px solid #15e617;border-radius:10px;box-shadow:#fff 0 0 30px,#15e617 0 0 70px;}.fv-layout-a .hint-arrow.metallic{top:-541px}.fv-layout-a .hint-arrow.wings{top:-502px}.fv-layout-a .hint-arrow.horns{top:-467px}.fv-layout-a .hint-arrow.color{top:-433px}.fv-layout-a .hint-arrow.black{top:-397px}.fv-layout-a .hint-arrow.forelimbs{top:-378px}.fv-layout-a .hint-arrow.hindlimbs{top:-342px}.fv-layout-a .hint-arrow.armor{top:-304px}.fv-layout-a .hint-arrow.sex{top:-128px}
+.geniblocks.ordinal-organism{border:1px solid #444;}.geniblocks.ordinal-organism .ordinal{font:bold 24px sans-serif;text-align:center;color:#555;margin-top:3px}.geniblocks.ordinal-organism .organism{padding-top:0;margin-left:-2px;margin-top:-1px}.geniblocks.ordinal-organism.complete{background-color:#aaa}
+.geniblocks.organism.flipped{transform:scaleX(-1)}.geniblocks.organism .unknown-organism{font-size:14em;font-family:Palatino}
+.geniblocks.pen{display:flex;flex-wrap:wrap;border:1px solid #000;margin:3px;padding:2px;background-color:rgba(255,255,255,0.4)}
+@-webkit-keyframes pulse{from{-webkit-transform:scale(1)}5%{-webkit-transform:scale(1.2)}10%{-webkit-transform:scale(1)}15%{-webkit-transform:scale(1.2)}20%{-webkit-transform:scale(1)}}.pulse{-webkit-animation-name:pulse;-webkit-animation-duration:5s;-webkit-animation-iteration-count:infinite}@-webkit-keyframes mini-pulse{from{-webkit-transform:scale(1)}5%{-webkit-transform:scale(1.06)}10%{-webkit-transform:scale(1)}15%{-webkit-transform:scale(1.06)}20%{-webkit-transform:scale(1)}}.mini-pulse{-webkit-animation-name:mini-pulse;-webkit-animation-duration:5s;-webkit-animation-iteration-count:infinite}
+.geniblocks.stats{display:flex;width:400px;flex-wrap:wrap;border:1px solid #000;margin:3px;padding:2px;height:320px}
+#tutorial{position:fixed;top:0;left:0;font-family:'Yanone Kaffeesatz';font-size:1rem;transition:background-color 1s;width:100%;height:100%;z-index:200;background-color:rgba(0,0,0,0.7);}#tutorial .tutorial-content{position:absolute;top:650px;left:150px;width:350px;border-radius:18px;border:4px solid #fff;background-color:rgba(0,0,0,0.5);color:#fff;padding:20px;box-shadow:0 0 35px #000;}#tutorial .tutorial-content.bottom-right{top:800px;left:1350px}#tutorial .tutorial-content .tutorial-short{font-size:1.7rem;padding-bottom:10px}#tutorial .tutorial-content .tutorial-long{font-size:1.4rem}#tutorial .tutorial-content .tutorial-show-more{font-size:1.1rem;margin:-10px 0 0 100px;cursor:pointer;text-decoration:underline}#tutorial .tutorial-content .forward-back-buttons{display:flex;justify-content:flex-end;padding-top:10px;}#tutorial .tutorial-content .forward-back-buttons .tutorial-navigate{height:34px;width:80px;background-color:#fff;border-radius:20px;color:#000;text-align:center;font-size:1.6rem;cursor:pointer;}#tutorial .tutorial-content .forward-back-buttons .tutorial-navigate.prev{margin-right:auto}#tutorial .tutorial-content .tutorial-close{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:20px;border:2px solid #fff;text-align:center;color:#fff;cursor:pointer}.tutorial{z-index:201 !important}
+.geniblocks.avatar-button{width:116px;height:107px;background-image:url("../resources/fablevision/huds/Avatar_base.png");background-size:cover;}.geniblocks.avatar-button .avatar-center{position:absolute;left:22px;top:19px;width:74px;height:74px;background-image:url("../resources/fablevision/huds/Avatar_center.png");background-size:100% 100%}
+.fv-bottom-hud{position:absolute;bottom:0;}.fv-bottom-hud .geniblocks.avatar-button{position:absolute;left:70px;top:38px}.fv-bottom-hud .geniblocks.level-indicator{position:absolute;left:275px;top:54px}.fv-bottom-hud .geniblocks.trial-count{position:absolute;left:1418px;top:38px}.fv-bottom-hud .geniblocks.score-count{position:absolute;left:1560px;top:38px}.fv-bottom-hud .geniblocks.moves-count{position:absolute;left:1565px;top:38px;width:200px;}.fv-bottom-hud .geniblocks.moves-count .hud-text-area{left:10px}.fv-bottom-hud .gem-set-container{background-image:url("../resources/fablevision/huds/crystal_bar.png");width:912px;height:114px;margin-top:30px;background-size:contain;background-repeat:no-repeat}.fv-bottom-hud .gem-set{margin-top:0;margin-left:263px;}.fv-bottom-hud .gem-set .gem-number-text{visibility:hidden}.fv-bottom-hud .gem-set .gem-container .gem-outline-highlight{margin-right:-3px;}.fv-bottom-hud .gem-set .gem-container .gem-outline-highlight .gem-outline{background-image:url("../resources/fablevision/huds/empty_crystal.png")}.fv-bottom-hud .gem-set .gem-container .gem-outline-highlight .gem-fill,.fv-bottom-hud .gem-set .gem-container .gem-outline-highlight .gem-outline{width:68px;margin-left:17px}.fv-bottom-hud .mission-screen{background-image:url("../resources/fablevision/huds/mission_screen.png");width:264px;height:78px;position:absolute;margin-left:69px;margin-top:54px;background-size:contain;background-repeat:no-repeat;}.fv-bottom-hud .mission-screen .mission-label{position:absolute;font-family:'Yanone Kaffeesatz';font-weight:bold;font-size:1.4rem;color:#555;margin-top:17px}.fv-bottom-hud .mission-screen .mission-label-text{margin-left:79px;margin-top:20px}.fv-bottom-hud .mission-screen .mission-label-value{margin-left:187px;margin-top:20px}.fv-bottom-hud .tutorial-activate{position:absolute;left:1800px;top:40px;width:100px;height:100px;background-image:url("../resources/fablevision/huds/tutorial_questionmark_button_base.png");}.fv-bottom-hud .tutorial-activate .tutorial-icon{background-image:url("../resources/fablevision/huds/tutorial_questionmark_button.png");background-repeat:no-repeat;background-position:center;width:100%;height:100%;cursor:pointer}.next-trial-button{position:absolute;width:237px;height:161px;background-image:url("../resources/fablevision/huds/Trial_screen.png");background-size:cover;top:0;margin-top:897px;margin-left:1654px;z-index:4;cursor:pointer;}.next-trial-button .next-trial-text{margin-top:50px;margin-left:61px;font-family:'Yanone Kaffeesatz';font-size:2.5rem}.gem-set{transform:scale(.7);margin-top:50px}
+.geniblocks.breed-button-area{width:1001px;height:142px;margin-top:45px;display:flex;flex-direction:row;justify-content:center;align-items:flex-start;background-image:url("../resources/fablevision/layout-c/screen_eggsperm_box.png");}.geniblocks.breed-button-area .egg-image{background:url("../resources/fablevision/layout-c/egg_animation.png");background-position-y:50%;background-position-x:0%;width:1052px;height:946px;position:relative;z-index:2}.geniblocks.breed-button-area .organism{width:200px;height:200px;margin-left:-35px;margin-top:-10px}.geniblocks.breed-button-area .offspring-buttons{display:flex;flex-direction:column;justify-content:center;height:100%;}.geniblocks.breed-button-area .offspring-buttons button{margin:3px;padding:4px;width:76px}
+.geniblocks.breed-button-surround{background:url("../resources/fablevision/layout-c/breed_surround.png");height:236px;width:100%;margin-top:-45px;display:flex;justify-content:center;background-position:50% 50%;background-size:370px 369px;background-repeat:no-repeat;align-items:center;}.geniblocks.breed-button-surround .breed-button{width:139px;height:138px;display:flex;justify-content:center;align-items:center;margin-top:-8px;margin-left:2px;background:url("../resources/fablevision/layout-c/unclicked_breed_button.png");cursor:pointer;color:#3b74ff;}.geniblocks.breed-button-surround .breed-button:active{cursor:default;background:url("../resources/fablevision/layout-c/clicked_breed_button.png");background-size:contain;background-repeat:no-repeat;color:#82ebfe}.geniblocks.breed-button-surround .breed-button.disabled{cursor:default;background:url("../resources/fablevision/layout-c/inactive_breed_button.png");color:#409ef6}.geniblocks.breed-button-surround .breed-button .breed-button-label{font-size:3rem}.os-windows .geniblocks.breed-button-surround .breed-button .breed-button-label{margin-top:.4rem}
+.geniblocks.fv-button{display:flex;justify-content:center;align-items:center;background-position:50% 50%;background-repeat:no-repeat;cursor:pointer;color:#3b74ff;}.geniblocks.fv-button:active{color:#82ebfe}.geniblocks.fv-button.disabled{color:#409ef6}.geniblocks.fv-button .button-label{font-size:3rem}
+#challenges.mission-backdrop.fv-layout-h{background-position:50% 50%;background-repeat:no-repeat;}#challenges.mission-backdrop.fv-layout-h.create-unique{background-image:url("../resources/fablevision/layout-a/screen_border.png"),url("../resources/fablevision/layout-b/background.jpg")}#challenges.mission-backdrop.fv-layout-h.submit-parents{background-image:url("../resources/fablevision/layout-a/screen_border.png"),url("../resources/fablevision/layout-h/background.jpg")}#challenges.mission-backdrop.fv-layout-h .center-column{width:674px;display:flex;margin-top:-3px}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake{height:240px;margin:-17px 0 -45px 0;position:relative;}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.mother,#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.father{margin-right:0;margin-left:0;}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.mother .parentTitle,#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.father .parentTitle{position:absolute;top:56px;color:#f9ec9a}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.mother .organism,#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.father .organism{position:absolute;top:-22px}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.mother .parent-drake-hidden,#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.father .parent-drake-hidden{width:100%;margin-left:200px;margin-top:30px;font-size:2em;color:#f9ec9a}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.mother{background-image:none;left:53px;}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.mother .parentTitle{left:-10px}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.mother .organism{left:112px}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.father{background-image:none;left:-33px;}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.father .parentTitle{left:346px}#challenges.mission-backdrop.fv-layout-h .geniblocks.parentDrake.father .organism{left:64px}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.parentDrake{margin:0;}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.parentDrake.mother .parentTitle,#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.parentDrake.father .parentTitle{top:137px}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.parentDrake.mother{left:0;}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.parentDrake.mother .parentTitle{left:-27px}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.parentDrake.father{left:0;}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.parentDrake.father .parentTitle{left:388px}#challenges.mission-backdrop.fv-layout-h .geniblocks.genome.parent{margin-top:40px}#challenges.mission-backdrop.fv-layout-h .geniblocks.target-drake-container{background-image:url("../resources/fablevision/layout-h/target_gizmo_single.png");margin:-87px 0 17px 0;width:400px;height:362px;flex-direction:column;align-items:center;}#challenges.mission-backdrop.fv-layout-h .geniblocks.target-drake-container .organism{margin:65px 0 0 -14px}#challenges.mission-backdrop.fv-layout-h .geniblocks.target-drake-container .target-drake-text{margin-top:-4px;margin-left:5px}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.target-drake-container{background-image:none;margin:-53px 0 50px 0;}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.target-drake-container .drakes{display:flex;justify-content:space-around;width:500px}#challenges.mission-backdrop.fv-layout-h.submit-parents .geniblocks.target-drake-container .target-drake-text{color:#b05e22;font-size:38px;margin:-16px 0 0 0}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view{margin-top:-3px;height:323px;width:577px;background:none;}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .clutch-slider{width:169px;height:29px;background-repeat:no-repeat;background-position-y:50%;}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .clutch-slider.left{background-image:url("../resources/fablevision/layout-b/Clutch_Slider_Arrow_L.png"),url("../resources/fablevision/layout-h/slider_track.jpg")}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .clutch-slider.right{background-image:url("../resources/fablevision/layout-b/Clutch_Slider_Arrow_R.png"),url("../resources/fablevision/layout-h/slider_track.jpg");background-position-x:100%}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .clutch-counter{width:100%;justify-content:space-between;margin-top:5px;z-index:10;}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .clutch-counter .stable-count{margin-left:70px}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .clutch-slider{margin-top:0}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .clutch-page-count{margin-left:0;white-space:nowrap}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .drake-pages{height:80%;}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .drake-pages .clutch-drakes{display:flex;flex-direction:row;height:100%;margin:0;align-self:flex-end;justify-content:space-around;align-content:space-around;}#challenges.mission-backdrop.fv-layout-h .geniblocks.clutch-view .drake-pages .clutch-drakes .stable-drake-overlay{background-image:url("../resources/fablevision/layout-h/pen_circle.png");margin:0}#challenges.mission-backdrop.fv-layout-h .geniblocks.breed-button-area{background-image:none;height:auto;width:auto;margin-top:23px}#challenges.mission-backdrop.fv-layout-h .geniblocks.breed-button-surround{background:none;height:auto;width:auto;margin-top:0;}#challenges.mission-backdrop.fv-layout-h .geniblocks.breed-button-surround .breed-button{width:236px;height:118px;background:url("../resources/fablevision/layout-b/breed_on.png");color:#95471f;}#challenges.mission-backdrop.fv-layout-h .geniblocks.breed-button-surround .breed-button:active{background:url("../resources/fablevision/layout-b/breed_on_clicked.png")}#challenges.mission-backdrop.fv-layout-h .geniblocks.breed-button-surround .breed-button.disabled{background:url("../resources/fablevision/layout-b/breed_off.png");}#challenges.mission-backdrop.fv-layout-h .geniblocks.breed-button-surround .breed-button.disabled .breed-button-label{font-size:3rem}#challenges.mission-backdrop.fv-layout-h #bottom-buttons{display:flex;justify-content:center;}#challenges.mission-backdrop.fv-layout-h #bottom-buttons .submit-parents-button{color:#95471f;background-image:url("../resources/fablevision/layout-h/submitparent_button_unclicked.png");width:255px;height:100px;}#challenges.mission-backdrop.fv-layout-h #bottom-buttons .submit-parents-button .button-label{font-size:2rem}#challenges.mission-backdrop.fv-layout-h #bottom-buttons .submit-parents-button:active{background-image:url("../resources/fablevision/layout-h/submitparent_button_clicked.png")}#challenges.mission-backdrop.test-cross .geniblocks.clutch-view{margin-top:40px;margin-bottom:-100px;height:650px;width:540px}#challenges.mission-backdrop.test-cross .geniblocks.genome.parent{margin-left:25px}#challenges.mission-backdrop.test-cross .geniblocks.ready-to-answer-button-area{background-image:none;height:auto;width:auto;margin-top:200px}#challenges.mission-backdrop.test-cross .geniblocks.ready-to-answer-button-surround{background:none;height:auto;width:auto;margin-top:0;}#challenges.mission-backdrop.test-cross .geniblocks.ready-to-answer-button-surround .ready-to-answer-button{width:384px;height:131px;background:url("../resources/fablevision/layout-i/ReadytoAnswer_button_unclicked.png");color:#95471f;font-size:3rem;}#challenges.mission-backdrop.test-cross .geniblocks.ready-to-answer-button-surround .ready-to-answer-button:active{background:url("../resources/fablevision/layout-i/ReadytoAnswer_clicked.png")}#challenges.mission-backdrop.test-cross .geniblocks.ready-to-answer-button-surround .ready-to-answer-button.disabled{background:url("../resources/fablevision/layout-i/ReadytoAnswer_button_unclicked.png");opacity:.5}.geniblocks.test-cross-submit-button-surround{background:none;height:auto;width:45%;display:inline-block;margin-top:0;}.geniblocks.test-cross-submit-button-surround .test-cross-submit-button{width:200px;height:80px;background:url("../resources/fablevision/layout-i/resubmit_button.png");color:#95471f;font-size:2rem;margin-left:auto;margin-right:auto;}.geniblocks.test-cross-submit-button-surround .test-cross-submit-button:active{background:url("../resources/fablevision/layout-i/resubmit_button_clicked.png")}.geniblocks.test-cross-submit-button-surround .test-cross-submit-button.disabled{background:url("../resources/fablevision/layout-i/resubmit_button.png");opacity:.5}.geniblocks.test-cross-submit-button-surround .test-cross-submit-button .button-label{font-size:1.8rem}.geniblocks.test-cross-save-button-surround{background:none;height:auto;width:auto;margin-top:0;width:45%;display:inline-block;}.geniblocks.test-cross-save-button-surround .test-cross-save-button{width:230px;height:80px;background:url("../resources/fablevision/layout-i/saveandclose_button.png");color:#95471f;font-size:2rem;}.geniblocks.test-cross-save-button-surround .test-cross-save-button:active{background:url("../resources/fablevision/layout-i/saveandclose_button_clicked.png")}.geniblocks.test-cross-save-button-surround .test-cross-save-button.disabled{background:url("../resources/fablevision/layout-i/saveandclose_button.png");opacity:.5}.geniblocks.test-cross-save-button-surround .test-cross-save-button .button-label{font-size:1.8rem}
+.geniblocks.counter{width:158px;height:107px;background-image:url("../resources/fablevision/huds/Trial_screen.png");background-size:100% 100%;}.geniblocks.counter .hud-text-area{position:relative;text-align:center;left:0;top:25px;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Yanone Kaffeesatz';font-weight:bold;font-size:1.4rem;line-height:1.15;color:#555}.geniblocks.counter.blue{background-image:url("../resources/fablevision/huds/move-screens/blue_moves.png")}.geniblocks.counter.yellow{background-image:url("../resources/fablevision/huds/move-screens/yellow_moves.png")}.geniblocks.counter.red{background-image:url("../resources/fablevision/huds/move-screens/red_moves.png")}.geniblocks.counter.black{background-image:url("../resources/fablevision/huds/move-screens/null_moves.png");}.geniblocks.counter.black .hud-text-area{color:#aaa;width:100%;}.geniblocks.counter.black .hud-text-area .count-label{padding:0 60px 0 60px}.os-windows .geniblocks.counter .hud-text-area{margin-top:.1rem}
+.geniblocks.egg-hatch-drake{pointer-events:none;}.geniblocks.egg-hatch-drake .egg-image{background:url("../resources/fablevision/layout-c/egg_animation.png");background-position-y:50%;background-position-x:0%;width:1052px;height:946px;margin-top:120px;margin-left:20px;position:relative;z-index:2;pointer-events:none}.geniblocks.egg-hatch-drake .organism{width:200px;height:200px;margin-left:-100px;margin-top:-120px}
+.you-earned-text{font-size:3rem;margin-top:50px}#end-level-separator-2{bottom:158px}.gem-info .gem-win-box{width:263px;height:263px;background-image:url("../resources/fablevision/venture-pad/gemwin_box.png");margin-left:50px;margin-top:50px;}.gem-info .gem-win-box .gem-container{margin-left:85px;margin-top:50px;position:absolute}.gem-info .gem-win-box .gem-won-text{font-size:2rem;text-align:center;margin-top:238px;position:absolute;width:263px}.gem-info .gem-set{margin-top:-215px;margin-left:300px;flex-wrap:wrap}.end-level-navigation-buttons{display:flex;flex-direction:row;position:absolute;bottom:40px;}.end-level-navigation-buttons.disabled{visibility:hidden;}.end-level-navigation-buttons.disabled .continue-button-container .continue-button{cursor:default}.end-level-navigation-buttons.disabled .try-again-button-container .try-again-button{cursor:default}.end-level-navigation-buttons .continue-button-container{display:flex;flex-direction:row;margin-left:237px;font-size:3rem;}.end-level-navigation-buttons .continue-button-container .continue-button{width:64px;height:64px;background-image:url("../resources/fablevision/venture-pad/continue_button.png");margin-left:20px;cursor:pointer}.end-level-navigation-buttons .try-again-button-container{display:flex;flex-direction:row;font-size:3rem;}.end-level-navigation-buttons .try-again-button-container .try-again-text{display:inline-block;white-space:nowrap;margin-left:-5px}.end-level-navigation-buttons .try-again-button-container .try-again-button{width:87px;background-image:url("../resources/fablevision/venture-pad/replay_button.png");background-size:contain;background-repeat:no-repeat;cursor:pointer}
+.geniblocks.change-sex-toggle-group{display:flex;justify-content:space-between;align-items:center;width:220px;margin-top:30px;margin-left:-30px;}.geniblocks.change-sex-toggle-group .sex-label{font-family:'Yanone Kaffeesatz';font-size:1.8rem;cursor:pointer;color:#ccc;}.geniblocks.change-sex-toggle-group .sex-label.selected{color:#fff;font-weight:bold}.geniblocks.change-sex-toggle-group .change-sex-toggle{width:92px;height:41px;background-image:url("../resources/fablevision/layout-a/Toggle_base.png");}.geniblocks.change-sex-toggle-group .change-sex-toggle .toggle-button{display:inline-block;width:50%;height:100%;cursor:pointer;}.geniblocks.change-sex-toggle-group .change-sex-toggle .toggle-button.selected{background-image:url("../resources/fablevision/layout-a/toggle_button.png");background-repeat:no-repeat;}.geniblocks.change-sex-toggle-group .change-sex-toggle .toggle-button.selected.female-button{background-position:4px 4px}.geniblocks.change-sex-toggle-group .change-sex-toggle .toggle-button.selected.male-button{background-position:0 4px}
+.fv-chromosome-image{height:78px;width:27px;background-image:url("../resources/fablevision/layout-c/egg_sperm_chromosome_filled.png");background-size:contain;background-repeat:no-repeat;}.fv-chromosome-image.chromosome-y{height:55px;width:27px;background-image:url("../resources/fablevision/layout-c/egg_sperm_chromosome_half_filled.png")}.fv-chromosome-image.small{background-image:url("../resources/fablevision/layout-c/chromosome_lite.png");height:122px;width:20px;}.fv-chromosome-image.small.chromosome-y{height:74px;width:20px;background-image:url("../resources/fablevision/layout-c/chromosome_half_lite.png")}.test-cross .fv-chromosome-image{background-image:url("../resources/fablevision/layout-i/chromosome_full.png");}.test-cross .fv-chromosome-image.chromosome-y{background-image:url("../resources/fablevision/layout-i/chromosome_full_y.png")}.fv-chromosome-image.empty,.parent .fv-chromosome-image.bold{background-image:url("../resources/fablevision/layout-c/egg_sperm_chromosome_empty.png");background-size:contain;background-repeat:no-repeat;}.fv-chromosome-image.empty.chromosome-y,.parent .fv-chromosome-image.bold.chromosome-y{height:55px;width:27px;background-image:url("../resources/fablevision/layout-c/egg_sperm_chromosome_half_empty.png")}.fv-chromosome-image.empty.small,.parent .fv-chromosome-image.bold.small{height:122px;width:20px;background-image:url("../resources/fablevision/layout-c/chromosome_dark.png");}.fv-chromosome-image.empty.small.chromosome-y,.parent .fv-chromosome-image.bold.small.chromosome-y{height:74px;width:20px;background-image:url("../resources/fablevision/layout-c/chromosome_half_dark.png")}.chromosome-label{position:relative;left:6px;top:18px;font-family:"Yanone Kaffeesatz";font-size:.9rem;color:#333;}.chromosome-label.label-x{top:54px}.chromosome-label.label-y{top:24px}.chromosome-label.label-1{top:48px}.chromosome-label.label-2{top:48px}.chromosome-allele-container .empty .chromosome-label{display:none}.gamete-chromosomes .chromosome-label{display:none}
+.fv-stable.drag-droppable{border:10px solid #ff0;}.fv-stable.drag-droppable.drag-over{border-color:#0f0}
+.fv-layout-d .straw{width:1920px;height:375px;position:absolute;left:0;top:195px;background-image:url("../resources/fablevision/layout-d/straw_over.png");background-repeat:no-repeat;pointer-events:none;z-index:1}.fv-layout-d #egg-0{top:63px;left:20px;transform:rotate(-17deg)}.fv-layout-d #egg-1{top:131px;left:178px;transform:rotate(20deg)}.fv-layout-d #egg-2{top:131px;left:306px;transform:rotate(-3deg)}.fv-layout-d #egg-3{top:208px;left:468px;transform:rotate(-45deg)}.fv-layout-d #egg-4{top:208px;left:615px;transform:rotate(-40deg)}.fv-layout-d #egg-5{top:168px;left:745px;transform:rotate(-40deg)}.fv-layout-d #egg-6{top:158px;left:892px;transform:rotate(-40deg)}.fv-layout-d #egg-7{top:168px;left:1031px;transform:rotate(-22deg)}
+.animated-egg-image{background-image:url("../resources/fablevision/layout-c/egg_animation.png");background-position-y:50%;background-position-x:0%;width:1052px;height:946px;position:absolute;z-index:2}
+.fv-layout-d #mission-wrapper{margin:70px 0 0 0;width:100%;}.fv-layout-d #mission-wrapper #egg-sort-game{width:100%;display:flex;flex-direction:row;}.fv-layout-d #mission-wrapper #egg-sort-game #eggs{width:100%;height:100%}.fv-layout-d #mission-wrapper #egg-sort-game .clutch-egg{background-image:url("../resources/fablevision/layout-d/egg_unclicked.png");background-position:50% 50%;background-repeat:no-repeat;width:115px;height:158px;opacity:1;position:absolute;margin-left:49px;margin-top:49px;z-index:1;}.fv-layout-d #mission-wrapper #egg-sort-game .clutch-egg.selected{z-index:0;margin-left:0;margin-top:0;width:213px;height:256px;background-image:url("../resources/fablevision/layout-d/egg_clicked.png")}.fv-layout-d #mission-wrapper #egg-sort-game #baskets{width:inherit;}.fv-layout-d #mission-wrapper #egg-sort-game #baskets .basket-set{width:inherit;align-items:flex-start;}.fv-layout-d #mission-wrapper #egg-sort-game #baskets .basket-set .basket{bottom:235px;right:250px;}.fv-layout-d #mission-wrapper #egg-sort-game #baskets .basket-set .basket .basket-image{background-image:url("../resources/fablevision/layout-d/basket_inactive.png");width:505px;height:503px;background-size:contain;position:absolute;}.fv-layout-d #mission-wrapper #egg-sort-game #baskets .basket-set .basket .basket-image .basket-label{width:133px;height:135px;left:203px;top:352px;font-family:'Yanone Kaffeesatz';position:absolute;text-align:center;display:flex;flex-direction:column;justify-content:center}.fv-layout-d #mission-wrapper #egg-sort-game #baskets .basket-set .basket.selected .basket-image{background-image:url("../resources/fablevision/layout-d/basket.png");}.fv-layout-d #mission-wrapper #egg-sort-game #baskets .basket-set .basket.selected .basket-image .basket-hover{width:250px;height:230px;position:absolute;left:130px;top:265px;cursor:pointer;z-index:3}.fv-layout-d #mission-wrapper #egg-sort-game #left-section{width:1156px;display:flex;justify-content:center;align-items:center}.fv-layout-d #mission-wrapper #egg-sort-game #right-section{position:static;}.fv-layout-d #mission-wrapper #egg-sort-game #right-section #container{background:none;border:none;font-family:'Yanone Kaffeesatz';}.fv-layout-d #mission-wrapper #egg-sort-game #right-section #container #background{background:none;border:none}.fv-layout-d #mission-wrapper #egg-sort-game .chromomatic-container{display:block;position:absolute;right:0;z-index:3;pointer-events:none}.fv-layout-d #mission-wrapper #egg-sort-game .chromomatic{height:871px;width:764px;background-image:url("../resources/fablevision/layout-d/chromomatic.png");display:flex;justify-content:center;align-items:center;z-index:2;margin-left:10px}
+.ovum .gamete-container{background-image:url("../resources/fablevision/layout-c/egg.png");background-size:contain;background-repeat:no-repeat;width:178px;height:151px;display:flex;align-items:center}.sperm .gamete-container{background-image:url("../resources/fablevision/layout-c/sperm_head.png"),url("../resources/fablevision/layout-c/sperm_tail.png");background-position:0% 50%,100% 53%;background-size:65% auto,36% auto;background-repeat:no-repeat;width:229px;height:150px;display:flex;align-items:center}.gamete-chromosomes{margin-top:-17px;margin-left:-6px;}.gamete-chromosomes .fv-chromosome-image{margin-left:-6px}
+.geniblocks.genome #mountNode .react-selectize-control{display:flex;flex-direction:row;height:26px;border-radius:12px;padding-left:10px;background-repeat:no-repeat;background-size:100% 100%;color:#fff;}.geniblocks.genome #mountNode .react-selectize-control input{font-family:"Yanone Kaffeesatz";font-size:1.5rem}.rtl .fv-gene-option-value{padding-left:30px}.fv-layout-a #mountNode .react-selectize-control{background:#4c1fb6;border:2px solid #eae1fe}.fv-layout-a .fv-gene-option{background:#4c1fb6}.fv-layout-a .dropdown-menu{border-color:#eae1fe !important;}.fv-layout-a .dropdown-menu .option-wrapper{background:#eae1fe}.fv-layout-b #mountNode .react-selectize-control{background:#cf670a;border:2px solid layout-b-highlight}.fv-layout-b .fv-gene-option{background:#cf670a}.fv-layout-b .dropdown-menu{border-color:#f7e88d !important;}.fv-layout-b .dropdown-menu .option-wrapper{background:#f7e88d}.fv-layout-c #mountNode .react-selectize-control{background:#084875;border:2px solid #0bebff}.fv-layout-c .fv-gene-option{background:#084875}.fv-layout-c .dropdown-menu{border-color:#0bebff !important;}.fv-layout-c .dropdown-menu .option-wrapper{background:#0bebff}.fv-layout-e #mountNode .react-selectize-control{background:#084875;border:2px solid #0bebff}.fv-layout-e .fv-gene-option{background:#084875}.fv-layout-e .dropdown-menu{border-color:#0bebff !important;}.fv-layout-e .dropdown-menu .option-wrapper{background:#0bebff}.fv-layout-h #mountNode .react-selectize-control{background:#cf670a;border:2px solid #f7e88d}.fv-layout-h .fv-gene-option{background:#cf670a}.fv-layout-h .dropdown-menu{border-color:#f7e88d !important;}.fv-layout-h .dropdown-menu .option-wrapper{background:#f7e88d}.fv-layout-i #mountNode .react-selectize-control{background:#cf670a;border:2px solid #f7e88d}.fv-layout-i .fv-gene-option{background:#cf670a}.fv-layout-i .dropdown-menu{border-color:#f7e88d !important;}.fv-layout-i .dropdown-menu .option-wrapper{background:#f7e88d}.react-selectize-toggle-button-container{background:url("../resources/images/arrow.svg");background-repeat:no-repeat;background-size:60%;background-position:center center}.ltl .react-selectize-toggle-button-container{border-left:2px solid #fff}.rtl .react-selectize-toggle-button-container{position:absolute;border-right:2px solid #fff;left:0}.react-selectize-toggle-button{display:none}.dropdown-menu{border:1px solid #666;border-color:#333 !important;background:#000;top:0;border-radius:12px !important;padding:1px;box-shadow:0 0 15px #333;}.dropdown-menu .option-wrapper{padding:2px 1px 1px 1px;background:#fff;}.dropdown-menu .option-wrapper.highlight{background:#fff !important}.fv-gene-option{width:100%;color:#fff;padding:6px 0;border-radius:12px;}.fv-gene-option :hover{border-radius:12px;background:#444}.fv-gene-option div{padding-left:16px;font-size:1.1em !important}.fv-gene-option .selected{position:relative;float:left;margin-left:-2px;color:#fff;background:url("../resources/images/arrow.svg");background-repeat:no-repeat;background-size:80%;transform:rotate(270deg);background-position:center center}.react-selectize.root-node{position:relative;width:158px;}.react-selectize.root-node input{color:transparent;text-shadow:0 0 0 #000}.geniblocks.genome #mountNode{position:relative;z-index:1;margin-left:-10px;}.geniblocks.genome #mountNode .react-selectize-search-field-and-selected-values{height:10px;display:flex;flex-direction:row}.geniblocks.genome .rtl #mountNode{margin-right:-10px}.geniblocks.genome .fl #mountNode{margin-top:-30px}.geniblocks.genome #mountNode .react-selectize-search-field-and-selected-values{height:40px;display:flex;flex-direction:row}.labels .geniblocks.fv-gene-label.allele.noneditable.m{z-index:8}.labels .geniblocks.fv-gene-label.allele.noneditable.w{z-index:7}.labels .geniblocks.fv-gene-label.allele.noneditable.h{z-index:6}.labels .geniblocks.fv-gene-label.allele.noneditable.c{z-index:5}.labels .geniblocks.fv-gene-label.allele.noneditable.b{z-index:4}.labels .geniblocks.fv-gene-label.allele.noneditable.fl{z-index:3}.labels .geniblocks.fv-gene-label.allele.noneditable.hl{z-index:2}.labels .geniblocks.fv-gene-label.allele.noneditable.a{z-index:1}.fv-layout .geniblocks.fv-gene-label{font-family:'Yanone Kaffeesatz';font-size:1.5rem;color:#fff;position:absolute;display:flex;flex-direction:row;justify-content:flex-end}.fv-layout .geniblocks.chromosome-container .items.ltl .labels{justify-content:flex-start;padding-left:30px}.fv-layout .geniblocks.chromosome-container .items.rtl .labels{justify-content:flex-start;padding-right:30px}.fv-layout.fv-layout-a .geniblocks.chromosome-container .items.rtl .labels .fv-gene-label{right:1490px}.fv-layout.fv-layout-d .geniblocks.chromosome-container .items.rtl .labels .fv-gene-label{right:235px}.fv-layout.fv-layout-c .mother .geniblocks.chromosome-container .items.rtl .labels .fv-gene-label{right:235px}.fv-layout.fv-layout-c .father .geniblocks.chromosome-container .items.rtl .labels .fv-gene-label{right:360px}.fv-layout.fv-layout-c .half-genome .geniblocks.chromosome-container .items.rtl .labels .fv-gene-label{right:55px}.fv-layout .line{position:absolute;margin-top:-3px;background-color:#fff;width:20px;height:2px;top:15px;left:-27px}.fv-layout .fv-gene-label-text{margin-top:-3px;margin-left:-2px;margin-right:-2px}.fv-layout .items.rtl .line{margin-left:auto;left:0;right:-27px}.fv-layout .small .stripe{position:absolute;background-color:#fff;width:19px;height:10px;top:11px;left:0}.fv-layout .items.rtl .small .stripe{margin-left:auto;left:0;right:-19px}.fv-layout .t #mountNode{margin-top:-23px}.fv-layout .t .fv-gene-label-text{margin-top:-19px}.fv-layout .fl .line{width:25px}.fv-layout .h .line{width:21px}.fv-layout .h #mountNode{margin-top:-6px}.fv-layout .fl .line{margin-top:-7px;width:25px}.fv-layout .fl #mountNode{margin-top:25px}.fv-layout .fl .fv-gene-label-text{margin-top:-21px}.fv-layout .w .line{margin-top:-7px;width:25px}.fv-layout .w #mountNode{margin-top:-23px}.fv-layout .w .fv-gene-label-text{margin-top:-24px}.fv-layout .a .line{margin-top:6px;width:25px}.fv-layout .a #mountNode{margin-top:31px}.fv-layout .a .fv-gene-label-text{margin-top:19px}.fv-layout .c .line{margin-top:-7px;width:25px}.fv-layout .c #mountNode{margin-top:-16px}.fv-layout .c .fv-gene-label-text{margin-top:-20px}.fv-layout .b .line{margin-top:3px;width:25px}.fv-layout .b #mountNode{margin-top:7px}.fv-layout .b .fv-gene-label-text{margin-top:10px}.fv-layout .d #mountNode{margin-top:3px}.fv-layout .bog .line{margin-top:3px;width:25px}.fv-layout .bog #mountNode{margin-top:30px}.fv-layout .bog .fv-gene-label-text{margin-top:12px}.fv-layout .ltl .t .line{transform:rotate(-35deg);left:-30px;top:12px}.fv-layout .rtl .t .line{transform:rotate(35deg);right:-29px;top:12px}.fv-layout .ltl .w .line{transform:rotate(-35deg);left:-30px;top:12px}.fv-layout .rtl .w .line{transform:rotate(35deg);right:-29px;top:12px}.fv-layout .ltl .c .line{transform:rotate(-35deg);left:-30px;top:12px}.fv-layout .rtl .c .line{transform:rotate(35deg);right:-29px;top:12px}.fv-layout .ltl .fl .line{transform:rotate(-35deg);left:-30px;top:12px}.fv-layout .rtl .fl .line{transform:rotate(35deg);right:-29px;top:12px}.fv-layout .ltl .a .line{transform:rotate(42deg);top:15px;left:-30px}.fv-layout .rtl .a .line{transform:rotate(-42deg);top:15px;right:-30px}.fv-layout .ltl .b .line{transform:rotate(25deg);top:15px;left:-30px}.fv-layout .rtl .b .line{transform:rotate(-25deg);top:15px;right:-30px}.fv-layout .ltl .bog .line{transform:rotate(35deg);top:20px;left:-30px}.fv-layout .rtl .bog .line{transform:rotate(-35deg);top:20px;right:-30px}
+.fv-layout-a.mission-backdrop{background-image:url("../resources/fablevision/layout-a/screen_border.png"),url("../resources/fablevision/layout-a/screen_center_box.png"),url("../resources/fablevision/layout-a/screen_R_chromosome_box.png"),url("../resources/fablevision/layout-a/screen_L_chromosome_box.png"),url("../resources/fablevision/layout-a/screen_target_yourdrake.png"),url("../resources/fablevision/layout-a/screen_top_lines.png"),url("../resources/fablevision/layout-a/screen.png");background-position:50% 50%,50% 6%,100% 35%,0% 35%,50% -30%,50% 9.5%,50% 50%;background-size:auto,auto,auto,auto,250px auto,auto,auto;overflow:hidden}.fv-layout-a #mission-wrapper{margin:150px auto;height:750px}.fv-layout-a #genome-challenge{width:100%;display:flex;flex-direction:column;}.fv-layout-a #genome-challenge .columns{justify-content:center;}.fv-layout-a #genome-challenge .columns.bottom{margin-bottom:-11px}.fv-layout-a #genome-challenge .fv-stable{background-image:url("../resources/fablevision/layout-a/stable.png")}.fv-layout-a#challenges #left-column{width:450px}.fv-layout-a#challenges #center-column{width:500px}.fv-layout-a#challenges #right-column{width:450px}.fv-layout-a .geniblocks.chromosome-container .items .labels select{font-family:'Yanone Kaffeesatz';font-size:1.5rem;height:36px}.fv-layout-a .label-container{margin-top:-70px;width:250px;height:100px;display:flex;justify-content:center;align-items:center}.fv-layout-a .your-drake-surround{display:flex;justify-content:center;align-items:center;width:400px;height:402px;margin-top:10px;background-image:url("../resources/fablevision/layout-a/screen_target_egg.png");background-position:52% 47%;}.fv-layout-a .your-drake-surround #your-drake{margin-left:-40px}.fv-layout-a#challenges #mission-wrapper #your-drake-label{margin:-5px 0 0 0;font-family:'Yanone Kaffeesatz';font-size:2.5rem}.fv-layout-a .hatch-drake-button{width:315px;height:120px;display:flex;justify-content:center;align-items:center;background-image:url("../resources/fablevision/layout-a/Hatch_ON.png");cursor:pointer;color:#fff;}.fv-layout-a .hatch-drake-button:active{cursor:default;background-image:url("../resources/fablevision/layout-a/Hatch_OFF.png");background-position:17px 17px;background-size:auto;background-repeat:no-repeat}.fv-layout-a .hatch-drake-button .hatch-drake-button-label{font-size:2.5rem}.fv-layout-a .target-drake-view{pointer-events:none}.fv-layout-a .target-gizmo-animation{background-image:url("../resources/fablevision/layout-a/Interface_A_V5_TargetDrake-anim.png");width:915px;height:738px;margin-left:442px;margin-top:-80px;pointer-events:none}.fv-layout-a .target-drake-gizmo{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:705px;height:673px;margin-left:263px;margin-top:-41px;background-image:url("../resources/fablevision/layout-a/target_gizmo.png");}.fv-layout-a .target-drake-gizmo.decorative{background-image:url("../resources/fablevision/layout-a/target_gizmo_decorative.png")}.fv-layout-a .target-drake-gizmo #target-drake-label{position:absolute;display:inline-block;margin-left:-20px;top:140px;font-family:'Yanone Kaffeesatz';font-size:2.5rem;font-weight:bold;color:#fff;left:267px}.fv-layout-a .target-drake-gizmo #target-drake{margin-left:-80px}
+.geniblocks.fv-stable,.geniblocks.clutch-view{display:flex;flex-wrap:wrap;margin-bottom:-60px;padding:2px;height:196px;width:1133px;background:url("../resources/fablevision/layout-c/stable.png");background-repeat:no-repeat;background-size:contain;justify-content:flex-start;align-items:center;flex-direction:column;}.geniblocks.fv-stable .stable-counter,.geniblocks.clutch-view .stable-counter,.geniblocks.fv-stable .clutch-counter,.geniblocks.clutch-view .clutch-counter{font-family:'Yanone Kaffeesatz';font-size:1.4rem;color:#fff;margin-top:1.5px;display:flex;flex-direction:row;}.geniblocks.fv-stable .stable-counter .stable-count,.geniblocks.clutch-view .stable-counter .stable-count,.geniblocks.fv-stable .clutch-counter .stable-count,.geniblocks.clutch-view .clutch-counter .stable-count{margin-left:90px}.geniblocks.fv-stable .stable-drakes,.geniblocks.clutch-view .stable-drakes,.geniblocks.fv-stable .clutch-drakes,.geniblocks.clutch-view .clutch-drakes{display:flex;flex-direction:row;margin-top:20px;margin-right:30px;align-self:flex-end}.os-windows .geniblocks.fv-stable .stable-counter,.os-windows .geniblocks.fv-stable .clutch-counter{margin-top:.4rem}
+.fv-layout-zoom.mission-backdrop{background-image:none;background-color:#000}.fv-layout-zoom #zoom-challenge-container{position:absolute;width:100%;height:100%;left:0;top:0;}.fv-layout-zoom #zoom-challenge-container iframe{width:100%;height:100%;border:none}
+.gem-container .gem-fill{width:82px;height:158px;background-size:contain;background-repeat:no-repeat}.gem-container .gem-fill-0{background-image:url("../resources/fablevision/venture-pad/gem_blue.png")}.gem-container .gem-fill-1{background-image:url("../resources/fablevision/venture-pad/gem_yellow.png")}.gem-container .gem-fill-2{background-image:url("../resources/fablevision/venture-pad/gem_red.png")}.gem-container .gem-fill-3{background-image:url("../resources/fablevision/venture-pad/dark_crystal.png")}.gem-set{display:flex;flex-direction:row;}.gem-set .gem-container{margin-left:5px;width:90px;}.gem-set .gem-container.navigable{cursor:pointer}.gem-set .gem-container.locked{opacity:.5;cursor:default}.gem-set .gem-container .gem-outline-highlight{width:100px;height:150px;background-image:url("../resources/fablevision/venture-pad/gemslot_select.png");background-size:cover;background-repeat:no-repeat;margin-top:-12px;margin-left:-15px;}.gem-set .gem-container .gem-outline-highlight .gem-fill,.gem-set .gem-container .gem-outline-highlight .gem-outline{position:absolute;width:73px;height:150px;margin-left:15px;margin-top:15px;background-repeat:no-repeat;background-size:contain}.gem-set .gem-container .gem-outline-highlight .gem-outline{background-image:url("../resources/fablevision/venture-pad/gemslot_empty.png");}.gem-set .gem-container .gem-outline-highlight .gem-outline .gem-number-text{position:absolute;margin-left:23px;margin-top:10px;font-family:'Yanone Kaffeesatz';font-size:4rem;color:#fff}
+.geniblocks.level-indicator{width:207px;height:82px;background-image:url("../resources/fablevision/huds/Levels_screen.png");background-size:100% 100%;}.geniblocks.level-indicator .level-text-area{position:relative;}.geniblocks.level-indicator .level-text-area .level-indicator-label{position:absolute;left:51px;top:22px;width:56px;height:34px}.geniblocks.level-indicator .level-text-area .level-indicator-text{position:absolute;left:120px;top:22px;width:30px;height:34px}.geniblocks.level-indicator .level-text-area .hud-text{display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Yanone Kaffeesatz';font-weight:bold;font-size:1.4rem;color:#555}.os-windows .geniblocks.level-indicator .hud-text-area{margin-top:.1rem}
+.geniblocks.location-indicator{width:592px;height:96px;background-image:url("../resources/fablevision/huds/Location_bar.png");background-size:100% 100%;}.geniblocks.location-indicator .hud-text-area{position:relative;left:174px;top:16px;width:245px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Yanone Kaffeesatz';font-weight:bold;font-size:2rem;line-height:1.15;color:#ddd}.os-windows .geniblocks.location-indicator .hud-text-area{margin-top:.2rem}
+.navigation-dialog .gem-container{margin-top:-30px}.navigation-dialog .level-indicator .level-title{font-size:3rem;position:absolute;margin-left:467px;margin-top:-172px}.navigation-dialog .level-navigation{display:flex;flex-direction:row;position:absolute;margin-top:-110px;margin-left:400px;width:225px;justify-content:space-around;}.navigation-dialog .level-navigation .level-label{border:4px solid #777;border-radius:10px;width:66px;height:95px;text-align:center}.navigation-dialog .level-navigation .level-nav-button{width:50px;height:50px;margin-top:22px;cursor:pointer}.navigation-dialog .level-navigation #prev-level-button{background-image:url("../resources/fablevision/venture-pad/left_nav_button.png")}.navigation-dialog .level-navigation #next-level-button{background-image:url("../resources/fablevision/venture-pad/right_nav_button.png")}.navigation-dialog #gem-label-0{margin-top:20px}.navigation-dialog .mission-lock{width:56px;height:52px;background-image:url("../resources/fablevision/venture-pad/lock.png");margin-top:-60px;margin-left:290px}
+.geniblocks.parentDrake{height:187px;width:475px;margin-top:30px;background-size:contain;background-repeat:no-repeat;color:#fff;display:flex;flex-direction:row;align-items:flex-start;font-family:'Yanone Kaffeesatz';font-size:3rem;}.geniblocks.parentDrake.mother{margin-right:20px;background-image:url("../resources/fablevision/layout-c/female_drake_overlay.png");justify-content:flex-end;}.geniblocks.parentDrake.mother .parentTitle{margin-right:20px}.geniblocks.parentDrake.mother .organism{margin-right:20px}.geniblocks.parentDrake.father{margin-left:30px;background-image:url("../resources/fablevision/layout-c/male_drake_overlay.png");justify-content:flex-start;}.geniblocks.parentDrake.father .parentTitle{margin-left:20px}.geniblocks.parentDrake.father .organism{margin-left:20px}.geniblocks.parentDrake .parentTitle{margin-top:10px}.geniblocks.parentDrake .organism{margin-top:-8px}.os-windows .geniblocks.parentDrake .parentTitle{margin-top:1rem}
+.room{background-position:50% 7.25%,50% 48%,50% 50%;}.room.breedingbarn{background-image:url("../resources/fablevision/rooms/hatchingbarn.jpg");}.room.breedingbarn .hotspot{top:10%;left:0;height:76%;width:85%}.room.hatchery{background-image:url("../resources/fablevision/rooms/hatchery.jpg");}.room.hatchery .hotspot{top:10%;left:0;height:54%;width:100%}.room.home{background-image:url("../resources/fablevision/rooms/missioncontrol.jpg")}.room.simroom{background-image:url("../resources/fablevision/rooms/simroom.jpg");}.room.simroom .hotspot{left:30%;top:30%;width:30%;height:30%}.room.zoomroom{background-image:url("../resources/fablevision/rooms/zoom.jpg");}.room.zoomroom .hotspot{left:0;top:10%;height:75%;width:56%}#enter-challenge-hotspot{position:absolute;cursor:pointer}#easter-egg-trigger{position:absolute;cursor:pointer;z-index:15}#easter-egg{cursor:pointer;-webkit-transition:all .5s;transition:all .5s;}#easter-egg.hidden{position:absolute;left:50%;top:50%;width:0;height:0;overflow:hidden;opacity:.3}#easter-egg.visible{position:absolute;left:0;top:0;width:100%;height:100%;z-index:20;background-color:rgba(0,0,0,0.7);opacity:1}#easter-egg-image{width:100%;height:100%;background-size:contain;background-repeat:no-repeat;background-position:50%}#close-easter-egg{position:absolute;right:50px;top:50px;font-size:3rem;color:#fff;font-family:sans-serif}.home #easter-egg-trigger{left:1461px;top:421px;width:180px;height:252px}.home #easter-egg.hidden{left:1530px;top:550px}.home #easter-egg-image{background-image:url("../resources/fablevision/rooms/eastereggs/missioncontrol-small-screen-right-kingdom_map03.jpg")}.simroom #easter-egg-trigger{left:1219px;top:837px;width:100px;height:77px}.simroom #easter-egg.hidden{left:1250px;top:870px}.simroom #easter-egg-image{background-image:url("../resources/fablevision/rooms/eastereggs/simroom-floor-notebook4.jpg")}.zoomroom #easter-egg-trigger{left:1600px;top:637px;width:140px;height:274px;transform:rotate(30deg)}.zoomroom #easter-egg.hidden{left:1700px;top:750px}.zoomroom #easter-egg-image{background-image:url("../resources/fablevision/rooms/eastereggs/zoomroom-rolled-up-poster-drakecolorposter4.jpg")}.room-sprite{position:absolute}.home #sprite-1{background-image:url("../resources/fablevision/rooms/sprites/mission_control/MissionControl_spritesheet-group1_150x203-tiny.png");width:150px;height:203px;left:511px;top:495px;animation:MissionControl_spritesheet-group1 7s steps(17) infinite}.home #sprite-2{background-image:url("../resources/fablevision/rooms/sprites/mission_control/MissionControl_spritesheet-group2_206x227-tiny.png");width:206px;height:227px;left:800px;top:500px;animation:MissionControl_spritesheet-group2 5s steps(23) infinite}.simroom #sprite-1{background-image:url("../resources/fablevision/rooms/sprites/sim_room/outerpaper_spritesheet700x644-tiny.png");width:700px;height:568px;left:0;top:38px;animation:outerpaper_spritesheet 3s steps(24) infinite}.simroom #sprite-2{background-image:url("../resources/fablevision/rooms/sprites/sim_room/RollMachine_spritesheet682x700-tiny.png");width:682px;height:700px;left:1011px;top:162px;animation:RollMachine_spritesheet 4s steps(23) infinite}.hatchery #sprite-1{background-image:url("../resources/fablevision/rooms/sprites/hatchery/HATCHERY_animation_spritesheet730x262-tiny.png");width:730px;height:262px;left:0;top:387px;animation:HATCHERY_animation_spritesheet 2s steps(13) infinite}.breedingbarn #sprite-1{background-image:url("../resources/fablevision/rooms/sprites/breeding_barn/FlyingDrake_Spritesheet_356x215-tiny.png");width:356px;height:215px;left:709px;top:0;animation:FlyingDrake_Spritesheet 10s steps(22) infinite}.breedingbarn #sprite-2{background-image:url("../resources/fablevision/rooms/sprites/breeding_barn/Tail-Orange_Spritesheet_375x454-tiny.png");width:360px;height:454px;left:566px;top:243px;animation:Tail-Orange_Spritesheet 7s steps(24) infinite}.breedingbarn #sprite-3{background-image:url("../resources/fablevision/rooms/sprites/breeding_barn/Tail-Blue_Spritesheet164x195-tiny.png");width:164px;height:195px;left:1200px;top:100px;animation:Tail-Blue_Spritesheet 12s steps(15) infinite}@-moz-keyframes MissionControl_spritesheet-group1{0%{background-position:0}20%,100%{background-position:-2550px}}@-webkit-keyframes MissionControl_spritesheet-group1{0%{background-position:0}20%,100%{background-position:-2550px}}@-o-keyframes MissionControl_spritesheet-group1{0%{background-position:0}20%,100%{background-position:-2550px}}@keyframes MissionControl_spritesheet-group1{0%{background-position:0}20%,100%{background-position:-2550px}}@-moz-keyframes MissionControl_spritesheet-group2{0%{background-position:0}20%,100%{background-position:-4738px}}@-webkit-keyframes MissionControl_spritesheet-group2{0%{background-position:0}20%,100%{background-position:-4738px}}@-o-keyframes MissionControl_spritesheet-group2{0%{background-position:0}20%,100%{background-position:-4738px}}@keyframes MissionControl_spritesheet-group2{0%{background-position:0}20%,100%{background-position:-4738px}}@-moz-keyframes outerpaper_spritesheet{0%{background-position:0}100%{background-position:-16800px}}@-webkit-keyframes outerpaper_spritesheet{0%{background-position:0}100%{background-position:-16800px}}@-o-keyframes outerpaper_spritesheet{0%{background-position:0}100%{background-position:-16800px}}@keyframes outerpaper_spritesheet{0%{background-position:0}100%{background-position:-16800px}}@-moz-keyframes RollMachine_spritesheet{0%{background-position:0}100%{background-position:-15686px}}@-webkit-keyframes RollMachine_spritesheet{0%{background-position:0}100%{background-position:-15686px}}@-o-keyframes RollMachine_spritesheet{0%{background-position:0}100%{background-position:-15686px}}@keyframes RollMachine_spritesheet{0%{background-position:0}100%{background-position:-15686px}}@-moz-keyframes HATCHERY_animation_spritesheet{0%,70%{background-position:0}100%{background-position:-9490px}}@-webkit-keyframes HATCHERY_animation_spritesheet{0%,70%{background-position:0}100%{background-position:-9490px}}@-o-keyframes HATCHERY_animation_spritesheet{0%,70%{background-position:0}100%{background-position:-9490px}}@keyframes HATCHERY_animation_spritesheet{0%,70%{background-position:0}100%{background-position:-9490px}}@-moz-keyframes FlyingDrake_Spritesheet{75%{background-position:0}100%{background-position:-7832px}}@-webkit-keyframes FlyingDrake_Spritesheet{75%{background-position:0}100%{background-position:-7832px}}@-o-keyframes FlyingDrake_Spritesheet{75%{background-position:0}100%{background-position:-7832px}}@keyframes FlyingDrake_Spritesheet{75%{background-position:0}100%{background-position:-7832px}}@-moz-keyframes Tail-Orange_Spritesheet{0%,30%{background-position:0}100%{background-position:-9000px}}@-webkit-keyframes Tail-Orange_Spritesheet{0%,30%{background-position:0}100%{background-position:-9000px}}@-o-keyframes Tail-Orange_Spritesheet{0%,30%{background-position:0}100%{background-position:-9000px}}@keyframes Tail-Orange_Spritesheet{0%,30%{background-position:0}100%{background-position:-9000px}}@-moz-keyframes Tail-Blue_Spritesheet{0%{background-position:0}20%,100%{background-position:-2460px}}@-webkit-keyframes Tail-Blue_Spritesheet{0%{background-position:0}20%,100%{background-position:-2460px}}@-o-keyframes Tail-Blue_Spritesheet{0%{background-position:0}20%,100%{background-position:-2460px}}@keyframes Tail-Blue_Spritesheet{0%{background-position:0}20%,100%{background-position:-2460px}}
+.fv-layout .stable-drakes{margin-right:10px}.fv-layout .stable-drake-overlay{background-image:url("../resources/fablevision/layout-c/stable_drake_background.png");display:flex;justify-content:center;background-size:contain;background-repeat:no-repeat;height:85px;width:85px;margin-top:10px;margin-right:15px;}.fv-layout .stable-drake-overlay .organism{margin-top:-23px;margin-left:-20px}.fv-layout.fv-layout-a .stable-drake-overlay{background-image:url("../resources/fablevision/layout-a/stable_drake_background.png")}
+.geniblocks.target-drake-container{display:flex;flex-direction:row;height:272px;width:520px;background:url("../resources/fablevision/layout-c/target_drake_gizmo.png");background-repeat:no-repeat;background-size:cover;justify-content:center;align-self:center;margin-bottom:-420px;margin-top:40px;z-index:3;}.geniblocks.target-drake-container .target-drake-text{font-family:'Yanone Kaffeesatz';font-size:30px;color:#fff;margin-top:70px;margin-left:-10px}.geniblocks.target-drake-container .organism{margin-top:10px}
+.fv-top-hud{z-index:2;position:absolute;top:0;}.fv-top-hud .geniblocks.location-indicator{position:absolute;left:654px;top:0}.fv-top-hud .map-button-container{z-index:3;cursor:pointer;position:absolute;margin-top:-34px;margin-left:-400px;}.fv-top-hud .map-button-container .map-button{width:105px;height:58px;background-image:url("../resources/fablevision/huds/map_button.png")}
+.venture-pad-container{outline:none;font-family:'Yanone Kaffeesatz';font-size:4rem;color:#fff;}.venture-pad-container .venture-pad-backdrop{position:fixed;z-index:10;top:0;bottom:0;left:0;right:0;background-color:#000;opacity:.8;}.venture-pad-container .venture-pad-backdrop.light{opacity:.2}.venture-pad-container .venture-pad-background{position:absolute;top:7%;left:28%;width:921px;height:894px;background-image:url("../resources/fablevision/venture-pad/screen_behind.png");background-position:30% 50%;background-repeat:no-repeat;margin-left:460px;z-index:11}.venture-pad-container .venture-pad-screen{position:absolute;top:125px;left:28%;width:700px;height:825px;z-index:12;margin-left:530px;background-size:cover;background-repeat:no-repeat;overflow-y:auto;}.venture-pad-container .venture-pad-screen .venture-pad-title{margin-top:34px}.venture-pad-container .venture-pad-screen .venture-pad-flavor-text{font-size:1rem;color:#808080}.venture-pad-container .venture-pad-screen .venture-pad-separator{position:absolute;width:720px;height:3px;background-color:#808080;}.venture-pad-container .venture-pad-screen .venture-pad-separator#venture-pad-separator-1{margin-top:20px}.venture-pad-container .venture-pad-screen::-webkit-scrollbar-thumb{border-radius:10px;-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);background-color:#555}.venture-pad-container .venture-pad-screen::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);border-radius:10px;background-color:#f5f5f5}.venture-pad-container .venture-pad-screen::-webkit-scrollbar{width:12px;background-color:#f5f5f5}.venture-pad-container .venture-pad-overlay{position:absolute;top:7%;left:28%;width:921px;height:894px;margin-left:460px;background-image:url("../resources/fablevision/venture-pad/frame.png"),url("../resources/fablevision/venture-pad/screen_over.png");background-position:50% 50%,30% 50%;background-repeat:no-repeat;pointer-events:none;z-index:13}.venture-pad-glass{position:absolute;width:1590px;height:824px;background-image:url("../resources/fablevision/venture-pad/glass.png");background-size:contain;background-repeat:no-repeat;top:125px;left:25px;z-index:10;}.venture-pad-glass .venture-pad-map{background-image:url("../resources/fablevision/venture-pad/map.png");width:1008px;height:798px;background-size:contain;background-repeat:no-repeat;}.venture-pad-glass .venture-pad-map .venture-pad-room-highlight{position:absolute;}.venture-pad-glass .venture-pad-map .venture-pad-room-highlight.hatchery{background-image:url("../resources/fablevision/venture-pad/map_hatchery_highlight.png");width:216px;height:114px;margin-left:70px;margin-top:310px}.venture-pad-glass .venture-pad-map .venture-pad-room-highlight.zoomroom{background-image:url("../resources/fablevision/venture-pad/map_zoomroom_highlight.png");width:167px;height:133px;margin-left:708px;margin-top:564px}.venture-pad-glass .venture-pad-map .venture-pad-room-highlight.simroom{background-image:url("../resources/fablevision/venture-pad/map_simfactory_highlight.png");width:222px;height:66px;margin-left:708px;margin-top:463px}.venture-pad-glass .venture-pad-map .venture-pad-room-highlight.breedingbarn{background-image:url("../resources/fablevision/venture-pad/map_breedingbarn_highlight.png");width:294px;height:319px;margin-left:355px;margin-top:377px}.venture-pad-glass .venture-pad-map .venture-pad-room-highlight.home{background-image:url("../resources/fablevision/venture-pad/map_missioncontrol_highlight.png");width:331px;height:222px;margin-left:339px;margin-top:207px}

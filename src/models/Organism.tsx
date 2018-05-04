@@ -153,6 +153,9 @@ export const Organism = types
         }
         organelle.step(currentTime, self, organismsHistory);
       });
+    },
+    setAlleles(alleles: string) {
+      self.alleles = alleles;
     }
   }));
 export type IOrganism = typeof Organism.Type;

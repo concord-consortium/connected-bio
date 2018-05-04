@@ -7,7 +7,8 @@ export enum View {
   None = 'None',
   Organism = 'Organism',
   Cell = 'Cell',
-  Protein = 'Protein'
+  Protein = 'Protein',
+  Genome = 'Genome'
 }
 
 const Box = types
@@ -36,6 +37,7 @@ export const AppStore = types
     // whether we show graphs and add/remove buttons. In future we should explicitly say what views we want.
     // Default: true, set with `?showSubstances=false`
     showSubstances: types.boolean,
+    canEditGenome: types.boolean,
     // which views we allow in the organism boxes
     // Default: ['None', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
     _availableViews: types.array(types.string),
@@ -84,6 +86,8 @@ if (getUrlParamValue('initialOrgs')) {
   initialOrgs = [org, org];
 }
 
+const canEditGenome = getUrlParamValue('canEditGenome') === 'true';
+
 export const appStore = AppStore.create({
   boxes: {
     'box-1': {
@@ -97,6 +101,7 @@ export const appStore = AppStore.create({
       view: initialViews[1]
     }
   },
-  showSubstances: showSubstances,
+  showSubstances,
+  canEditGenome,
   _availableViews: availableViews
 });

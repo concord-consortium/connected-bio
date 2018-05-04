@@ -37,3 +37,10 @@
   top: 3px;
   z-index: 1;
 }
+
+.organism-genome {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 6px;
+}

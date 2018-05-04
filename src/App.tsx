@@ -10,6 +10,7 @@ import { stringToEnum } from './utils';
 import OrganelleWrapper from './components/OrganelleWrapper';
 import AssayTool from './components/Assay/AssayTool';
 import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
+import Genome from 'src/components/Genetics/Genome';
 
 interface AppProps { }
 
@@ -60,6 +61,19 @@ class App extends React.Component<AppProps> {
     } else if (view === View.Organism) {
       let imgSrc = org.getImageSrc();
       return <img src={imgSrc} width="500px" />;
+    } else if (view === View.Genome) {
+      let imgSrc = org.getImageSrc();
+      return (
+        <div className="organism-genome">
+          <div>
+            <img src={imgSrc} width="200px" />
+          </div>
+          <Genome
+            editable={appStore.canEditGenome}
+            org={org}
+          />
+        </div>
+      );
     } else {
       return (
         <OrganelleWrapper
@@ -73,7 +87,7 @@ class App extends React.Component<AppProps> {
 
   forceDropper(e: any) {
     // Hack to force Fabric canvases to inherit cursor styles, should configure in Organelle instead
-    if (e.target.className.indexOf('upper-canvas') > -1) {
+    if (e.target.className.indexOf && e.target.className.indexOf('upper-canvas') > -1) {
       e.target.style.cursor = 'inherit';
     }
   }
