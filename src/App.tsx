@@ -10,19 +10,29 @@ import { stringToEnum } from './utils';
 import OrganelleWrapper from './components/OrganelleWrapper';
 import AssayTool from './components/Assay/AssayTool';
 import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
-import Genome from 'src/components/Genetics/Genome';
+import Genome from './components/Genetics/Genome';
+import { RaisedButton } from 'material-ui';
+
+declare var BioLogica: any;
 
 interface AppProps { }
+interface AppState {
+  offspring:  any[];
+}
 
 const STEP_MS = 100;
 
 @observer
-class App extends React.Component<AppProps> {
+class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
+    this.state = {
+      offspring: []
+    };
     this.handleAssayToggle = this.handleAssayToggle.bind(this);
     this.handleAssayClear = this.handleAssayClear.bind(this);
     this.forceDropper = this.forceDropper.bind(this);
+    this.handleBreed = this.handleBreed.bind(this);
   }
 
   componentDidMount() {
@@ -92,6 +102,13 @@ class App extends React.Component<AppProps> {
     }
   }
 
+  handleBreed() {
+    const bioOrg1 = appStore.getBoxOrganism('box-1').getBiologicaOrganism();
+    const bioOrg2 = appStore.getBoxOrganism('box-2').getBiologicaOrganism();
+    const offspring = new Array(20).fill(null).map(() => BioLogica.breed(bioOrg1, bioOrg2)) as any[];
+    this.setState({offspring});
+  }
+
   render() {
     const substanceTools = appStore.showSubstances ? (
       <div className="tools">
@@ -102,6 +119,31 @@ class App extends React.Component<AppProps> {
         <SubstanceManipulator />
       </div>
     ) : null;
+    const offspringViews = this.state.offspring.map((org, i: number) => {
+      const color = org.getCharacteristic('color');
+      const imgSrc = color === 'Light' ? 'assets/sandrat-10.png' : 'assets/sandrat-02.png';
+      return <img key={`offspring-${i}`} src={imgSrc} width="102px" />;
+    });
+    const breedingTools = (
+      <div>
+        <div className="box offspring-container">
+          {offspringViews}
+        </div>
+        <div className="box breed-tools">
+          <RaisedButton
+            label={'Breed'}
+            onClick={this.handleBreed}
+            style={{width: '150px', margin: '5px'}}
+            labelStyle={{ fontSize: '11px'}}
+            primary={true}
+          />
+        </div>
+      </div>
+    );
+    const showingTwoDiffGenomeViews = appStore.getBoxView('box-1') === View.Genome &&
+      appStore.getBoxView('box-2') === View.Genome &&
+      appStore.getBoxOrganism('box-1').id !== appStore.getBoxOrganism('box-2').id;
+    const rightPanel = showingTwoDiffGenomeViews ? breedingTools : substanceTools;
     return (
       <MuiThemeProvider>
         <div className="App">
@@ -146,7 +188,7 @@ class App extends React.Component<AppProps> {
                 </div>
               </div>
             </div>
-            {substanceTools}
+            {rightPanel}
           </div>
         </div>
       </MuiThemeProvider>

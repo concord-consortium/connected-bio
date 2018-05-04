@@ -38,6 +38,19 @@
   z-index: 1;
 }
 
+.box.offspring-container {
+  width: 420px;
+  height: 530px;
+}
+
+.box.breed-tools {
+  width: 420px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .organism-genome {
   display: flex;
   align-items: center;
