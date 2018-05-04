@@ -39,8 +39,17 @@
 }
 
 .box.offspring-container {
+  position: relative;
   width: 420px;
   height: 530px;
+}
+
+.box.offspring-container .offspring-chart{
+  width: 250px;
+  height: 70px;
+  position: absolute;
+  left: 61px;
+  bottom: 56px;
 }
 
 .box.breed-tools {

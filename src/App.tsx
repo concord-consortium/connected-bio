@@ -12,6 +12,7 @@ import AssayTool from './components/Assay/AssayTool';
 import SubstanceManipulator from './components/SubstanceManipulator/SubstanceManipulator';
 import Genome from './components/Genetics/Genome';
 import { RaisedButton } from 'material-ui';
+import { Bar } from 'react-chartjs-2';
 
 declare var BioLogica: any;
 
@@ -124,10 +125,42 @@ class App extends React.Component<AppProps, AppState> {
       const imgSrc = color === 'Light' ? 'assets/sandrat-10.png' : 'assets/sandrat-02.png';
       return <img key={`offspring-${i}`} src={imgSrc} width="102px" />;
     });
+    const numDark = this.state.offspring.filter(o => o.phenotype.characteristics.color === 'Dark').length;
+    const numLight = this.state.offspring.filter(o => o.phenotype.characteristics.color === 'Light').length;
+    const data = {
+      labels: ['Brown', 'White'],
+      datasets: [
+        {
+          label: 'Offspring',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
+          data: [numDark, numLight]
+        }
+      ]
+    };
     const breedingTools = (
       <div>
         <div className="box offspring-container">
           {offspringViews}
+          <div className="offspring-chart">
+            <Bar
+              data={data}
+              options={{
+                maintainAspectRatio: true,
+                scales: {
+                  yAxes: [{
+                      ticks: {
+                        min: 0,
+                        max: 20
+                      }
+                    }]
+                  }
+              }}
+            />
+          </div>
         </div>
         <div className="box breed-tools">
           <RaisedButton
