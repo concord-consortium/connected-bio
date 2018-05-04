@@ -39,17 +39,10 @@ export const AppStore = types
     // which views we allow in the organism boxes
     // Default: ['None', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
     _availableViews: types.array(types.string),
-    // which organisms we allow in the organism boxes
-    // Default: [BeachMouse, FieldMouse], set with `?availableOrgs=BeachMouse,FieldMouse`
-    _availableOrgs: types.array(types.reference(Organism)),
   })
   .views(self => ({
     get availableViews() {
       return self._availableViews.map(id => stringToEnum(id, View));
-    },
-
-    get availableOrgs() {
-      return self._availableOrgs;
     },
 
     getBoxOrganism(boxId: string): IOrganism {
@@ -78,16 +71,13 @@ const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : 
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
   [View.None, View.Organism, View.Cell, View.Protein];
-const availableOrgs = getUrlParamValue('availableOrgs') 
-  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
-  : [BeachMouse, FieldMouse];
 const initialViews = getUrlParamValue('initialViews') ?
   getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
   [View.Organism, View.Cell];
 
 let initialOrgs = [FieldMouse, FieldMouse];
 if (getUrlParamValue('initialOrgs')) {
-  initialOrgs = getUrlParamValue('initialOrgs').split(',').map((name: any) => 
+  initialOrgs = getUrlParamValue('initialOrgs').split(',').map((name: any) =>
     name === 'BeachMouse' ? BeachMouse : FieldMouse);
 } else if (getUrlParamValue('initialOrg')) {
   const org = (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse);
@@ -108,6 +98,5 @@ export const appStore = AppStore.create({
     }
   },
   showSubstances: showSubstances,
-  _availableViews: availableViews,
-  _availableOrgs: availableOrgs
+  _availableViews: availableViews
 });

@@ -1,10 +1,11 @@
 import { types, clone } from 'mobx-state-tree';
 import { isEqual } from 'lodash';
-import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse } from '../models/Organism';
+import { Organism, IOrganism, OrganelleRef, IOrganelleRef,
+  BeachMouse, FieldMouse, createOrganism } from '../models/Organism';
 import { SubstanceType } from '../models/Substance';
 import { AppStore, appStore, View } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
-import { stringToEnum, Timer } from '../utils';
+import { stringToEnum, Timer, getUrlParamValue } from '../utils';
 import { v4 as uuid } from 'uuid';
 
 export enum Mode {
@@ -21,6 +22,9 @@ const RootStore = types
   .model('RootStore', {
     mode: types.enumeration('Mode', Object.keys(Mode).map(key => Mode[key])),
     organisms: types.map(Organism),
+    // which organisms we allow in the organism boxes
+    // Default: [BeachMouse, FieldMouse], set with `?availableOrgs=BeachMouse,FieldMouse`
+    availableOrgs: types.array(types.reference(Organism)),
     activeAssay: types.maybe(OrganelleRef),
     lockedAssays: types.optional(types.array(OrganelleRef), []),
     activeSubstance: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
@@ -67,7 +71,7 @@ const RootStore = types
             delete timers[timerKey];
           }
         },
-        delay, 
+        delay,
         loop);
     },
 
@@ -76,7 +80,7 @@ const RootStore = types
       if (organismsHistory.length > 20) {
         organismsHistory.splice(0, 1);
       }
-      
+
       self.organisms.keys().forEach(orgKey => {
         self.organisms.get(orgKey).step(self.time, organismsHistory);
       });
@@ -116,9 +120,9 @@ const RootStore = types
 
     changeSubstanceLevel(organelleRef: IOrganelleRef) {
       self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-        organelleRef.organelleType, 
-        stringToEnum(self.activeSubstance, SubstanceType), 
-        self.activeSubstanceAmount, 
+        organelleRef.organelleType,
+        stringToEnum(self.activeSubstance, SubstanceType),
+        self.activeSubstanceAmount,
         self.time);
       self.setMode(Mode.Normal);
     },
@@ -137,12 +141,32 @@ const RootStore = types
     }
   }));
 
+const organisms = {
+  'Beach Mouse': BeachMouse,
+  'Field Mouse': FieldMouse
+};
+
+const customOrgs = getUrlParamValue('customOrgs')
+? getUrlParamValue('customOrgs').split(';').map((alleles: string, i: number) =>
+    createOrganism(`Custom ${i + 1}`, alleles)
+  )
+: [];
+
+// Add any custom orgs to the list
+// Probably in the future authors will have the expectation that, if any custom orgs are defined, then
+// only those orgs are available. That would be easy to implement.
+customOrgs.forEach((org: IOrganism) => organisms[org.id] = org);
+
+let availableOrgs = getUrlParamValue('availableOrgs')
+  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse)
+  : [BeachMouse, FieldMouse];
+
+availableOrgs = availableOrgs.concat(customOrgs);
+
 export const rootStore = RootStore.create({
   mode: Mode.Normal,
-  organisms: {
-    'Beach Mouse': BeachMouse,
-    'Field Mouse': FieldMouse
-  },
+  organisms,
+  availableOrgs,
   activeSubstance: SubstanceType.Hormone,
   appStore,
   assayStore
