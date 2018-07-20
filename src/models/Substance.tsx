@@ -10,6 +10,13 @@ export enum SubstanceType {
   Pheomelanin = 'Pheomelanin'
 }
 
+export const mysterySubstanceNames: object = {
+  Pheomelanin: 'Substance A',
+  'Activated Signal Protein': 'Substance B',
+  Eumelanin: 'Substance C',
+  Hormone: 'Substance D'
+};
+
 const substanceManipulationTime = 3500;
 
 export const Substance: any = types

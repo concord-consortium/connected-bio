@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { HorizontalBar } from 'react-chartjs-2';
-import { SubstanceType } from '../../models/Substance';
+import { SubstanceType, mysterySubstanceNames } from '../../models/Substance';
 import { IOrganelleRef } from '../../models/Organism';
 import { isEqual } from 'lodash';
 import { rootStore } from '../../stores/RootStore';
+import { appStore } from '../../stores/AppStore';
 import { assayStore } from '../../stores/AssayStore';
 import { stringToEnum } from '../../utils';
+import { mysteryOrganelleNames } from '../../models/Organelle';
 
 interface AssayBarProps {
   colors: object;
@@ -20,6 +22,10 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
     let bars = [];
 
     let barColor =  this.props.colors[substanceType];
+
+    const label = appStore.mysteryLabels ?
+      mysterySubstanceNames[substanceType] : substanceType;
+
     bars.push({
       data: allAssays.map(function(assayInfo: IOrganelleRef) {
         let organism = rootStore.organisms.get(assayInfo.organism.id);
@@ -32,7 +38,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
         }
         return substanceLevel;
       }),
-      label: substanceType,
+      label,
       backgroundColor: barColor,
       stack: 'Stack ' + barNum
     });
@@ -79,9 +85,12 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
       allAssays.push(activeAssay);
     }
 
+    const organelleLabel = (type: string) =>
+      appStore.mysteryLabels ? mysteryOrganelleNames[type] : type;
+
     let data: Chart.ChartData = {
       datasets: [],
-      labels: allAssays.map(assay => [assay.organism.id, assay.organelleType.toLowerCase()]),
+      labels: allAssays.map(assay => [assay.organism.id, organelleLabel(assay.organelleType).toLowerCase()]),
     };
     activeSubstances.forEach((activeSubstance, i) => {
       data.datasets = data.datasets.concat(

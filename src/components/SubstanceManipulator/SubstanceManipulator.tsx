@@ -3,7 +3,8 @@ import { observer } from 'mobx-react';
 import './SubstanceManipulator.css';
 import { RaisedButton } from 'material-ui';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
-import { SubstanceType } from '../../models/Substance';
+import { SubstanceType, mysterySubstanceNames } from '../../models/Substance';
+import { appStore } from '../../stores/AppStore';
 import { rootStore, Mode } from '../../stores/RootStore';
 
 interface SubstanceManipulatorProps {}
@@ -43,6 +44,10 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
 
   render() {
     let {mode} = rootStore;
+
+    const getSubstanceName = (name: string) =>
+      appStore.mysteryLabels ? mysterySubstanceNames[name] : name;
+
     return (
       <div className="substance-manipulator">
         <div className="substance-buttons">
@@ -74,28 +79,28 @@ class SubstanceManipulator extends React.Component<SubstanceManipulatorProps, Su
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Hormone}
-            label="Hormone"
+            label={getSubstanceName(SubstanceType.Hormone)}
             disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.SignalProtein}
-            label="Activated Signal Protein"
+            label={getSubstanceName(SubstanceType.SignalProtein)}
             disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Eumelanin}
-            label="Eumelanin"
+            label={getSubstanceName(SubstanceType.Eumelanin)}
             disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
           <RadioButton
             style={{width: '200px'}}
             labelStyle={{ fontSize: '12px'}}
             value={SubstanceType.Pheomelanin}
-            label="Pheomelanin"
+            label={getSubstanceName(SubstanceType.Pheomelanin)}
             disabled={!(mode === Mode.Normal || mode === Mode.Add || mode === Mode.Subtract)}
           />
         </RadioButtonGroup>

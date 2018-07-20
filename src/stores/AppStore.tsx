@@ -36,6 +36,10 @@ export const AppStore = types
     // whether we show graphs and add/remove buttons. In future we should explicitly say what views we want.
     // Default: true, set with `?showSubstances=false`
     showSubstances: types.boolean,
+    // whether the locations are substances are shown with true names (melanosome, pheomelanin) or
+    // "mystery" names (location 1, substance a)
+    // Default: false, set with `?mysteryLabels=true`
+    mysteryLabels: types.boolean,
     // which views we allow in the organism boxes
     // Default: ['None', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
     _availableViews: types.array(types.string),
@@ -78,8 +82,8 @@ const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : 
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
   [View.None, View.Organism, View.Cell, View.Protein];
-const availableOrgs = getUrlParamValue('availableOrgs') 
-  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse) 
+const availableOrgs = getUrlParamValue('availableOrgs')
+  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse)
   : [BeachMouse, FieldMouse];
 const initialViews = getUrlParamValue('initialViews') ?
   getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
@@ -87,12 +91,14 @@ const initialViews = getUrlParamValue('initialViews') ?
 
 let initialOrgs = [FieldMouse, FieldMouse];
 if (getUrlParamValue('initialOrgs')) {
-  initialOrgs = getUrlParamValue('initialOrgs').split(',').map((name: any) => 
+  initialOrgs = getUrlParamValue('initialOrgs').split(',').map((name: any) =>
     name === 'BeachMouse' ? BeachMouse : FieldMouse);
 } else if (getUrlParamValue('initialOrg')) {
   const org = (getUrlParamValue('initialOrg') === 'BeachMouse' ? BeachMouse : FieldMouse);
   initialOrgs = [org, org];
 }
+
+const mysteryLabels = getUrlParamValue('mysteryLabels') === 'true' ? true : false;
 
 export const appStore = AppStore.create({
   boxes: {
@@ -108,6 +114,7 @@ export const appStore = AppStore.create({
     }
   },
   showSubstances: showSubstances,
+  mysteryLabels: mysteryLabels,
   _availableViews: availableViews,
   _availableOrgs: availableOrgs
 });
