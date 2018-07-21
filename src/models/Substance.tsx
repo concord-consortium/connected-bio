@@ -4,10 +4,10 @@ import { IOrganism } from './Organism';
 import { OrganelleType, IOrganelle } from './Organelle';
 
 export enum SubstanceType {
-  Hormone = 'Hormone',
+  Pheomelanin = 'Pheomelanin',
   SignalProtein = 'Activated Signal Protein',
   Eumelanin = 'Eumelanin',
-  Pheomelanin = 'Pheomelanin'
+  Hormone = 'Hormone'
 }
 
 export const mysterySubstanceNames: object = {

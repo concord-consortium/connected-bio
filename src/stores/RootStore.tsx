@@ -67,7 +67,7 @@ const RootStore = types
             delete timers[timerKey];
           }
         },
-        delay, 
+        delay,
         loop);
     },
 
@@ -76,7 +76,7 @@ const RootStore = types
       if (organismsHistory.length > 20) {
         organismsHistory.splice(0, 1);
       }
-      
+
       self.organisms.keys().forEach(orgKey => {
         self.organisms.get(orgKey).step(self.time, organismsHistory);
       });
@@ -116,9 +116,9 @@ const RootStore = types
 
     changeSubstanceLevel(organelleRef: IOrganelleRef) {
       self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
-        organelleRef.organelleType, 
-        stringToEnum(self.activeSubstance, SubstanceType), 
-        self.activeSubstanceAmount, 
+        organelleRef.organelleType,
+        stringToEnum(self.activeSubstance, SubstanceType),
+        self.activeSubstanceAmount,
         self.time);
       self.setMode(Mode.Normal);
     },
@@ -143,7 +143,7 @@ export const rootStore = RootStore.create({
     'Beach Mouse': BeachMouse,
     'Field Mouse': FieldMouse
   },
-  activeSubstance: SubstanceType.Hormone,
+  activeSubstance: SubstanceType.Pheomelanin,
   appStore,
   assayStore
 });
