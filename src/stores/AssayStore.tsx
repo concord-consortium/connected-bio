@@ -34,10 +34,10 @@ const showLineGraphs = getUrlParamValue('showLineGraphs') === 'true' ? true : fa
 
 export const assayStore = AssayStore.create({
   visibleSubstances: {
-    [SubstanceType.Hormone]: true,
+    [SubstanceType.Pheomelanin]: true,
     [SubstanceType.SignalProtein]: true,
     [SubstanceType.Eumelanin]: true,
-    [SubstanceType.Pheomelanin]: true
+    [SubstanceType.Hormone]: true
   },
   graph: GraphType.Bar,
   showLineGraphs: showLineGraphs

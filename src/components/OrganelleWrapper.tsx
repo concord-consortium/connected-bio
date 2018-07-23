@@ -2,7 +2,7 @@ import * as React from 'react';
 import { autorun, IReactionDisposer } from 'mobx';
 import { observer } from 'mobx-react';
 import { IOrganism, OrganelleRef } from '../models/Organism';
-import { OrganelleType } from '../models/Organelle';
+import { OrganelleType, mysteryOrganelleNames } from '../models/Organelle';
 import { View, appStore } from '../stores/AppStore';
 import { rootStore, Mode } from '../stores/RootStore';
 import { createModel } from 'organelle';
@@ -94,7 +94,7 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
       appStore.boxes.get(this.props.boxId).setModel(m);
       this.completeLoad();
     });
-    
+
     // Update model properties as they change
     this.disposers.push(autorun(() => {
       const newModelProperties = organism.modelProperties;
@@ -324,10 +324,12 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
   }
 
   render() {
+    const hoverLabel = appStore.mysteryLabels ?
+      mysteryOrganelleNames[this.state.hoveredOrganelle] : this.state.hoveredOrganelle;
     const hoverDiv = this.state.hoveredOrganelle
       ? (
         <div className="hover-location">
-          {this.state.hoveredOrganelle}
+          {hoverLabel}
         </div>)
       : null;
 

@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { clone } from 'mobx-state-tree';
 import { Scatter } from 'react-chartjs-2';
-import { SubstanceType } from '../../models/Substance';
+import { SubstanceType, mysterySubstanceNames } from '../../models/Substance';
 import { IOrganelleRef } from '../../models/Organism';
 import { rootStore } from '../../stores/RootStore';
+import { appStore } from '../../stores/AppStore';
 import { assayStore } from '../../stores/AssayStore';
 import { observer } from 'mobx-react';
 import { stringToEnum } from '../../utils';
+import { mysteryOrganelleNames } from '../../models/Organelle';
 
 interface AssayLineProps {
   colors: object;
@@ -56,10 +58,12 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
         y: val
       };
     });
-    let color =  this.props.colors[activeSubstance];
+    const label = appStore.mysteryLabels ?
+      mysterySubstanceNames[activeSubstance] : activeSubstance;
+    const color =  this.props.colors[activeSubstance];
     return {
       data,
-      label: activeSubstance,
+      label,
       borderWidth: 3,
       backgroundColor: color,
       borderColor: color,
@@ -139,6 +143,9 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
       const yAxisFontSize = lockedAssays.length < 3 ? 12 :
       lockedAssays.length < 4 ? 10 : 8;
 
+      const organelleLabel = appStore.mysteryLabels ?
+        mysteryOrganelleNames[lockedAssay.organelleType] : lockedAssay.organelleType;
+
       const options: any = Object.assign({}, defaultOptions, {
         title,
         legend,
@@ -152,7 +159,7 @@ class AssayLineGraph extends React.Component<AssayLineProps, AssayLineState> {
             scaleLabel: {
               display: true,
               fontSize: yAxisFontSize,
-              labelString: lockedAssays[i].organism.id + ' ' + lockedAssay.organelleType.toLowerCase()
+              labelString: lockedAssays[i].organism.id + ' ' + organelleLabel.toLowerCase()
             }
           }],
           xAxes: [{

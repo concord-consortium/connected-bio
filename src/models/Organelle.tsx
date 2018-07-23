@@ -13,6 +13,14 @@ export enum OrganelleType {
   NearbyCells = 'Nearby cells'
 }
 
+export const mysteryOrganelleNames: object = {
+  Melanosomes: 'Location 1',
+  Nucleus: 'Location 2',
+  Cytoplasm: 'Location 3',
+  Extracellular: 'Location 4',
+  'Nearby cells': 'Location 5'
+};
+
 export const Organelle: any = types
   .model('Organelle', {
     type: types.enumeration('OrganelleType', Object.keys(OrganelleType).map(key => OrganelleType[key])),
