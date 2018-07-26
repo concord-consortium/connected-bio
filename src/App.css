@@ -9,6 +9,7 @@
   align-items: center;
   min-width: 930px;
   cursor: default;
+  background: white;
 }
 
 .four-up {
@@ -25,6 +26,8 @@
   border: 1px solid;
   overflow: hidden;
   margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
 }
 
 .view-box {

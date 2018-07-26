@@ -6,6 +6,7 @@ import { IOrganism } from './models/Organism';
 import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
 import { stringToEnum } from './utils';
+import { ProteinWrapper } from 'protein-viewer';
 
 import OrganelleWrapper from './components/OrganelleWrapper';
 import AssayTool from './components/Assay/AssayTool';
@@ -56,7 +57,7 @@ class App extends React.Component<AppProps> {
     const view: View = appStore.getBoxView(boxId);
 
     if (view === View.None) {
-      return null;
+      return <ProteinWrapper />;
     } else if (view === View.Organism) {
       let imgSrc = org.getImageSrc();
       return <img src={imgSrc} width="500px" />;
@@ -73,7 +74,7 @@ class App extends React.Component<AppProps> {
 
   forceDropper(e: any) {
     // Hack to force Fabric canvases to inherit cursor styles, should configure in Organelle instead
-    if (e.target.className.indexOf('upper-canvas') > -1) {
+    if (typeof e.target.className === 'string' && e.target.className.indexOf('upper-canvas') > -1) {
       e.target.style.cursor = 'inherit';
     }
   }
