@@ -40,3 +40,8 @@
   top: 3px;
   z-index: 1;
 }
+
+.protein-viewer {
+  transform: scale(.5);
+  top: -122px;
+}

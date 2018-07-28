@@ -57,7 +57,7 @@ class App extends React.Component<AppProps> {
     const view: View = appStore.getBoxView(boxId);
 
     if (view === View.None) {
-      return <ProteinWrapper />;
+      return <ProteinWrapper display="working"/>;
     } else if (view === View.Organism) {
       let imgSrc = org.getImageSrc();
       return <img src={imgSrc} width="500px" />;
