@@ -86,7 +86,7 @@ export const Organism = types
       } else {
         return 'assets/sandrat-10.png';
       }
-    },
+    }
   }))
   .actions(self => ({
     incrementOrganelleSubstance(organelleType: string, substanceType: SubstanceType, amount: number, 

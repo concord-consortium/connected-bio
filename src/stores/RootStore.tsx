@@ -22,6 +22,7 @@ const RootStore = types
     mode: types.enumeration('Mode', Object.keys(Mode).map(key => Mode[key])),
     organisms: types.map(Organism),
     activeAssay: types.maybe(OrganelleRef),
+    marks: types.optional(types.array(types.number), []),
     lockedAssays: types.optional(types.array(OrganelleRef), []),
     activeSubstance: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
     activeSubstanceAmount: types.optional(types.number, 0),
@@ -44,6 +45,10 @@ const RootStore = types
           }
         }
       });
+    },
+
+    setMarks(marks: any) {
+      self.marks = marks;
     },
 
     setLockedAssays(assayOrganelles: any) {

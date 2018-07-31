@@ -7,7 +7,8 @@ export enum View {
   None = 'None',
   Organism = 'Organism',
   Cell = 'Cell',
-  Protein = 'Protein'
+  Protein = 'Protein',
+  Builder = 'Builder'
 }
 
 const Box = types
@@ -81,7 +82,7 @@ export const AppStore = types
 const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : true;
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
-  [View.None, View.Organism, View.Cell, View.Protein];
+  [View.None, View.Organism, View.Cell, View.Protein, View.Builder];
 const availableOrgs = getUrlParamValue('availableOrgs')
   ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse)
   : [BeachMouse, FieldMouse];

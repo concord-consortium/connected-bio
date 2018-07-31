@@ -45,3 +45,7 @@
   transform: scale(.5);
   top: -122px;
 }
+
+.backpack {
+  width: 150px;
+}

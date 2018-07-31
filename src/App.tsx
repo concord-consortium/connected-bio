@@ -53,7 +53,7 @@ class App extends React.Component<AppProps> {
   }
 
   handleMark(marks: any) {
-    console.log(marks);
+    rootStore.setMarks(marks);
   }
 
   getBoxView(boxId: string) {
@@ -61,7 +61,10 @@ class App extends React.Component<AppProps> {
     const view: View = appStore.getBoxView(boxId);
 
     if (view === View.None) {
-      return <ProteinWrapper display="working" onMark={this.handleMark} />;
+      return null;
+    } else if (view === View.Builder) {
+      const protein = org.id === 'Field Mouse' ? 'working' : 'broken'; 
+      return <ProteinWrapper display={protein} onMark={this.handleMark} />;
     } else if (view === View.Organism) {
       let imgSrc = org.getImageSrc();
       return <img src={imgSrc} width="500px" />;
@@ -97,6 +100,9 @@ class App extends React.Component<AppProps> {
       <MuiThemeProvider>
         <div className="App">
           <div className="four-up">
+            <div className="backpack">
+              Stored amino acids: {rootStore.marks.join(', ')}
+            </div>
             <div>
               <div className="view-box" id="top-left">
                 <div className="view-selection-container">
