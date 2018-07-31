@@ -52,12 +52,16 @@ class App extends React.Component<AppProps> {
     rootStore.clearAssays();
   }
 
+  handleMark(marks: any) {
+    console.log(marks);
+  }
+
   getBoxView(boxId: string) {
     const org: IOrganism = appStore.getBoxOrganism(boxId);
     const view: View = appStore.getBoxView(boxId);
 
     if (view === View.None) {
-      return <ProteinWrapper display="working"/>;
+      return <ProteinWrapper display="working" onMark={this.handleMark} />;
     } else if (view === View.Organism) {
       let imgSrc = org.getImageSrc();
       return <img src={imgSrc} width="500px" />;
