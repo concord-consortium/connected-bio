@@ -19,6 +19,18 @@ declare module 'protein-viewer' {
   }
 }
 
+declare module 'cb-populations' {
+  export class PopulationsModelPanel {
+    render(): JSX.Element | null;
+    setState(state: any): any;
+    forceUpdate(): any;
+    props: any;
+    state: any;
+    context: any;
+    refs: any;
+  }
+}
+
 declare module "*.json" {
   const value: any;
   export default value;

@@ -7,6 +7,7 @@ import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
 import { stringToEnum } from './utils';
 import { ProteinWrapper } from 'protein-viewer';
+import { PopulationsModelPanel } from 'cb-populations';
 
 import OrganelleWrapper from './components/OrganelleWrapper';
 import AssayTool from './components/Assay/AssayTool';
@@ -61,7 +62,7 @@ class App extends React.Component<AppProps> {
     const view: View = appStore.getBoxView(boxId);
 
     if (view === View.None) {
-      return null;
+      return <PopulationsModelPanel />;
     } else if (view === View.Builder) {
       const protein = org.id === 'Field Mouse' ? 'working' : 'broken'; 
       return <ProteinWrapper display={protein} onMark={this.handleMark} />;

@@ -6,6 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
 injectTapEventPlugin();
+(window as any).require_brunch = (window as any).require;
 
 ReactDOM.render(
   <App />,

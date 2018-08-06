@@ -17,6 +17,7 @@
     "mobx-state-tree": "^1.3.1",
     "organelle": "^0.0.9",
     "protein-viewer": "^0.1.5",
+    "cb-populations": "^0.1.0",
     "react": "^16.4.1",
     "react-chartjs-2": "^2.7.0",
     "react-dom": "^16.4.1",
