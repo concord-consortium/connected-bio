@@ -49,3 +49,19 @@
 .backpack {
   width: 150px;
 }
+
+#model-panel {
+  position: absolute;
+  left: 200px;
+  top: 15px;
+}
+
+.population-box .view-selection-container {
+  left: 205px;
+}
+
+.population-box .backpack {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+}
