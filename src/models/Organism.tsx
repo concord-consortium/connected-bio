@@ -7,6 +7,7 @@ import { SubstanceType } from './Substance';
 export const Organism = types
   .model('Organism', {
     id: types.optional(types.identifier(types.string), () => uuid()),
+    genotype: types.string,
     organelles: types.map(Organelle),
     cellLightness: types.maybe(types.number)
   })
@@ -122,6 +123,7 @@ export type IOrganelleRef = typeof OrganelleRef.Type;
 
 export const BeachMouse = Organism.create({
   id: 'Beach Mouse',
+  genotype: 'a:b,b:b',
   organelles: {
     [OrganelleType.Extracellular]: {
       type: OrganelleType.Extracellular,
@@ -159,6 +161,7 @@ export const BeachMouse = Organism.create({
 
 export const FieldMouse = Organism.create({
   id: 'Field Mouse',
+  genotype: 'a:B,b:B',
   organelles: {
     [OrganelleType.Extracellular]: {
       type: OrganelleType.Extracellular,

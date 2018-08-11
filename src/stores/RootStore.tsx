@@ -27,8 +27,9 @@ const RootStore = types
     activeSubstance: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
     activeSubstanceAmount: types.optional(types.number, 0),
     time: types.optional(types.number, 0),
+    storedOrganisms: types.optional(types.array(Organism), []),
     appStore: AppStore,
-    assayStore: AssayStore
+    assayStore: AssayStore,
   })
   .actions(self => ({
     setMode(newMode: string) {
@@ -45,6 +46,10 @@ const RootStore = types
           }
         }
       });
+    },
+
+    storeOrganism(org: any) {
+      self.storedOrganisms.push(org);
     },
 
     setMarks(marks: any) {

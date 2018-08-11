@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { IOrganism } from './models/Organism';
+import { IOrganism, Organism } from './models/Organism';
 import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
 import { stringToEnum } from './utils';
@@ -57,6 +57,14 @@ class App extends React.Component<AppProps> {
     rootStore.setMarks(marks);
   }
 
+  handleMouseAdded(mouse: any) {
+    rootStore.storeOrganism(Organism.create({
+      id: `Mouse ${rootStore.storedOrganisms.length + 1}`,
+      genotype: mouse.alleles.color,
+      organelles: {}
+    }));
+  }
+
   getBoxView(boxId: string) {
     const org: IOrganism = appStore.getBoxOrganism(boxId);
     const view: View = appStore.getBoxView(boxId);
@@ -87,21 +95,38 @@ class App extends React.Component<AppProps> {
     }
   }
 
+  getBackpack() {
+    return (
+      <div className="backpack">
+        Stored amino acids: {rootStore.marks.join(', ')}
+        <br/>
+        Stored mice:<br/>{rootStore.storedOrganisms.map((mouse, i) => `Mouse ${i}: ${mouse.genotype}`).join('\n')}
+      </div>
+    );
+  }
+
   getPopulationView() {
+    const selectedOrg: IOrganism = appStore.getBoxOrganism('box-1');
+    const orgColor: string = selectedOrg.genotype === 'a:b,b:b' ? 'white' : 'brown';
+    const percentBB: number = selectedOrg.genotype === 'a:b,b:b' ? 0 : 100;
+    const mice = rootStore.storedOrganisms;
     return (
       <div className="population-box">
-        <div className="backpack">
-          Stored amino acids: {rootStore.marks.join(', ')}
+        {this.getBackpack()}
+        <div className="labeled-env">
+          <div className="view-selection-container">
+            <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
+              {appStore.availableOrgs.concat(mice).map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
+            </select>
+            <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
+              {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
+            </select>
+          </div>
+          <PopulationsModelPanel 
+            modelConfig={{envs: [orgColor], addToBackpack: this.handleMouseAdded, 
+              percentBB: percentBB, percentBb: 0}} 
+          />
         </div>
-        <div className="view-selection-container">
-          <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
-            {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
-          </select>
-          <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
-            {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
-          </select>
-        </div>
-        <PopulationsModelPanel />
       </div>
     );
   }
@@ -116,16 +141,15 @@ class App extends React.Component<AppProps> {
         <SubstanceManipulator />
       </div>
     ) : null;
+    const mice = rootStore.storedOrganisms;
     return (
       <div className="four-up">
-        <div className="backpack">
-          Stored amino acids: {rootStore.marks.join(', ')}
-        </div>
+        {this.getBackpack()}
         <div>
           <div className="view-box" id="top-left">
             <div className="view-selection-container">
               <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
-                {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
+                {appStore.availableOrgs.concat(mice).map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
               </select>
               <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
                 {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
@@ -175,7 +199,7 @@ class App extends React.Component<AppProps> {
     
     return (
       <MuiThemeProvider>
-        <div className="App">
+        <div className="cb-app">
           {view}      
         </div>
       </MuiThemeProvider>

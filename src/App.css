@@ -3,10 +3,10 @@
   font-size: 1.5em;
 }
 
-.App {
+.cb-app {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   min-width: 930px;
   cursor: default;
   background: white;
@@ -50,18 +50,23 @@
   width: 150px;
 }
 
-#model-panel {
-  position: absolute;
-  left: 200px;
-  top: 15px;
+.population-box {
+  display: flex;
+  flex-direction: row;
 }
 
 .population-box .view-selection-container {
-  left: 205px;
+  position: relative;
+  left: 9px;
+  top: 9px;
 }
 
-.population-box .backpack {
-  position: absolute;
-  left: 20px;
-  top: 10px;
+.population-box .bubble.right,
+.population-box .bubble.left {
+  margin-left: 150px;
+  margin-top: 10px;
+}
+
+.population-box .bubble.bottom {
+  margin-top: 110px;
 }

@@ -4,7 +4,7 @@ import { Organism, IOrganism, FieldMouse, BeachMouse } from '../models/Organism'
 import { stringToEnum, getUrlParamValue } from '../utils';
 
 export enum View {
-  None = 'None',
+  None = 'Population',
   Organism = 'Organism',
   Cell = 'Cell',
   Protein = 'Protein',
