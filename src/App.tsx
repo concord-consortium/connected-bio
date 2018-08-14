@@ -68,7 +68,7 @@ class App extends React.Component<AppProps> {
     const org: IOrganism = appStore.getBoxOrganism(boxId);
     const view: View = appStore.getBoxView(boxId);
 
-    if (view === View.None) {
+    if (view === View.Population) {
       return <PopulationsModelPanel />;
     } else if (view === View.Builder) {
       const protein = org.genotype === 'a:b,b:b' ? 'broken' : 'working'; 
@@ -104,24 +104,30 @@ class App extends React.Component<AppProps> {
     );
   }
 
-  getPopulationView() {
-    const selectedOrg: IOrganism = appStore.getBoxOrganism('box-1');
+  getDropdowns(boxId: string) {
+    const mice = rootStore.storedOrganisms;
+    return (
+      <div className="view-selection-container">
+        <select name={boxId} value={appStore.getBoxOrganism(boxId).id} onChange={this.handleOrgChange}>
+          {appStore.availableOrgs.concat(mice)
+            .map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
+        </select>
+        <select name={boxId} value={appStore.getBoxView(boxId)} onChange={this.handleViewChange}>
+          {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
+        </select>
+      </div>
+    );
+  }
+
+  getPopulationView(boxId: string) {
+    const selectedOrg: IOrganism = appStore.getBoxOrganism(boxId);
     const orgColor: string = selectedOrg.genotype === 'a:b,b:b' ? 'white' : 'brown';
     const percentBB: number = selectedOrg.genotype === 'a:b,b:b' ? 0 : 100;
-    const mice = rootStore.storedOrganisms;
     return (
       <div className="population-box">
         {this.getBackpack()}
         <div className="labeled-env">
-          <div className="view-selection-container">
-            <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
-              {appStore.availableOrgs.concat(mice)
-                .map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
-            </select>
-            <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
-              {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
-            </select>
-          </div>
+          {this.getDropdowns(boxId)}
           <PopulationsModelPanel 
             modelConfig={{envs: [orgColor], addToBackpack: this.handleMouseAdded, 
               percentBB: percentBB, percentBb: 0}} 
@@ -141,21 +147,12 @@ class App extends React.Component<AppProps> {
         <SubstanceManipulator />
       </div>
     ) : null;
-    const mice = rootStore.storedOrganisms;
     return (
       <div className="four-up">
         {this.getBackpack()}
         <div>
           <div className="view-box" id="top-left">
-            <div className="view-selection-container">
-              <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
-                {appStore.availableOrgs.concat(mice)
-                  .map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
-              </select>
-              <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
-                {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
-              </select>
-            </div>
+            {this.getDropdowns('box-1')}
             <div
               className="box"
               onClick={this.forceDropper}
@@ -167,14 +164,7 @@ class App extends React.Component<AppProps> {
             </div>
           </div>
           <div className="view-box" id="bottom-left">
-            <div className="view-selection-container">
-              <select name="box-2" value={appStore.getBoxOrganism('box-2').id} onChange={this.handleOrgChange}>
-                {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
-              </select>
-              <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
-                {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
-              </select>
-            </div>
+            {this.getDropdowns('box-2')}
             <div
               className="box"
               onClick={this.forceDropper}
@@ -194,8 +184,10 @@ class App extends React.Component<AppProps> {
   render() {
     let view = this.getFourUpView();
 
-    if (appStore.getBoxView('box-1') === View.None) {
-      view = this.getPopulationView();
+    if (appStore.getBoxView('box-1') === View.Population) {
+      view = this.getPopulationView('box-1');
+    } else if (appStore.getBoxView('box-2') === View.Population) {
+      view = this.getPopulationView('box-2');
     }
     
     return (

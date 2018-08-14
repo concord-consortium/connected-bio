@@ -4,7 +4,7 @@ import { Organism, IOrganism, FieldMouse, BeachMouse } from '../models/Organism'
 import { stringToEnum, getUrlParamValue } from '../utils';
 
 export enum View {
-  None = 'Population',
+  Population = 'Population',
   Organism = 'Organism',
   Cell = 'Cell',
   Protein = 'Protein',
@@ -42,7 +42,7 @@ export const AppStore = types
     // Default: false, set with `?mysteryLabels=true`
     mysteryLabels: types.boolean,
     // which views we allow in the organism boxes
-    // Default: ['None', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
+    // Default: ['Population', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
     _availableViews: types.array(types.string),
     // which organisms we allow in the organism boxes
     // Default: [BeachMouse, FieldMouse], set with `?availableOrgs=BeachMouse,FieldMouse`
@@ -82,7 +82,7 @@ export const AppStore = types
 const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : true;
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
-  [View.None, View.Organism, View.Cell, View.Protein, View.Builder];
+  [View.Population, View.Organism, View.Cell, View.Protein, View.Builder];
 const availableOrgs = getUrlParamValue('availableOrgs')
   ? getUrlParamValue('availableOrgs').split(',').map((name: any) => name === 'BeachMouse' ? BeachMouse : FieldMouse)
   : [BeachMouse, FieldMouse];
