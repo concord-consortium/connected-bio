@@ -28,7 +28,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
 
     bars.push({
       data: allAssays.map(function(assayInfo: IOrganelleRef) {
-        let organism = rootStore.organisms.get(assayInfo.organism.id);
+        let organism = assayInfo.organism;
         let organelleType = assayInfo.organelleType;
         let substanceLevel = organism.getLevelForOrganelleSubstance(organelleType, substanceType);
         let deltaLevel = organism.getDeltaForOrganelleSubstance(organelleType, substanceType);
@@ -45,7 +45,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
 
     bars.push({
       data: allAssays.map(function(assayInfo: IOrganelleRef) {
-        let organism = rootStore.organisms.get(assayInfo.organism.id);
+        let organism = assayInfo.organism;
         let organelleType = assayInfo.organelleType;
         return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substanceType));
       }),
@@ -56,7 +56,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
 
     bars.push({
       data: allAssays.map(function(assayInfo: IOrganelleRef) {
-        let organism = rootStore.organisms.get(assayInfo.organism.id);
+        let organism = assayInfo.organism;
         let organelleType = assayInfo.organelleType;
         return Math.max(0, organism.getDeltaForOrganelleSubstance(organelleType, substanceType) * -1);
       }),
@@ -90,7 +90,7 @@ class AssayBarChart extends React.Component<AssayBarProps, AssayBarState> {
 
     let data: Chart.ChartData = {
       datasets: [],
-      labels: allAssays.map(assay => [assay.organism.id, organelleLabel(assay.organelleType).toLowerCase()]),
+      labels: allAssays.map(assay => [assay.organism.name, organelleLabel(assay.organelleType).toLowerCase()]),
     };
     activeSubstances.forEach((activeSubstance, i) => {
       data.datasets = data.datasets.concat(

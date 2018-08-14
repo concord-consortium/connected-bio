@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { IOrganism, Organism } from './models/Organism';
+import { IOrganism, createMouse } from './models/Organism';
 import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
 import { stringToEnum } from './utils';
@@ -37,7 +37,7 @@ class App extends React.Component<AppProps> {
   }
 
   handleOrgChange(event: any) {
-    appStore.setBoxOrg(event.target.name, rootStore.organisms.get(event.target.value));
+    appStore.setBoxOrg(event.target.name, event.target.value);
     rootStore.checkAssays();
   }
 
@@ -58,11 +58,10 @@ class App extends React.Component<AppProps> {
   }
 
   handleMouseAdded(mouse: any) {
-    rootStore.storeOrganism(Organism.create({
-      id: `Mouse ${rootStore.storedOrganisms.length + 1}`,
-      genotype: mouse.alleles.color,
-      organelles: {}
-    }));
+    rootStore.storeOrganism(createMouse(
+      `Mouse ${rootStore.storedOrganisms.length + 1}`,
+      mouse.alleles.color
+    ));
   }
 
   getBoxView(boxId: string) {
@@ -72,7 +71,7 @@ class App extends React.Component<AppProps> {
     if (view === View.None) {
       return <PopulationsModelPanel />;
     } else if (view === View.Builder) {
-      const protein = org.id === 'Field Mouse' ? 'working' : 'broken'; 
+      const protein = org.genotype === 'a:b,b:b' ? 'broken' : 'working'; 
       return <ProteinWrapper display={protein} onMark={this.handleMark} />;
     } else if (view === View.Organism) {
       let imgSrc = org.getImageSrc();
@@ -100,7 +99,7 @@ class App extends React.Component<AppProps> {
       <div className="backpack">
         Stored amino acids: {rootStore.marks.join(', ')}
         <br/>
-        Stored mice:<br/>{rootStore.storedOrganisms.map((mouse, i) => `Mouse ${i}: ${mouse.genotype}`).join('\n')}
+        Stored mice:<br/>{rootStore.storedOrganisms.map((mouse, i) => `${mouse.name}: ${mouse.genotype}`).join('\n')}
       </div>
     );
   }
@@ -116,7 +115,8 @@ class App extends React.Component<AppProps> {
         <div className="labeled-env">
           <div className="view-selection-container">
             <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
-              {appStore.availableOrgs.concat(mice).map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
+              {appStore.availableOrgs.concat(mice)
+                .map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
             </select>
             <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
               {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
@@ -149,7 +149,8 @@ class App extends React.Component<AppProps> {
           <div className="view-box" id="top-left">
             <div className="view-selection-container">
               <select name="box-1" value={appStore.getBoxOrganism('box-1').id} onChange={this.handleOrgChange}>
-                {appStore.availableOrgs.concat(mice).map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
+                {appStore.availableOrgs.concat(mice)
+                  .map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
               </select>
               <select name="box-1" value={appStore.getBoxView('box-1')} onChange={this.handleViewChange}>
                 {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}
@@ -168,7 +169,7 @@ class App extends React.Component<AppProps> {
           <div className="view-box" id="bottom-left">
             <div className="view-selection-container">
               <select name="box-2" value={appStore.getBoxOrganism('box-2').id} onChange={this.handleOrgChange}>
-                {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.id}</option>)}
+                {appStore.availableOrgs.map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
               </select>
               <select name="box-2" value={appStore.getBoxView('box-2')} onChange={this.handleViewChange}>
                 {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}

@@ -59,9 +59,9 @@ export const Substance: any = types
       let pheomelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Melanosomes, SubstanceType.Pheomelanin);
 
-      let oldHormoneAmount = organismsHistory[0].get(parentOrganism.id).getTotalForOrganelleSubstance(
+      let oldHormoneAmount = organismsHistory[0][parentOrganism.id].getTotalForOrganelleSubstance(
         OrganelleType.Extracellular, SubstanceType.Hormone);
-      let oldSignalProteinAmount = organismsHistory[0].get(parentOrganism.id).getTotalForOrganelleSubstance(
+      let oldSignalProteinAmount = organismsHistory[0][parentOrganism.id].getTotalForOrganelleSubstance(
         OrganelleType.Cytoplasm, SubstanceType.SignalProtein);
 
       if (self.fixedValueEndTime > currentTime) {
@@ -78,7 +78,7 @@ export const Substance: any = types
           break;
         case SubstanceType.SignalProtein:
           birthRate = parentOrganelle.type === OrganelleType.Cytoplasm
-            ? parentOrganism.id === 'Field Mouse'
+            ? parentOrganism.genotype !== 'a:b,b:b'
               ? (180 + .8 * oldHormoneAmount) / 10
               : 25 / 10
             : 0;
@@ -86,7 +86,7 @@ export const Substance: any = types
           break;
         case SubstanceType.Eumelanin:
           birthRate = parentOrganelle.type === OrganelleType.Melanosomes
-            ? parentOrganism.id === 'Field Mouse'
+            ? parentOrganism.genotype !== 'a:b,b:b'
               ? (280 + 1.5 * oldSignalProteinAmount) / 10
               : (25 + 1.8 * oldSignalProteinAmount) / 10
             : 0;

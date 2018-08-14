@@ -20,7 +20,7 @@ let timers: any = {};
 const RootStore = types
   .model('RootStore', {
     mode: types.enumeration('Mode', Object.keys(Mode).map(key => Mode[key])),
-    organisms: types.map(Organism),
+    organisms: types.array(Organism),
     activeAssay: types.maybe(OrganelleRef),
     marks: types.optional(types.array(types.number), []),
     lockedAssays: types.optional(types.array(OrganelleRef), []),
@@ -82,13 +82,20 @@ const RootStore = types
     },
 
     step(msPassed: number) {
-      organismsHistory.push(clone(self.organisms));
+      const orgsCopy = clone(self.organisms);
+      organismsHistory.push(orgsCopy.reduce(
+        (orgs, org) => {
+          orgs[org.id] = org;
+          return orgs;
+        }, 
+        {}
+      ));
       if (organismsHistory.length > 20) {
         organismsHistory.splice(0, 1);
       }
 
-      self.organisms.keys().forEach(orgKey => {
-        self.organisms.get(orgKey).step(self.time, organismsHistory);
+      self.organisms.forEach(org => {
+        org.step(self.time, organismsHistory);
       });
 
       self.time += msPassed;
@@ -125,7 +132,7 @@ const RootStore = types
     },
 
     changeSubstanceLevel(organelleRef: IOrganelleRef) {
-      self.organisms.get(organelleRef.organism.id).incrementOrganelleSubstance(
+      organelleRef.organism.incrementOrganelleSubstance(
         organelleRef.organelleType,
         stringToEnum(self.activeSubstance, SubstanceType),
         self.activeSubstanceAmount,
@@ -149,10 +156,7 @@ const RootStore = types
 
 export const rootStore = RootStore.create({
   mode: Mode.Normal,
-  organisms: {
-    'Beach Mouse': BeachMouse,
-    'Field Mouse': FieldMouse
-  },
+  organisms: [BeachMouse, FieldMouse],
   activeSubstance: SubstanceType.Pheomelanin,
   appStore,
   assayStore

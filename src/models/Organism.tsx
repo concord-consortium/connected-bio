@@ -6,7 +6,8 @@ import { SubstanceType } from './Substance';
 
 export const Organism = types
   .model('Organism', {
-    id: types.optional(types.identifier(types.string), () => uuid()),
+    id: types.identifier(types.string),
+    name: types.string,
     genotype: types.string,
     organelles: types.map(Organelle),
     cellLightness: types.maybe(types.number)
@@ -52,11 +53,10 @@ export const Organism = types
           eumelaninInCell = Math.max(0, Math.min(100, (eumelaninLevel - 200) / 1.7)),
           workingReceptor;
 
-      switch (self.id) {
-        case 'Beach Mouse':
+      switch (self.genotype) {
+        case 'a:b,b:b':
           workingReceptor = false;
           break;
-        case 'Field Mouse':
         default:
           workingReceptor = true;
           break;
@@ -121,8 +121,7 @@ export const OrganelleRef = types
   });
 export type IOrganelleRef = typeof OrganelleRef.Type;
 
-export const BeachMouse = Organism.create({
-  id: 'Beach Mouse',
+const BEACH_MOUSE_DEFAULT = {
   genotype: 'a:b,b:b',
   organelles: {
     [OrganelleType.Extracellular]: {
@@ -157,10 +156,9 @@ export const BeachMouse = Organism.create({
       }
     }
   }
-});
+};
 
-export const FieldMouse = Organism.create({
-  id: 'Field Mouse',
+export const FIELD_MOUSE_DEFAULT = {
   genotype: 'a:B,b:B',
   organelles: {
     [OrganelleType.Extracellular]: {
@@ -195,4 +193,12 @@ export const FieldMouse = Organism.create({
       }
     }
   }
-});
+};
+
+export function createMouse(name: string, genome: string): IOrganism {
+  const baseMouse = genome === 'a:b,b:b' ? BEACH_MOUSE_DEFAULT : FIELD_MOUSE_DEFAULT;
+  return Organism.create(Object.assign(baseMouse, {id: uuid(), name, genome}));
+}
+
+export const BeachMouse = createMouse('Beach Mouse', 'a:b,b:b');
+export const FieldMouse = createMouse('Field Mouse', 'a:B,b:B');
