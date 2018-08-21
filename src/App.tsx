@@ -121,16 +121,30 @@ class App extends React.Component<AppProps> {
 
   getPopulationView(boxId: string) {
     const selectedOrg: IOrganism = appStore.getBoxOrganism(boxId);
-    const orgColor: string = selectedOrg.genotype === 'a:b,b:b' ? 'white' : 'brown';
-    const percentBB: number = selectedOrg.genotype === 'a:b,b:b' ? 0 : 100;
+    const genotype = selectedOrg.genotype;
+    let envColor = 'neutral';
+    let percentBB = 0;
+    let percentBb = 100;
+    let showSwitch = 'true';
+    if (genotype === 'a:b,b:b') {
+      envColor = 'white';
+      percentBB = 0;
+      percentBb = 0;
+      showSwitch = 'false';
+    } else if (genotype === 'a:B,b:B') {
+      envColor = 'brown';
+      percentBB = 100;
+      percentBb = 0;
+      showSwitch = 'false';
+    }
     return (
       <div className="population-box">
         {this.getBackpack()}
         <div className="labeled-env">
           {this.getDropdowns(boxId)}
           <PopulationsModelPanel 
-            modelConfig={{envs: [orgColor], addToBackpack: this.handleMouseAdded, 
-              percentBB: percentBB, percentBb: 0}} 
+            modelConfig={{envs: [envColor], addToBackpack: this.handleMouseAdded, 
+              percentBB, percentBb, switch: showSwitch}} 
           />
         </div>
       </div>

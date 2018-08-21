@@ -1542,9 +1542,9 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
-cb-populations@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/cb-populations/-/cb-populations-0.1.9.tgz#3edfa6fb16769efc2c7a874c2ddd0f0e51d34963"
+cb-populations@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/cb-populations/-/cb-populations-0.1.10.tgz#babdd40b82a00face2e7ae527cad07c2790702c2"
   dependencies:
     "@blueprintjs/core" "^2.3.1"
     autoprefixer "7.1.6"

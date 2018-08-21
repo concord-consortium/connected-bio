@@ -195,10 +195,11 @@ export const FIELD_MOUSE_DEFAULT = {
   }
 };
 
-export function createMouse(name: string, genome: string): IOrganism {
-  const baseMouse = genome === 'a:b,b:b' ? BEACH_MOUSE_DEFAULT : FIELD_MOUSE_DEFAULT;
-  return Organism.create(Object.assign(baseMouse, {id: uuid(), name, genome}));
+export function createMouse(name: string, genotype: string): IOrganism {
+  const baseMouse = genotype === 'a:b,b:b' ? BEACH_MOUSE_DEFAULT : FIELD_MOUSE_DEFAULT;
+  return Organism.create(Object.assign(baseMouse, {id: uuid(), name, genotype}));
 }
 
 export const BeachMouse = createMouse('Beach Mouse', 'a:b,b:b');
 export const FieldMouse = createMouse('Field Mouse', 'a:B,b:B');
+export const Heterozygote = createMouse('Heterozygote', 'a:B,b:b');

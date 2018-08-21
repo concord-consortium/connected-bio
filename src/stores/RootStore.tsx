@@ -1,6 +1,6 @@
 import { types, clone } from 'mobx-state-tree';
 import { isEqual } from 'lodash';
-import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse } from '../models/Organism';
+import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse, Heterozygote } from '../models/Organism';
 import { SubstanceType } from '../models/Substance';
 import { AppStore, appStore, View } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
@@ -156,7 +156,7 @@ const RootStore = types
 
 export const rootStore = RootStore.create({
   mode: Mode.Normal,
-  organisms: [BeachMouse, FieldMouse],
+  organisms: [BeachMouse, FieldMouse, Heterozygote],
   activeSubstance: SubstanceType.Pheomelanin,
   appStore,
   assayStore
