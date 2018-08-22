@@ -29,6 +29,13 @@ export function urlParamToMouse(param: string) {
   }
 }
 
+// Converts "a:c,b:C" into "cC"
+export function genotypeStringToDisplayString(genotype: string) {
+  const regex = /a:(\w+),b:(\w+)/g;
+  const match = regex.exec(genotype);
+  return match[1] + match[2];
+}
+
 /**
  * A pausable timer class.
  * 

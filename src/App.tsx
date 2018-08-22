@@ -5,7 +5,7 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { IOrganism, createMouse } from './models/Organism';
 import { rootStore, Mode } from './stores/RootStore';
 import { appStore, View } from './stores/AppStore';
-import { stringToEnum } from './utils';
+import { stringToEnum, genotypeStringToDisplayString } from './utils';
 import { ProteinWrapper } from 'protein-viewer';
 import { PopulationsModelPanel } from 'cb-populations';
 
@@ -99,7 +99,12 @@ class App extends React.Component<AppProps> {
       <div className="backpack">
         Stored amino acids: {rootStore.marks.join(', ')}
         <br/>
-        Stored mice:<br/>{rootStore.organisms.map((mouse, i) => `${mouse.name}: ${mouse.genotype}`).join('\n')}
+        Stored mice:<br/>
+        {
+          rootStore.organisms.map((mouse, i) => {
+            return [`${mouse.name}: ${genotypeStringToDisplayString(mouse.genotype)}`, <br key={i}/>];
+          })
+        }
       </div>
     );
   }
