@@ -125,7 +125,10 @@ class OrganelleWrapper extends React.Component<OrganelleWrapperProps, OrganelleW
     model.setTimeout(
       () => {
         for (var i = 0; i < 3; i++) {
-          model.world.createAgent(model.world.species.gProtein);
+          // The world could have been unmounted since the timeout was set
+          if (model && model.world) {
+            model.world.createAgent(model.world.species.gProtein);
+          }
         }
       },
       1300);
