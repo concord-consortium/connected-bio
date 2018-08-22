@@ -4,7 +4,7 @@ import { Organism, OrganelleRef, IOrganelleRef, BeachMouse, FieldMouse, Heterozy
 import { SubstanceType } from '../models/Substance';
 import { AppStore, appStore, View } from './AppStore';
 import { AssayStore, assayStore } from './AssayStore';
-import { stringToEnum, Timer } from '../utils';
+import { stringToEnum, Timer, getUrlParamValue, urlParamToMouse } from '../utils';
 import { v4 as uuid } from 'uuid';
 
 export enum Mode {
@@ -27,7 +27,6 @@ const RootStore = types
     activeSubstance: types.enumeration('SubstanceType', Object.keys(SubstanceType).map(key => SubstanceType[key])),
     activeSubstanceAmount: types.optional(types.number, 0),
     time: types.optional(types.number, 0),
-    storedOrganisms: types.optional(types.array(Organism), []),
     appStore: AppStore,
     assayStore: AssayStore,
   })
@@ -49,7 +48,7 @@ const RootStore = types
     },
 
     storeOrganism(org: any) {
-      self.storedOrganisms.push(org);
+      self.organisms.push(org);
     },
 
     setMarks(marks: any) {
@@ -154,9 +153,15 @@ const RootStore = types
     }
   }));
 
+// which organisms we allow in the organism boxes at the start
+// Default: [BeachMouse, FieldMouse, Heterozygote], set with `?availableOrgs=BeachMouse,FieldMouse`
+const organisms = getUrlParamValue('availableOrgs')
+  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => urlParamToMouse(name))
+  : [BeachMouse, FieldMouse, Heterozygote];
+
 export const rootStore = RootStore.create({
   mode: Mode.Normal,
-  organisms: [BeachMouse, FieldMouse, Heterozygote],
+  organisms,
   activeSubstance: SubstanceType.Pheomelanin,
   appStore,
   assayStore

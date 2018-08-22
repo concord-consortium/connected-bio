@@ -1,3 +1,5 @@
+import { BeachMouse, FieldMouse, Heterozygote } from './models/Organism';
+
 export function stringToEnum(str: string, enumType: any): any {
   let matchingKeys = Object.keys(enumType).filter((key) => enumType[key] === str);
   if (matchingKeys.length === 0) {
@@ -14,6 +16,17 @@ export function getUrlParamValue(key: string) {
   }
   var params = JSON.parse(`{"${decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`);
   return params[key];
+}
+
+export function urlParamToMouse(param: string) {
+  switch (param) {
+    case 'BeachMouse':
+      return BeachMouse;
+    case 'FieldMouse':
+      return FieldMouse;
+    default:
+      return Heterozygote;
+  }
 }
 
 /**

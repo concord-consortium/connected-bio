@@ -59,7 +59,7 @@ class App extends React.Component<AppProps> {
 
   handleMouseAdded(mouse: any) {
     rootStore.storeOrganism(createMouse(
-      `Mouse ${rootStore.storedOrganisms.length + 1}`,
+      `Mouse ${rootStore.organisms.length + 1}`,
       mouse.alleles.color
     ));
   }
@@ -99,18 +99,16 @@ class App extends React.Component<AppProps> {
       <div className="backpack">
         Stored amino acids: {rootStore.marks.join(', ')}
         <br/>
-        Stored mice:<br/>{rootStore.storedOrganisms.map((mouse, i) => `${mouse.name}: ${mouse.genotype}`).join('\n')}
+        Stored mice:<br/>{rootStore.organisms.map((mouse, i) => `${mouse.name}: ${mouse.genotype}`).join('\n')}
       </div>
     );
   }
 
   getDropdowns(boxId: string) {
-    const mice = rootStore.storedOrganisms;
     return (
       <div className="view-selection-container">
         <select name={boxId} value={appStore.getBoxOrganism(boxId).id} onChange={this.handleOrgChange}>
-          {appStore.availableOrgs.concat(mice)
-            .map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
+          {rootStore.organisms.map(org => <option key={org.id} value={org.id}>{org.name}</option>)}
         </select>
         <select name={boxId} value={appStore.getBoxView(boxId)} onChange={this.handleViewChange}>
           {appStore.availableViews.map(view => <option key={view} value={view}>{view}</option>)}

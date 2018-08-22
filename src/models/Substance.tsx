@@ -59,10 +59,14 @@ export const Substance: any = types
       let pheomelaninAmount = parentOrganism.getTotalForOrganelleSubstance(
         OrganelleType.Melanosomes, SubstanceType.Pheomelanin);
 
-      let oldHormoneAmount = organismsHistory[0][parentOrganism.id].getTotalForOrganelleSubstance(
-        OrganelleType.Extracellular, SubstanceType.Hormone);
-      let oldSignalProteinAmount = organismsHistory[0][parentOrganism.id].getTotalForOrganelleSubstance(
-        OrganelleType.Cytoplasm, SubstanceType.SignalProtein);
+      const oldParent = organismsHistory[0][parentOrganism.id];
+      // The parent may be missing in the history if the organism was just added
+      const oldHormoneAmount = oldParent
+        ? oldParent.getTotalForOrganelleSubstance(OrganelleType.Extracellular, SubstanceType.Hormone)
+        : hormoneAmount;
+      const oldSignalProteinAmount = oldParent
+        ? oldParent.getTotalForOrganelleSubstance(OrganelleType.Cytoplasm, SubstanceType.SignalProtein)
+        : signalProteinAmount;
 
       if (self.fixedValueEndTime > currentTime) {
         // User has recently set value, and we want to stay at this value

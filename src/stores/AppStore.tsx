@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree';
 import { v4 as uuid } from 'uuid';
-import { Organism, IOrganism, FieldMouse, BeachMouse, Heterozygote } from '../models/Organism';
-import { stringToEnum, getUrlParamValue } from '../utils';
+import { Organism, IOrganism, FieldMouse } from '../models/Organism';
+import { stringToEnum, getUrlParamValue, urlParamToMouse } from '../utils';
 
 export enum View {
   Population = 'Population',
@@ -43,18 +43,11 @@ export const AppStore = types
     mysteryLabels: types.boolean,
     // which views we allow in the organism boxes
     // Default: ['Population', 'Organism', 'Cell', 'Protein'], set with `?availableViews=Organism,Cell`
-    _availableViews: types.array(types.string),
-    // which organisms we allow in the organism boxes
-    // Default: [BeachMouse, FieldMouse, Heterozygote], set with `?availableOrgs=BeachMouse,FieldMouse`
-    _availableOrgs: types.array(types.reference(Organism)),
+    _availableViews: types.array(types.string)
   })
   .views(self => ({
     get availableViews() {
       return self._availableViews.map(id => stringToEnum(id, View));
-    },
-
-    get availableOrgs() {
-      return self._availableOrgs;
     },
 
     getBoxOrganism(boxId: string): IOrganism {
@@ -79,23 +72,10 @@ export const AppStore = types
     }
   }));
 
-const urlParamToMouse = (param: string) => {
-  switch (param) {
-    case 'BeachMouse':
-      return BeachMouse;
-    case 'FieldMouse':
-      return FieldMouse;
-    default:
-      return Heterozygote;
-  }
-};
 const showSubstances = getUrlParamValue('showSubstances') === 'false' ? false : true;
 const availableViews = getUrlParamValue('availableViews') ?
   getUrlParamValue('availableViews').split(',') :
   [View.Population, View.Organism, View.Cell, View.Protein, View.Builder];
-const availableOrgs = getUrlParamValue('availableOrgs')
-  ? getUrlParamValue('availableOrgs').split(',').map((name: any) => urlParamToMouse(name))
-  : [BeachMouse, FieldMouse, Heterozygote];
 const initialViews = getUrlParamValue('initialViews') ?
   getUrlParamValue('initialViews').split(',').map((id: string) => stringToEnum(id, View)) :
   [View.Organism, View.Cell];
@@ -126,5 +106,4 @@ export const appStore = AppStore.create({
   showSubstances: showSubstances,
   mysteryLabels: mysteryLabels,
   _availableViews: availableViews,
-  _availableOrgs: availableOrgs
 });
